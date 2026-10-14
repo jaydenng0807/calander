@@ -1,0 +1,578 @@
+{
+  "timezone": "Asia/Hong_Kong",
+  "student": "NG (Jayden) Man Chun",
+  "source": "Toddle home → Timetable (Sentral portal), cyclical view",
+  "sourceUrl": "https://sentral.esf.edu.hk/s-n9DrBG/portal/#!/timetable/58",
+  "cycleLabel": "Term 1 Week 9 - Term 1 Week 10",
+  "asOf": "2026-10-15",
+  "notes": [
+    "Fortnightly cycle. Week A is Term 1 Week 9 (Mon 5 Oct–Fri 9 Oct 2026). Week B is Term 1 Week 10 (Mon 12 Oct–Fri 16 Oct 2026) and is the current week; today Thursday 15 Oct is ThuB.",
+    "Timetable grid is Monday–Friday only. No Saturday or Sunday periods are shown.",
+    "Break (11:20–11:40) and Lunch (13:00–13:50) are scheduled as No Lesson. Friday period 4 (13:50–15:10) is No Lesson in both weeks.",
+    "Physical and Health Education (10PE103) has no room listed on the grid. Physical Education (10PE803) is a different class and is in S304.",
+    "Enrolled classes with no period on this Week 9–10 grid: Year 10 Arts - Visual Arts (10AR204), Year 10 Material Design (10DG503), Service as action (Year 10 - SAA), Induction - MYP."
+  ],
+  "days": [
+    {
+      "day": "Mon",
+      "cycle": "A",
+      "date": "2026-10-05",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "Sciences",
+          "classCode": "10SC203",
+          "room": "S501",
+          "teacher": "C. LIANG"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Chinese Language Acquisition - Phase 4",
+          "classCode": "10CL501",
+          "room": "S117",
+          "teacher": "K. ZHANG"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "Individuals and Societies",
+          "classCode": "10IS203",
+          "room": "S101",
+          "teacher": "F. SPANOS"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "Physical Education",
+          "classCode": "10PE803",
+          "room": "S304",
+          "teacher": "R. JULIAN"
+        }
+      ]
+    },
+    {
+      "day": "Tue",
+      "cycle": "A",
+      "date": "2026-10-06",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "Mathematics",
+          "classCode": "10MA201",
+          "room": "S214",
+          "teacher": "M. LEWIS"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Arts - Theatre Arts",
+          "classCode": "10TA201",
+          "room": "C011",
+          "teacher": "G. COLAROSSI"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "English Language and Literature",
+          "classCode": "10ENA03",
+          "room": "S406",
+          "teacher": "B. LODDERS"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "Food Design",
+          "classCode": "10DG401",
+          "room": "S418",
+          "teacher": "R. AYYAR KARTHIK"
+        }
+      ]
+    },
+    {
+      "day": "Wed",
+      "cycle": "A",
+      "date": "2026-10-07",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "Physical and Health Education",
+          "classCode": "10PE103",
+          "teacher": "R. JULIAN"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Chinese Language Acquisition - Phase 4",
+          "classCode": "10CL501",
+          "room": "S117",
+          "teacher": "K. ZHANG"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "Individuals and Societies",
+          "classCode": "10IS203",
+          "room": "S101",
+          "teacher": "F. SPANOS"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "Mathematics",
+          "classCode": "10MA201",
+          "room": "S214",
+          "teacher": "M. LEWIS"
+        }
+      ]
+    },
+    {
+      "day": "Thu",
+      "cycle": "A",
+      "date": "2026-10-08",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "English Language and Literature",
+          "classCode": "10ENA03",
+          "room": "S406",
+          "teacher": "B. LODDERS"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Food Design",
+          "classCode": "10DG401",
+          "room": "S418",
+          "teacher": "R. AYYAR KARTHIK"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "Sciences",
+          "classCode": "10SC203",
+          "room": "S501",
+          "teacher": "C. LIANG"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "Arts - Theatre Arts",
+          "classCode": "10TA201",
+          "room": "C011",
+          "teacher": "G. COLAROSSI"
+        }
+      ]
+    },
+    {
+      "day": "Fri",
+      "cycle": "A",
+      "date": "2026-10-09",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "Personal and Social Education",
+          "classCode": "10PZ103",
+          "room": "S301",
+          "teacher": "H. TURNER"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Mathematics",
+          "classCode": "10MA201",
+          "room": "S214",
+          "teacher": "M. LEWIS"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "English Language and Literature",
+          "classCode": "10ENA03",
+          "room": "S406",
+          "teacher": "B. LODDERS"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "No lesson"
+        }
+      ]
+    },
+    {
+      "day": "Mon",
+      "cycle": "B",
+      "date": "2026-10-12",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "Sciences",
+          "classCode": "10SC203",
+          "room": "S501",
+          "teacher": "C. LIANG"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Arts - Theatre Arts",
+          "classCode": "10TA201",
+          "room": "C011",
+          "teacher": "G. COLAROSSI"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "English Language and Literature",
+          "classCode": "10ENA03",
+          "room": "S406",
+          "teacher": "B. LODDERS"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "Physical and Health Education",
+          "classCode": "10PE103",
+          "teacher": "R. JULIAN"
+        }
+      ]
+    },
+    {
+      "day": "Tue",
+      "cycle": "B",
+      "date": "2026-10-13",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "English Language and Literature",
+          "classCode": "10ENA03",
+          "room": "S406",
+          "teacher": "B. LODDERS"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Food Design",
+          "classCode": "10DG401",
+          "room": "S418",
+          "teacher": "R. AYYAR KARTHIK"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "Individuals and Societies",
+          "classCode": "10IS203",
+          "room": "S101",
+          "teacher": "F. SPANOS"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "Chinese Language Acquisition - Phase 4",
+          "classCode": "10CL501",
+          "room": "S117",
+          "teacher": "K. ZHANG"
+        }
+      ]
+    },
+    {
+      "day": "Wed",
+      "cycle": "B",
+      "date": "2026-10-14",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "Arts - Theatre Arts",
+          "classCode": "10TA201",
+          "room": "C011",
+          "teacher": "G. COLAROSSI"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Mathematics",
+          "classCode": "10MA201",
+          "room": "S214",
+          "teacher": "M. LEWIS"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "Individuals and Societies",
+          "classCode": "10IS203",
+          "room": "S101",
+          "teacher": "F. SPANOS"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "Sciences",
+          "classCode": "10SC203",
+          "room": "S501",
+          "teacher": "C. LIANG"
+        }
+      ]
+    },
+    {
+      "day": "Thu",
+      "cycle": "B",
+      "date": "2026-10-15",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "Chinese Language Acquisition - Phase 4",
+          "classCode": "10CL501",
+          "room": "S117",
+          "teacher": "K. ZHANG"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Sciences",
+          "classCode": "10SC203",
+          "room": "S501",
+          "teacher": "C. LIANG"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "Food Design",
+          "classCode": "10DG401",
+          "room": "S418",
+          "teacher": "R. AYYAR KARTHIK"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "Physical and Health Education",
+          "classCode": "10PE103",
+          "teacher": "R. JULIAN"
+        }
+      ]
+    },
+    {
+      "day": "Fri",
+      "cycle": "B",
+      "date": "2026-10-16",
+      "periods": [
+        {
+          "start": "08:25",
+          "end": "08:40",
+          "subject": "Advisory",
+          "classCode": "S07",
+          "room": "S303",
+          "teacher": "R. CHANG"
+        },
+        {
+          "start": "08:40",
+          "end": "10:00",
+          "subject": "Chinese Language Acquisition - Phase 4",
+          "classCode": "10CL501",
+          "room": "S117",
+          "teacher": "K. ZHANG"
+        },
+        {
+          "start": "10:00",
+          "end": "11:20",
+          "subject": "Mathematics",
+          "classCode": "10MA201",
+          "room": "S214",
+          "teacher": "M. LEWIS"
+        },
+        {
+          "start": "11:20",
+          "end": "11:40",
+          "subject": "Break"
+        },
+        {
+          "start": "11:40",
+          "end": "13:00",
+          "subject": "Individuals and Societies",
+          "classCode": "10IS203",
+          "room": "S101",
+          "teacher": "F. SPANOS"
+        },
+        {
+          "start": "13:00",
+          "end": "13:50",
+          "subject": "Lunch"
+        },
+        {
+          "start": "13:50",
+          "end": "15:10",
+          "subject": "No lesson"
+        }
+      ]
+    }
+  ]
+}

@@ -47,7 +47,7 @@ deploy_github_pages() {
       # repo may exist empty; init push path
       git init
       git checkout -B "$BRANCH"
-      git add index.html events.json manifest.webmanifest sw.js README.md calendar-standalone.html deploy.sh deploy.config
+      git add index.html events.json timetable.json manifest.webmanifest sw.js README.md calendar-standalone.html deploy.sh deploy.config
       git -c user.email="calander@local" -c user.name="Calander" commit -m "Initial Calander site" || true
       gh repo create "$OWNER/$REPO" --public --source=. --remote=origin --push
     }
@@ -63,7 +63,7 @@ deploy_github_pages() {
   # Only publish site files (not previews / netlify drop screenshots)
   git add -A
   git reset HEAD -- preview.png preview-mobile.png live-unlocked.png netlify-drop-done.png 2>/dev/null || true
-  git add index.html events.json manifest.webmanifest sw.js README.md calendar-standalone.html deploy.sh deploy.config SITE_URL.txt 2>/dev/null || true
+  git add index.html events.json timetable.json manifest.webmanifest sw.js README.md calendar-standalone.html deploy.sh deploy.config SITE_URL.txt 2>/dev/null || true
   git -c user.email="calander@local" -c user.name="Calander" commit -m "Update Calander $(date -Iseconds)" || echo "(no new commit)"
   git push -u origin "$BRANCH"
 

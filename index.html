@@ -5,46 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="theme-color" content="#08080f" />
+  <meta name="theme-color" content="#070712" />
   <meta name="description" content="Jayden's week calendar — Hong Kong time" />
   <title>Calander — Welcome Jayden</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
     :root {
-      --bg: #08080f;
-      --surface: #141422;
-      --surface-2: #1a1a2e;
-      --surface-hover: #22223a;
-      --text: #f5f5fb;
-      --text-soft: #c4c4d8;
-      --text-muted: #8b8ba3;
-      --text-dim: #5c5c78;
-      --purple: #a78bfa;
-      --purple-deep: #7c5cfc;
-      --purple-glow: rgba(124, 92, 252, 0.35);
-      --purple-soft: rgba(167, 139, 250, 0.16);
-      --blue: #60a5fa;
-      --blue-deep: #3b82f6;
-      --blue-soft: rgba(96, 165, 250, 0.16);
-      --danger: #fb7185;
-      --danger-soft: rgba(251, 113, 133, 0.15);
-      --border: rgba(255, 255, 255, 0.07);
-      --border-strong: rgba(167, 139, 250, 0.28);
-      --today-ring: rgba(167, 139, 250, 0.55);
+      --bg: #070712;
+      --bg-2: #0c0c1a;
+      --surface: rgba(22, 22, 40, 0.78);
+      --surface-solid: #161628;
+      --surface-2: #1e1e36;
+      --surface-hover: #262644;
+      --text: #f7f7ff;
+      --text-soft: #d0d0e6;
+      --text-muted: #9494b0;
+      --text-dim: #636380;
+      --purple: #b39aff;
+      --purple-deep: #8b6cff;
+      --purple-glow: rgba(139, 108, 255, 0.4);
+      --purple-soft: rgba(179, 154, 255, 0.18);
+      --blue: #6eb6ff;
+      --blue-deep: #4a9eff;
+      --blue-soft: rgba(110, 182, 255, 0.16);
+      --danger: #ff7a8a;
+      --danger-soft: rgba(255, 122, 138, 0.16);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(179, 154, 255, 0.35);
+      --today-ring: rgba(179, 154, 255, 0.65);
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
-      --radius: 18px;
-      --radius-sm: 14px;
+      --radius: 22px;
+      --radius-sm: 16px;
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-      --tab-w: min(148px, 38vw);
+      --shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+      --tab-closed: clamp(112px, 28vw, 160px);
+      --tab-open: min(92vw, 400px);
+      --edge: max(14px, env(safe-area-inset-left, 0px));
+      --edge-r: max(14px, env(safe-area-inset-right, 0px));
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
+    html {
       min-height: 100%;
       background: var(--bg);
+      scroll-behavior: smooth;
+    }
+
+    html, body {
       color: var(--text);
       font-family: var(--font);
       -webkit-font-smoothing: antialiased;
@@ -53,20 +62,28 @@
 
     body {
       min-height: 100dvh;
+      width: 100%;
+      overflow-x: hidden;
       background:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124, 92, 252, 0.22), transparent 55%),
-        radial-gradient(ellipse 60% 40% at 100% 20%, rgba(59, 130, 246, 0.12), transparent 50%),
-        radial-gradient(ellipse 50% 30% at 0% 80%, rgba(167, 139, 250, 0.08), transparent 45%),
-        var(--bg);
+        radial-gradient(ellipse 90% 55% at 50% -15%, rgba(139, 108, 255, 0.32), transparent 58%),
+        radial-gradient(ellipse 55% 45% at 110% 18%, rgba(74, 158, 255, 0.18), transparent 52%),
+        radial-gradient(ellipse 50% 40% at -10% 75%, rgba(179, 154, 255, 0.14), transparent 48%),
+        radial-gradient(ellipse 40% 30% at 70% 100%, rgba(59, 130, 246, 0.1), transparent 50%),
+        linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 45%, #06060e 100%);
       padding:
-        calc(18px + var(--safe-top))
-        14px
-        calc(24px + var(--safe-bottom));
-      max-width: 1100px;
-      margin: 0 auto;
+        calc(20px + var(--safe-top))
+        0
+        calc(28px + var(--safe-bottom));
     }
 
-    .hero { margin-bottom: 18px; }
+    .shell {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--edge);
+    }
+
+    .hero { margin-bottom: 8px; }
 
     .hero-top {
       display: flex;
@@ -76,18 +93,18 @@
     }
 
     .welcome {
-      font-size: clamp(28px, 7vw, 40px);
+      font-size: clamp(30px, 7.5vw, 44px);
       font-weight: 800;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.045em;
       line-height: 1.05;
-      background: linear-gradient(135deg, #fff 0%, #c4b5fd 55%, #93c5fd 100%);
+      background: linear-gradient(135deg, #fff 0%, #d4c4ff 45%, #9ec9ff 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
     .brand {
-      margin-top: 6px;
+      margin-top: 8px;
       font-size: clamp(18px, 4.5vw, 24px);
       font-weight: 650;
       letter-spacing: -0.02em;
@@ -99,25 +116,27 @@
 
     .brand::before {
       content: "";
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: var(--purple);
-      box-shadow: 0 0 12px var(--purple-glow);
+      box-shadow: 0 0 14px var(--purple-glow);
       flex-shrink: 0;
     }
 
     .tz-pill {
       flex-shrink: 0;
-      margin-top: 4px;
+      margin-top: 6px;
       font-size: 11px;
       font-weight: 700;
       color: var(--purple);
       background: var(--purple-soft);
       border: 1px solid var(--border-strong);
       border-radius: 999px;
-      padding: 7px 12px;
+      padding: 8px 13px;
       white-space: nowrap;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .week-nav {
@@ -125,13 +144,14 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-top: 16px;
-      padding: 10px 12px;
-      background: rgba(20, 20, 34, 0.75);
+      margin-top: 18px;
+      padding: 11px 13px;
+      background: rgba(22, 22, 40, 0.72);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
     }
 
     .nav-btn {
@@ -139,16 +159,18 @@
       border: 1px solid var(--border);
       background: var(--surface-2);
       color: var(--text);
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      font-size: 18px;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      font-size: 20px;
       font-weight: 600;
       cursor: pointer;
       display: grid;
       place-items: center;
+      transition: background 0.15s, transform 0.1s, border-color 0.15s;
     }
-    .nav-btn:active { transform: scale(0.96); }
+    .nav-btn:hover { border-color: var(--border-strong); background: var(--surface-hover); }
+    .nav-btn:active { transform: scale(0.95); }
 
     .week-label { text-align: center; flex: 1; min-width: 0; }
     .week-label .range {
@@ -157,7 +179,7 @@
       letter-spacing: -0.01em;
     }
     .week-label .hint {
-      margin-top: 2px;
+      margin-top: 3px;
       font-size: 12px;
       color: var(--text-muted);
       font-weight: 500;
@@ -170,77 +192,149 @@
       color: #fff;
       font-size: 12px;
       font-weight: 700;
-      padding: 8px 14px;
+      padding: 9px 16px;
       border-radius: 999px;
       cursor: pointer;
-      box-shadow: 0 4px 16px var(--purple-glow);
+      box-shadow: 0 6px 20px var(--purple-glow);
       white-space: nowrap;
       display: block;
-      margin: 12px auto 0;
+      margin: 14px auto 0;
+      transition: transform 0.12s, box-shadow 0.15s;
     }
+    .today-jump:active { transform: scale(0.97); }
 
     .hint-line {
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 12px;
       color: var(--text-muted);
       text-align: center;
     }
 
-    /* —— Horizontal collapsible day tabs —— */
+    /* —— Full-bleed horizontal day tabs —— */
+    .week-rail {
+      margin-top: 18px;
+      width: 100%;
+      position: relative;
+    }
+
     .week-tabs {
       display: flex;
       flex-direction: row;
       align-items: flex-start;
-      gap: 10px;
-      margin-top: 16px;
+      gap: 12px;
       overflow-x: auto;
       overflow-y: hidden;
+      overscroll-behavior-x: contain;
       -webkit-overflow-scrolling: touch;
-      scroll-snap-type: x proximity;
-      padding: 4px 2px 14px;
-      min-height: 120px;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      padding: 6px var(--edge) 20px;
+      min-height: 140px;
+      cursor: grab;
+      /* hide ugly native white scrollbar */
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
     }
+    .week-tabs::-webkit-scrollbar,
+    .week-tabs::-webkit-scrollbar-thumb,
+    .week-tabs::-webkit-scrollbar-track,
+    .week-tabs::-webkit-scrollbar-button {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+    }
+    .week-tabs.is-dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
+    .week-tabs.is-dragging .day-tab { pointer-events: none; }
 
     .day-tab {
-      flex: 0 0 var(--tab-w);
-      width: var(--tab-w);
-      scroll-snap-align: start;
+      flex: 0 0 var(--tab-closed);
+      width: var(--tab-closed);
+      scroll-snap-align: center;
+      scroll-snap-stop: normal;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
       box-shadow: var(--shadow);
-      transition: flex-basis 0.28s ease, width 0.28s ease, border-color 0.2s, box-shadow 0.2s;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition:
+        flex-basis 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.22s,
+        box-shadow 0.22s,
+        transform 0.22s;
+      will-change: flex-basis, width;
     }
 
     .day-tab.is-open {
-      flex: 0 0 min(320px, 86vw);
-      width: min(320px, 86vw);
+      flex: 0 0 var(--tab-open);
+      width: var(--tab-open);
       border-color: var(--border-strong);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(179, 154, 255, 0.12);
     }
 
     .day-tab.is-today {
       border-color: var(--today-ring);
-      box-shadow: 0 0 0 1px var(--today-ring), var(--shadow), 0 0 36px rgba(124, 92, 252, 0.14);
+      box-shadow: 0 0 0 1px var(--today-ring), var(--shadow), 0 0 42px rgba(139, 108, 255, 0.2);
+    }
+
+    .day-tab.is-today.is-open {
+      box-shadow: 0 0 0 1px var(--today-ring), 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 48px rgba(139, 108, 255, 0.28);
+    }
+
+    @media (min-width: 900px) {
+      :root {
+        --tab-open: min(440px, 34vw);
+      }
+      .week-tabs {
+        scroll-snap-type: x proximity;
+        justify-content: stretch;
+        gap: 14px;
+        padding-left: max(24px, env(safe-area-inset-left, 0px));
+        padding-right: max(24px, env(safe-area-inset-right, 0px));
+      }
+      /* Closed days grow to fill the viewport — no giant black gutters */
+      .day-tab:not(.is-open) {
+        flex: 1 1 0;
+        width: auto;
+        min-width: 108px;
+        max-width: 200px;
+        scroll-snap-align: start;
+      }
+      .day-tab.is-open {
+        flex: 0 0 var(--tab-open);
+        width: var(--tab-open);
+        max-width: none;
+        scroll-snap-align: center;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .day-tab:not(.is-open) { max-width: 220px; }
+      :root { --tab-open: min(480px, 32vw); }
     }
 
     .day-tab-toggle {
       appearance: none;
       width: 100%;
       border: none;
-      background: linear-gradient(180deg, rgba(167, 139, 250, 0.08), transparent);
+      background: linear-gradient(180deg, rgba(179, 154, 255, 0.1), transparent 70%);
       color: inherit;
       text-align: left;
-      padding: 14px 12px 12px;
+      padding: 15px 14px 13px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
       font-family: inherit;
     }
 
     .day-tab.is-today .day-tab-toggle {
-      background: linear-gradient(180deg, rgba(124, 92, 252, 0.22), transparent);
+      background: linear-gradient(180deg, rgba(139, 108, 255, 0.26), transparent 75%);
     }
 
     .day-tab-toggle:active { opacity: 0.92; }
@@ -255,26 +349,30 @@
     .dow {
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
       color: var(--text-muted);
     }
     .day-tab.is-today .dow { color: var(--purple); }
 
     .chev {
-      width: 22px;
-      height: 22px;
-      border-radius: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 9px;
       background: var(--surface-2);
       border: 1px solid var(--border);
       display: grid;
       place-items: center;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
-      transition: transform 0.2s;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s, border-color 0.2s;
       flex-shrink: 0;
     }
-    .day-tab.is-open .chev { transform: rotate(90deg); color: var(--purple); border-color: var(--border-strong); }
+    .day-tab.is-open .chev {
+      transform: rotate(90deg);
+      color: var(--purple);
+      border-color: var(--border-strong);
+    }
 
     .dom {
       display: flex;
@@ -284,9 +382,9 @@
     }
 
     .dom-num {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 800;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.045em;
       line-height: 1;
     }
 
@@ -304,7 +402,7 @@
       text-transform: uppercase;
       color: #fff;
       background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
-      padding: 3px 7px;
+      padding: 3px 8px;
       border-radius: 999px;
     }
     .day-tab.is-today .today-badge { display: inline-block; }
@@ -313,34 +411,46 @@
       font-size: 10px;
       font-weight: 700;
       color: var(--text-muted);
-      background: var(--surface-2);
+      background: rgba(30, 30, 54, 0.9);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 3px 8px;
+      padding: 4px 9px;
       width: fit-content;
     }
-    .count-pill.has { color: var(--purple); border-color: var(--border-strong); background: var(--purple-soft); }
+    .count-pill.has {
+      color: var(--purple);
+      border-color: var(--border-strong);
+      background: var(--purple-soft);
+    }
 
     .day-panel {
       display: none;
-      padding: 0 12px 14px;
+      padding: 0 14px 15px;
       border-top: 1px solid var(--border);
-      animation: fadeIn 0.2s ease;
+      animation: fadeIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .day-tab.is-open .day-panel { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; }
+    .day-tab.is-open .day-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding-top: 13px;
+    }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
+      from { opacity: 0; transform: translateY(-6px); }
       to { opacity: 1; transform: none; }
     }
 
     .empty-slot {
       text-align: center;
-      padding: 18px 8px;
+      padding: 22px 10px;
       color: var(--text-dim);
       font-size: 13px;
       font-weight: 500;
-      line-height: 1.4;
+      line-height: 1.45;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--radius-sm);
+      border: 1px dashed rgba(255, 255, 255, 0.06);
     }
     .empty-slot .dash {
       display: block;
@@ -353,7 +463,7 @@
     .event {
       display: flex;
       gap: 10px;
-      padding: 10px 11px;
+      padding: 11px 12px;
       border-radius: var(--radius-sm);
       background: var(--surface-2);
       border: 1px solid var(--border);
@@ -361,7 +471,7 @@
       overflow: hidden;
       text-decoration: none;
       color: inherit;
-      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      transition: border-color 0.15s, background 0.15s, transform 0.12s, box-shadow 0.15s;
     }
 
     .event::before {
@@ -375,12 +485,15 @@
 
     .event.color-blue::before { background: var(--blue); }
     .event.color-purple::before { background: var(--purple); }
-    .event.color-blue { background: linear-gradient(90deg, var(--blue-soft), var(--surface-2) 40%); }
-    .event.color-purple { background: linear-gradient(90deg, var(--purple-soft), var(--surface-2) 40%); }
+    .event.color-blue { background: linear-gradient(90deg, var(--blue-soft), var(--surface-2) 42%); }
+    .event.color-purple { background: linear-gradient(90deg, var(--purple-soft), var(--surface-2) 42%); }
 
     .event.is-link { cursor: pointer; }
     .event.is-link:active { transform: scale(0.985); }
-    .event.is-link:hover { border-color: var(--border-strong); }
+    .event.is-link:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
 
     .event-meta { flex: 1; min-width: 0; }
 
@@ -399,7 +512,7 @@
       font-size: 14px;
       font-weight: 650;
       letter-spacing: -0.01em;
-      line-height: 1.25;
+      line-height: 1.3;
       word-break: break-word;
     }
 
@@ -413,8 +526,8 @@
     .tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-      margin-top: 6px;
+      gap: 5px;
+      margin-top: 7px;
     }
 
     .tag {
@@ -422,7 +535,7 @@
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 3px 7px;
+      padding: 3px 8px;
       border-radius: 999px;
     }
     .tag-due { color: var(--danger); background: var(--danger-soft); }
@@ -430,13 +543,247 @@
     .tag-toddle { color: var(--blue); background: var(--blue-soft); }
 
     .footer {
-      margin-top: 18px;
+      margin-top: 20px;
       text-align: center;
       font-size: 12px;
       color: var(--text-dim);
-      line-height: 1.5;
+      line-height: 1.55;
     }
     .footer strong { color: var(--text-muted); font-weight: 600; }
+
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .tt-btn {
+      appearance: none;
+      border: 1px solid var(--border-strong);
+      background: linear-gradient(135deg, rgba(139, 108, 255, 0.28), rgba(74, 158, 255, 0.22));
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 6px 22px rgba(139, 108, 255, 0.28);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.12s, box-shadow 0.15s, border-color 0.15s;
+    }
+    .tt-btn:hover { border-color: var(--purple); box-shadow: 0 8px 26px rgba(139, 108, 255, 0.4); }
+    .tt-btn:active { transform: scale(0.97); }
+    .tt-btn .ico { font-size: 15px; line-height: 1; }
+
+    .tt-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(4, 4, 12, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+    .tt-overlay.is-open { display: flex; }
+
+    .tt-panel {
+      width: min(720px, 100%);
+      max-height: min(92dvh, 920px);
+      background:
+        radial-gradient(ellipse 80% 40% at 50% 0%, rgba(139, 108, 255, 0.28), transparent 55%),
+        linear-gradient(180deg, #141428 0%, #0c0c1a 100%);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.55);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: ttSlide 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @media (min-width: 720px) {
+      .tt-overlay { align-items: center; padding: 24px; }
+      .tt-panel { border-radius: 24px; max-height: min(88dvh, 860px); }
+    }
+    @keyframes ttSlide {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .tt-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .tt-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .tt-sub {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .tt-close {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .tt-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 18px 0;
+      flex-shrink: 0;
+    }
+    .tt-cycle {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(30, 30, 54, 0.8);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .tt-cycle.is-active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
+      border-color: transparent;
+      box-shadow: 0 4px 16px var(--purple-glow);
+    }
+
+    .tt-day-pills {
+      display: flex;
+      gap: 6px;
+      padding: 12px 18px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex-shrink: 0;
+    }
+    .tt-day-pills::-webkit-scrollbar { display: none; }
+    .tt-day-pill {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-soft);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tt-day-pill.is-active {
+      border-color: var(--border-strong);
+      color: #fff;
+      background: var(--purple-soft);
+      box-shadow: 0 0 0 1px rgba(179, 154, 255, 0.25);
+    }
+    .tt-day-pill.is-today {
+      border-color: var(--today-ring);
+    }
+
+    .tt-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 18px 22px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tt-body::-webkit-scrollbar { display: none; }
+
+    .tt-period {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .tt-period:last-child { border-bottom: none; }
+    .tt-time {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      line-height: 1.35;
+      padding-top: 2px;
+    }
+    .tt-card {
+      border-radius: 14px;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      position: relative;
+      overflow: hidden;
+    }
+    .tt-card::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--purple);
+    }
+    .tt-card.subj-break,
+    .tt-card.subj-lunch,
+    .tt-card.subj-free {
+      background: rgba(255,255,255,0.03);
+      border-style: dashed;
+    }
+    .tt-card.subj-break::before,
+    .tt-card.subj-lunch::before,
+    .tt-card.subj-free::before { background: var(--text-dim); }
+    .tt-card.subj-sci::before { background: var(--blue); }
+    .tt-card.subj-math::before { background: #f472b6; }
+    .tt-card.subj-eng::before { background: #34d399; }
+    .tt-card.subj-chi::before { background: #fbbf24; }
+    .tt-card.subj-pe::before { background: #fb7185; }
+    .tt-card.subj-design::before { background: #a78bfa; }
+    .tt-card.subj-is::before { background: #60a5fa; }
+    .tt-card.subj-arts::before { background: #c084fc; }
+    .tt-card.subj-adv::before { background: #94a3b8; }
+
+    .tt-subj {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+    .tt-meta {
+      margin-top: 5px;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+    }
 
     .status {
       margin-top: 8px;
@@ -447,34 +794,63 @@
   </style>
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-top">
-      <div>
-        <h1 class="welcome">Welcome Jayden</h1>
-        <p class="brand">Calander</p>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <h1 class="welcome">Welcome Jayden</h1>
+          <p class="brand">Calander</p>
+        </div>
+        <span class="tz-pill">HKT</span>
       </div>
-      <span class="tz-pill">HKT</span>
-    </div>
 
-    <div class="week-nav">
-      <button type="button" class="nav-btn" id="prevWeek" aria-label="Previous week">‹</button>
-      <div class="week-label">
-        <div class="range" id="weekRange">This week</div>
-        <div class="hint" id="weekHint">Mon – Sun · Asia/Hong_Kong</div>
+      <div class="week-nav">
+        <button type="button" class="nav-btn" id="prevWeek" aria-label="Previous week">‹</button>
+        <div class="week-label">
+          <div class="range" id="weekRange">This week</div>
+          <div class="hint" id="weekHint">Mon – Sun · Asia/Hong_Kong</div>
+        </div>
+        <button type="button" class="nav-btn" id="nextWeek" aria-label="Next week">›</button>
       </div>
-      <button type="button" class="nav-btn" id="nextWeek" aria-label="Next week">›</button>
+      <div class="hero-actions">
+        <button type="button" class="tt-btn" id="openTimetable" aria-haspopup="dialog">
+          <span class="ico" aria-hidden="true">▦</span> School timetable
+        </button>
+        <button type="button" class="today-jump" id="jumpToday" style="margin:0">Jump to today</button>
+      </div>
+      <p class="hint-line">Swipe or drag days · tap a day to open / close</p>
+    </header>
+  </div>
+
+  <div class="tt-overlay" id="ttOverlay" role="dialog" aria-modal="true" aria-labelledby="ttTitle" hidden>
+    <div class="tt-panel">
+      <div class="tt-head">
+        <div>
+          <div class="tt-title" id="ttTitle">School timetable</div>
+          <div class="tt-sub" id="ttSub">Loading…</div>
+        </div>
+        <button type="button" class="tt-close" id="ttClose" aria-label="Close">×</button>
+      </div>
+      <div class="tt-tabs">
+        <button type="button" class="tt-cycle" data-cycle="A">Week A</button>
+        <button type="button" class="tt-cycle" data-cycle="B">Week B</button>
+      </div>
+      <div class="tt-day-pills" id="ttDayPills"></div>
+      <div class="tt-body" id="ttBody"></div>
     </div>
-    <button type="button" class="today-jump" id="jumpToday">Jump to today</button>
-    <p class="hint-line">Swipe days left ↔ right · tap a day to open / close</p>
-  </header>
+  </div>
 
-  <main class="week-tabs" id="weekTabs" aria-live="polite"></main>
+  <div class="week-rail">
+    <main class="week-tabs" id="weekTabs" aria-live="polite"></main>
+  </div>
 
-  <p class="footer">
-    Week tabs · data from <strong>events.json</strong><br />
-    School items open Toddle when tapped.
-  </p>
-  <p class="status" id="status"></p>
+  <div class="shell">
+    <p class="footer">
+      Week tabs · data from <strong>events.json</strong><br />
+      School items open Toddle when tapped.
+    </p>
+    <p class="status" id="status"></p>
+  </div>
 
   <script>
     const TZ = "Asia/Hong_Kong";
@@ -697,10 +1073,233 @@
       renderWeek();
     });
 
+
+    // Pointer drag for scrollbar-free horizontal scrolling
+    (function enableDragScroll() {
+      const el = document.getElementById("weekTabs");
+      if (!el) return;
+      let down = false;
+      let moved = false;
+      let startX = 0;
+      let startScroll = 0;
+      let pointerId = null;
+
+      el.addEventListener("pointerdown", (e) => {
+        if (e.pointerType === "touch") return; // native momentum
+        if (e.button !== 0) return;
+        down = true;
+        moved = false;
+        startX = e.clientX;
+        startScroll = el.scrollLeft;
+        pointerId = e.pointerId;
+        try { el.setPointerCapture(pointerId); } catch (_) {}
+      });
+
+      el.addEventListener("pointermove", (e) => {
+        if (!down || e.pointerId !== pointerId) return;
+        const dx = e.clientX - startX;
+        if (!moved && Math.abs(dx) > 4) {
+          moved = true;
+          el.classList.add("is-dragging");
+        }
+        if (moved) {
+          el.scrollLeft = startScroll - dx;
+          e.preventDefault();
+        }
+      });
+
+      function endDrag(e) {
+        if (!down || (e && e.pointerId !== pointerId)) return;
+        down = false;
+        el.classList.remove("is-dragging");
+        if (moved) {
+          // swallow the click that follows a drag
+          const block = (ev) => { ev.stopPropagation(); ev.preventDefault(); el.removeEventListener("click", block, true); };
+          el.addEventListener("click", block, true);
+        }
+        pointerId = null;
+      }
+      el.addEventListener("pointerup", endDrag);
+      el.addEventListener("pointercancel", endDrag);
+    })();
+
+
+    // —— School timetable (fortnightly Week A/B) ——
+    const SUBJECT_PLAIN = {
+      "Advisory": "Advisory",
+      "Sciences": "Science",
+      "Chinese Language Acquisition - Phase 4": "Chinese",
+      "Individuals and Societies": "Individuals & Societies",
+      "Physical Education": "PE",
+      "Physical and Health Education": "PE / Health",
+      "Mathematics": "Math",
+      "Arts - Theatre Arts": "Theatre Arts",
+      "English Language and Literature": "English",
+      "Food Design": "Food Design",
+      "Personal and Social Education": "Personal & Social Ed",
+      "Break": "Break",
+      "Lunch": "Lunch",
+      "No lesson": "No lesson"
+    };
+
+    function plainSubject(s) {
+      return SUBJECT_PLAIN[s] || s;
+    }
+
+    function subjectClass(s) {
+      const p = plainSubject(s).toLowerCase();
+      if (s === "Break") return "subj-break";
+      if (s === "Lunch") return "subj-lunch";
+      if (s === "No lesson") return "subj-free";
+      if (p.includes("science")) return "subj-sci";
+      if (p.includes("math")) return "subj-math";
+      if (p.includes("english")) return "subj-eng";
+      if (p.includes("chinese")) return "subj-chi";
+      if (p.includes("pe")) return "subj-pe";
+      if (p.includes("food") || p.includes("design")) return "subj-design";
+      if (p.includes("individual")) return "subj-is";
+      if (p.includes("theatre") || p.includes("arts")) return "subj-arts";
+      if (p.includes("advisory")) return "subj-adv";
+      if (p.includes("personal")) return "subj-adv";
+      return "";
+    }
+
+    function formatClock(hhmm) {
+      if (!hhmm) return "";
+      const [h, mi] = hhmm.split(":").map(Number);
+      const ampm = h >= 12 ? "PM" : "AM";
+      const h12 = ((h + 11) % 12) + 1;
+      return `${h12}:${String(mi).padStart(2,"0")} ${ampm}`;
+    }
+
+    let timetableData = null;
+    let ttCycle = "B";
+    let ttDay = "Thu";
+
+    function inferCycleAndDay(data) {
+      const today = hktParts().ymd;
+      const hit = (data.days || []).find(d => d.date === today);
+      if (hit) return { cycle: hit.cycle, day: hit.day };
+      // fallback: match weekday within most recent cycle dates
+      const wd = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date(today + "T12:00:00+08:00").getDay()];
+      const map = { Mon: "Mon", Tue: "Tue", Wed: "Wed", Thu: "Thu", Fri: "Fri", Sat: "Mon", Sun: "Mon" };
+      const day = map[wd] || "Mon";
+      // prefer B if today is in week of Oct 12-16 2026 pattern: use asOf week
+      const asOf = data.asOf || today;
+      const asOfHit = (data.days || []).find(d => d.date === asOf);
+      return { cycle: asOfHit ? asOfHit.cycle : "B", day };
+    }
+
+    function openTimetable() {
+      const ov = document.getElementById("ttOverlay");
+      ov.hidden = false;
+      ov.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      renderTimetable();
+    }
+
+    function closeTimetable() {
+      const ov = document.getElementById("ttOverlay");
+      ov.classList.remove("is-open");
+      ov.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    function renderTimetable() {
+      if (!timetableData) {
+        document.getElementById("ttSub").textContent = "Couldn’t load timetable";
+        document.getElementById("ttBody").innerHTML = `<div class="empty-slot">No timetable data</div>`;
+        return;
+      }
+      const today = hktParts().ymd;
+      const days = (timetableData.days || []).filter(d => d.cycle === ttCycle);
+      document.querySelectorAll(".tt-cycle").forEach(btn => {
+        btn.classList.toggle("is-active", btn.getAttribute("data-cycle") === ttCycle);
+      });
+      const pills = document.getElementById("ttDayPills");
+      pills.innerHTML = days.map(d => {
+        const isToday = d.date === today;
+        const active = d.day === ttDay;
+        return `<button type="button" class="tt-day-pill ${active ? "is-active" : ""} ${isToday ? "is-today" : ""}" data-day="${d.day}">${d.day}${d.cycle}${isToday ? " · today" : ""}</button>`;
+      }).join("");
+      pills.querySelectorAll("[data-day]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          ttDay = btn.getAttribute("data-day");
+          renderTimetable();
+        });
+      });
+
+      const dayObj = days.find(d => d.day === ttDay) || days[0];
+      if (!dayObj) {
+        document.getElementById("ttBody").innerHTML = `<div class="empty-slot">No school day</div>`;
+        return;
+      }
+      const label = `Week ${ttCycle} · ${dayObj.day}${ttCycle}`;
+      const dateBits = parseYmd(dayObj.date);
+      document.getElementById("ttSub").textContent =
+        `${label} · ${MONTHS[dateBits.m - 1]} ${dateBits.d} · Mon–Fri · from Toddle / Sentral`;
+
+      const body = document.getElementById("ttBody");
+      body.innerHTML = (dayObj.periods || []).map(p => {
+        const name = plainSubject(p.subject);
+        const cls = subjectClass(p.subject);
+        const meta = [];
+        if (p.room) meta.push(`Room ${escapeHtml(p.room)}`);
+        if (p.teacher) meta.push(escapeHtml(p.teacher));
+        if (p.classCode && p.subject !== "Break" && p.subject !== "Lunch" && p.subject !== "No lesson") {
+          /* keep codes out of plain title; optional quiet code */
+        }
+        return `<div class="tt-period">
+          <div class="tt-time">${formatClock(p.start)}<br/>${formatClock(p.end)}</div>
+          <div class="tt-card ${cls}">
+            <div class="tt-subj">${escapeHtml(name)}</div>
+            ${meta.length ? `<div class="tt-meta">${meta.join(" · ")}</div>` : ""}
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    async function loadTimetable() {
+      try {
+        const res = await fetch("timetable.json", { cache: "no-store" });
+        if (!res.ok) throw new Error("bad");
+        timetableData = await res.json();
+      } catch {
+        timetableData = null;
+      }
+      if (timetableData) {
+        const inf = inferCycleAndDay(timetableData);
+        ttCycle = inf.cycle;
+        ttDay = inf.day;
+      }
+    }
+
+    document.getElementById("openTimetable").addEventListener("click", openTimetable);
+    document.getElementById("ttClose").addEventListener("click", closeTimetable);
+    document.getElementById("ttOverlay").addEventListener("click", (e) => {
+      if (e.target.id === "ttOverlay") closeTimetable();
+    });
+    document.querySelectorAll(".tt-cycle").forEach(btn => {
+      btn.addEventListener("click", () => {
+        ttCycle = btn.getAttribute("data-cycle");
+        const days = (timetableData?.days || []).filter(d => d.cycle === ttCycle);
+        if (!days.find(d => d.day === ttDay) && days[0]) ttDay = days[0].day;
+        renderTimetable();
+      });
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && document.getElementById("ttOverlay").classList.contains("is-open")) {
+        closeTimetable();
+      }
+    });
+
     (async () => {
       initWeek();
-      await loadEvents();
+      await Promise.all([loadEvents(), loadTimetable()]);
       renderWeek();
+      if (new URLSearchParams(location.search).has("tt")) {
+        openTimetable();
+      }
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
         navigator.serviceWorker.register("./sw.js").catch(() => {});
       }

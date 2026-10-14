@@ -1,11 +1,1 @@
-# BLOCKED until GitHub CLI login once.
-# Target stable URL (after ./deploy.sh succeeds):
-https://jaydenng0807.github.io/calander/
-
-# One-time unblock (box or Windows):
-#   gh auth login
-#   cd /workspace/jayden-calendar   # or Downloads\jayden-calendar
-#   ./deploy.sh
-#
-# Weekly: edit events.json → ./deploy.sh (same URL forever)
-# No Netlify Drop. No password (public GitHub Pages).
+SITE_URL=https://jaydenng0807.github.io/calander/
