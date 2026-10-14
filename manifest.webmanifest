@@ -1,0 +1,10 @@
+{
+  "name": "Calander — Welcome Jayden",
+  "short_name": "Calander",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#08080f",
+  "theme_color": "#08080f",
+  "description": "Jayden's week calendar — Hong Kong time",
+  "icons": []
+}

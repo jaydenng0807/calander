@@ -1,0 +1,63 @@
+{
+  "timezone": "Asia/Hong_Kong",
+  "updated": "2026-10-15T00:30:00+08:00",
+  "toddleBase": "https://web.toddleapp.com/platform/391418444458869835/todos",
+  "events": [
+    {
+      "id": "pe-dragon-dance-2026-10-15",
+      "date": "2026-10-15",
+      "title": "PE dragon dance performance",
+      "allDay": true,
+      "type": "personal",
+      "color": "purple"
+    },
+    {
+      "id": "food-design-peer-2026-10-15",
+      "date": "2026-10-15",
+      "title": "Food Design peer feedback",
+      "time": "08:30",
+      "due": true,
+      "type": "school",
+      "color": "blue",
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
+    },
+    {
+      "id": "chinese-work-2026-10-15",
+      "date": "2026-10-15",
+      "title": "Chinese work",
+      "time": "15:30",
+      "due": true,
+      "type": "school",
+      "color": "blue",
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
+    },
+    {
+      "id": "holiday-2026-10-16",
+      "date": "2026-10-16",
+      "title": "Holiday",
+      "allDay": true,
+      "type": "personal",
+      "color": "purple"
+    },
+    {
+      "id": "chinese-reading-2026-10-16",
+      "date": "2026-10-16",
+      "title": "Chinese reading notes",
+      "time": "13:00",
+      "due": true,
+      "type": "school",
+      "color": "blue",
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
+    },
+    {
+      "id": "dragon-blog-2026-10-16",
+      "date": "2026-10-16",
+      "title": "Dragon dance blog",
+      "time": "17:00",
+      "due": true,
+      "type": "school",
+      "color": "blue",
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
+    }
+  ]
+}

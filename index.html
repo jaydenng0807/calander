@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#08080f" />
+  <meta name="description" content="Jayden's week calendar — Hong Kong time" />
+  <title>Calander — Welcome Jayden</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <style>
+    :root {
+      --bg: #08080f;
+      --surface: #141422;
+      --surface-2: #1a1a2e;
+      --surface-hover: #22223a;
+      --text: #f5f5fb;
+      --text-soft: #c4c4d8;
+      --text-muted: #8b8ba3;
+      --text-dim: #5c5c78;
+      --purple: #a78bfa;
+      --purple-deep: #7c5cfc;
+      --purple-glow: rgba(124, 92, 252, 0.35);
+      --purple-soft: rgba(167, 139, 250, 0.16);
+      --blue: #60a5fa;
+      --blue-deep: #3b82f6;
+      --blue-soft: rgba(96, 165, 250, 0.16);
+      --danger: #fb7185;
+      --danger-soft: rgba(251, 113, 133, 0.15);
+      --border: rgba(255, 255, 255, 0.07);
+      --border-strong: rgba(167, 139, 250, 0.28);
+      --today-ring: rgba(167, 139, 250, 0.55);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --radius: 18px;
+      --radius-sm: 14px;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+      --tab-w: min(148px, 38vw);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100dvh;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124, 92, 252, 0.22), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 20%, rgba(59, 130, 246, 0.12), transparent 50%),
+        radial-gradient(ellipse 50% 30% at 0% 80%, rgba(167, 139, 250, 0.08), transparent 45%),
+        var(--bg);
+      padding:
+        calc(18px + var(--safe-top))
+        14px
+        calc(24px + var(--safe-bottom));
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero { margin-bottom: 18px; }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .welcome {
+      font-size: clamp(28px, 7vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #fff 0%, #c4b5fd 55%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .brand {
+      margin-top: 6px;
+      font-size: clamp(18px, 4.5vw, 24px);
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      color: var(--purple);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--purple);
+      box-shadow: 0 0 12px var(--purple-glow);
+      flex-shrink: 0;
+    }
+
+    .tz-pill {
+      flex-shrink: 0;
+      margin-top: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--purple);
+      background: var(--purple-soft);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      padding: 7px 12px;
+      white-space: nowrap;
+    }
+
+    .week-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 16px;
+      padding: 10px 12px;
+      background: rgba(20, 20, 34, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .nav-btn:active { transform: scale(0.96); }
+
+    .week-label { text-align: center; flex: 1; min-width: 0; }
+    .week-label .range {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .week-label .hint {
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .today-jump {
+      appearance: none;
+      border: none;
+      background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px var(--purple-glow);
+      white-space: nowrap;
+      display: block;
+      margin: 12px auto 0;
+    }
+
+    .hint-line {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* —— Horizontal collapsible day tabs —— */
+    .week-tabs {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+      padding: 4px 2px 14px;
+      min-height: 120px;
+    }
+
+    .day-tab {
+      flex: 0 0 var(--tab-w);
+      width: var(--tab-w);
+      scroll-snap-align: start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: flex-basis 0.28s ease, width 0.28s ease, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .day-tab.is-open {
+      flex: 0 0 min(320px, 86vw);
+      width: min(320px, 86vw);
+      border-color: var(--border-strong);
+    }
+
+    .day-tab.is-today {
+      border-color: var(--today-ring);
+      box-shadow: 0 0 0 1px var(--today-ring), var(--shadow), 0 0 36px rgba(124, 92, 252, 0.14);
+    }
+
+    .day-tab-toggle {
+      appearance: none;
+      width: 100%;
+      border: none;
+      background: linear-gradient(180deg, rgba(167, 139, 250, 0.08), transparent);
+      color: inherit;
+      text-align: left;
+      padding: 14px 12px 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-family: inherit;
+    }
+
+    .day-tab.is-today .day-tab-toggle {
+      background: linear-gradient(180deg, rgba(124, 92, 252, 0.22), transparent);
+    }
+
+    .day-tab-toggle:active { opacity: 0.92; }
+
+    .tab-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .dow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .day-tab.is-today .dow { color: var(--purple); }
+
+    .chev {
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .day-tab.is-open .chev { transform: rotate(90deg); color: var(--purple); border-color: var(--border-strong); }
+
+    .dom {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .dom-num {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .dom-month {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .today-badge {
+      display: none;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
+      padding: 3px 7px;
+      border-radius: 999px;
+    }
+    .day-tab.is-today .today-badge { display: inline-block; }
+
+    .count-pill {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 8px;
+      width: fit-content;
+    }
+    .count-pill.has { color: var(--purple); border-color: var(--border-strong); background: var(--purple-soft); }
+
+    .day-panel {
+      display: none;
+      padding: 0 12px 14px;
+      border-top: 1px solid var(--border);
+      animation: fadeIn 0.2s ease;
+    }
+    .day-tab.is-open .day-panel { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .empty-slot {
+      text-align: center;
+      padding: 18px 8px;
+      color: var(--text-dim);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .empty-slot .dash {
+      display: block;
+      font-size: 18px;
+      opacity: 0.35;
+      margin-bottom: 4px;
+      letter-spacing: 0.2em;
+    }
+
+    .event {
+      display: flex;
+      gap: 10px;
+      padding: 10px 11px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    }
+
+    .event::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      border-radius: 3px 0 0 3px;
+      background: var(--purple);
+    }
+
+    .event.color-blue::before { background: var(--blue); }
+    .event.color-purple::before { background: var(--purple); }
+    .event.color-blue { background: linear-gradient(90deg, var(--blue-soft), var(--surface-2) 40%); }
+    .event.color-purple { background: linear-gradient(90deg, var(--purple-soft), var(--surface-2) 40%); }
+
+    .event.is-link { cursor: pointer; }
+    .event.is-link:active { transform: scale(0.985); }
+    .event.is-link:hover { border-color: var(--border-strong); }
+
+    .event-meta { flex: 1; min-width: 0; }
+
+    .event-time {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .event-title {
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .open-hint {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--blue);
+      margin-left: auto;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border-radius: 999px;
+    }
+    .tag-due { color: var(--danger); background: var(--danger-soft); }
+    .tag-allday { color: var(--purple); background: var(--purple-soft); }
+    .tag-toddle { color: var(--blue); background: var(--blue-soft); }
+
+    .footer {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .footer strong { color: var(--text-muted); font-weight: 600; }
+
+    .status {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-top">
+      <div>
+        <h1 class="welcome">Welcome Jayden</h1>
+        <p class="brand">Calander</p>
+      </div>
+      <span class="tz-pill">HKT</span>
+    </div>
+
+    <div class="week-nav">
+      <button type="button" class="nav-btn" id="prevWeek" aria-label="Previous week">‹</button>
+      <div class="week-label">
+        <div class="range" id="weekRange">This week</div>
+        <div class="hint" id="weekHint">Mon – Sun · Asia/Hong_Kong</div>
+      </div>
+      <button type="button" class="nav-btn" id="nextWeek" aria-label="Next week">›</button>
+    </div>
+    <button type="button" class="today-jump" id="jumpToday">Jump to today</button>
+    <p class="hint-line">Swipe days left ↔ right · tap a day to open / close</p>
+  </header>
+
+  <main class="week-tabs" id="weekTabs" aria-live="polite"></main>
+
+  <p class="footer">
+    Week tabs · data from <strong>events.json</strong><br />
+    School items open Toddle when tapped.
+  </p>
+  <p class="status" id="status"></p>
+
+  <script>
+    const TZ = "Asia/Hong_Kong";
+    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const DOW = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    const TODDLE_DEFAULT = "https://web.toddleapp.com/platform/391418444458869835/todos";
+
+    const EMBEDDED = {
+      "timezone": "Asia/Hong_Kong",
+      "updated": "2026-10-15T00:30:00+08:00",
+      "toddleBase": TODDLE_DEFAULT,
+      "events": [
+        {"id":"pe-dragon-dance-2026-10-15","date":"2026-10-15","title":"PE dragon dance performance","allDay":true,"type":"personal","color":"purple"},
+        {"id":"food-design-peer-2026-10-15","date":"2026-10-15","title":"Food Design peer feedback","time":"08:30","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
+        {"id":"chinese-work-2026-10-15","date":"2026-10-15","title":"Chinese work","time":"15:30","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
+        {"id":"holiday-2026-10-16","date":"2026-10-16","title":"Holiday","allDay":true,"type":"personal","color":"purple"},
+        {"id":"chinese-reading-2026-10-16","date":"2026-10-16","title":"Chinese reading notes","time":"13:00","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
+        {"id":"dragon-blog-2026-10-16","date":"2026-10-16","title":"Dragon dance blog","time":"17:00","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT}
+      ]
+    };
+
+    let eventsData = EMBEDDED;
+    let weekStart = null;
+    /** ymd -> open state; today defaults open */
+    const openState = new Map();
+
+    function hktParts(d = new Date()) {
+      const fmt = new Intl.DateTimeFormat("en-CA", {
+        timeZone: TZ,
+        year: "numeric", month: "2-digit", day: "2-digit",
+        weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false
+      });
+      const parts = Object.fromEntries(fmt.formatToParts(d).map(p => [p.type, p.value]));
+      return {
+        y: +parts.year, m: +parts.month, d: +parts.day,
+        weekday: parts.weekday,
+        ymd: `${parts.year}-${parts.month}-${parts.day}`
+      };
+    }
+
+    function parseYmd(ymd) {
+      const [y, m, d] = ymd.split("-").map(Number);
+      return { y, m, d };
+    }
+
+    function ymdFromParts(y, m, d) {
+      return `${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    }
+
+    function addDaysYmd(ymd, n) {
+      const { y, m, d } = parseYmd(ymd);
+      const utc = new Date(Date.UTC(y, m - 1, d + n));
+      return ymdFromParts(utc.getUTCFullYear(), utc.getUTCMonth() + 1, utc.getUTCDate());
+    }
+
+    function weekdayIndexMon0(ymd) {
+      const { y, m, d } = parseYmd(ymd);
+      const utc = new Date(Date.UTC(y, m - 1, d, 12));
+      return (utc.getUTCDay() + 6) % 7;
+    }
+
+    function mondayOf(ymd) {
+      return addDaysYmd(ymd, -weekdayIndexMon0(ymd));
+    }
+
+    function formatTime12(hhmm) {
+      if (!hhmm) return "";
+      const [h, mi] = hhmm.split(":").map(Number);
+      const ampm = h >= 12 ? "PM" : "AM";
+      const h12 = ((h + 11) % 12) + 1;
+      return `${h12}:${String(mi).padStart(2,"0")} ${ampm}`;
+    }
+
+    function prettyRange(monYmd) {
+      const sun = addDaysYmd(monYmd, 6);
+      const a = parseYmd(monYmd);
+      const b = parseYmd(sun);
+      if (a.m === b.m && a.y === b.y) return `${MONTHS[a.m - 1]} ${a.d} – ${b.d}, ${a.y}`;
+      if (a.y === b.y) return `${MONTHS[a.m - 1]} ${a.d} – ${MONTHS[b.m - 1]} ${b.d}, ${a.y}`;
+      return `${MONTHS[a.m - 1]} ${a.d}, ${a.y} – ${MONTHS[b.m - 1]} ${b.d}, ${b.y}`;
+    }
+
+    function eventsForDate(ymd) {
+      const list = (eventsData.events || []).filter(e => e.date === ymd);
+      list.sort((a, b) => {
+        if (a.allDay && !b.allDay) return -1;
+        if (!a.allDay && b.allDay) return 1;
+        return (a.time || "").localeCompare(b.time || "");
+      });
+      return list;
+    }
+
+    function eventUrl(ev) {
+      return ev.url || ev.toddleUrl || "";
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function escapeAttr(s) {
+      return escapeHtml(s).replace(/'/g, "&#39;");
+    }
+
+    function renderEvent(ev) {
+      const color = ev.color === "blue" ? "color-blue" : "color-purple";
+      const timeLabel = ev.allDay ? "All day" : formatTime12(ev.time);
+      const href = eventUrl(ev);
+      const tags = [];
+      if (ev.due) tags.push('<span class="tag tag-due">Due</span>');
+      if (ev.allDay) tags.push('<span class="tag tag-allday">All day</span>');
+      if (href) tags.push('<span class="tag tag-toddle">Toddle</span>');
+      const openHint = href ? '<span class="open-hint">Open ↗</span>' : "";
+      const inner = `
+          <div class="event-meta">
+            <div class="event-time">${timeLabel}${openHint}</div>
+            <div class="event-title">${escapeHtml(ev.title)}</div>
+            ${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}
+          </div>`;
+      if (href) {
+        return `<a class="event ${color} is-link" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${inner}</a>`;
+      }
+      return `<article class="event ${color}">${inner}</article>`;
+    }
+
+    function isOpen(ymd, todayYmd) {
+      if (openState.has(ymd)) return openState.get(ymd);
+      return ymd === todayYmd;
+    }
+
+    function renderWeek() {
+      const today = hktParts().ymd;
+      const root = document.getElementById("weekTabs");
+      const days = [];
+      for (let i = 0; i < 7; i++) {
+        const ymd = addDaysYmd(weekStart, i);
+        const { m, d } = parseYmd(ymd);
+        const isToday = ymd === today;
+        const open = isOpen(ymd, today);
+        const evs = eventsForDate(ymd);
+        const body = evs.length
+          ? evs.map(renderEvent).join("")
+          : `<div class="empty-slot"><span class="dash">— — —</span>Nothing scheduled</div>`;
+        const countLabel = evs.length === 0 ? "Empty" : (evs.length === 1 ? "1 item" : `${evs.length} items`);
+        days.push(`
+          <section class="day-tab ${isToday ? "is-today" : ""} ${open ? "is-open" : ""}" data-date="${ymd}">
+            <button type="button" class="day-tab-toggle" aria-expanded="${open}" data-toggle="${ymd}">
+              <div class="tab-top">
+                <span class="dow">${DOW[i]}</span>
+                <span class="chev" aria-hidden="true">›</span>
+              </div>
+              <div class="dom">
+                <span class="dom-num">${d}</span>
+                <span class="dom-month">${MONTHS[m - 1]}</span>
+                <span class="today-badge">Today</span>
+              </div>
+              <span class="count-pill ${evs.length ? "has" : ""}">${countLabel}</span>
+            </button>
+            <div class="day-panel">${body}</div>
+          </section>`);
+      }
+      root.innerHTML = days.join("");
+      document.getElementById("weekRange").textContent = prettyRange(weekStart);
+      document.getElementById("weekHint").textContent = "Mon – Sun · Asia/Hong_Kong";
+
+      root.querySelectorAll("[data-toggle]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const ymd = btn.getAttribute("data-toggle");
+          const next = !isOpen(ymd, today);
+          openState.set(ymd, next);
+          renderWeek();
+          requestAnimationFrame(() => {
+            const el = root.querySelector(`[data-date="${ymd}"]`);
+            if (el) el.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+          });
+        });
+      });
+
+      requestAnimationFrame(() => {
+        const el = root.querySelector(".is-today.is-open") || root.querySelector(".is-today");
+        if (el) el.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      });
+    }
+
+    async function loadEvents() {
+      const status = document.getElementById("status");
+      try {
+        const res = await fetch("events.json", { cache: "no-store" });
+        if (!res.ok) throw new Error("bad status");
+        eventsData = await res.json();
+        status.textContent = `Updated ${eventsData.updated || ""}`.trim();
+      } catch {
+        eventsData = EMBEDDED;
+        status.textContent = "Using offline / built-in events";
+      }
+    }
+
+    function initWeek() {
+      weekStart = mondayOf(hktParts().ymd);
+      openState.clear();
+    }
+
+    document.getElementById("prevWeek").addEventListener("click", () => {
+      weekStart = addDaysYmd(weekStart, -7);
+      openState.clear();
+      renderWeek();
+    });
+    document.getElementById("nextWeek").addEventListener("click", () => {
+      weekStart = addDaysYmd(weekStart, 7);
+      openState.clear();
+      renderWeek();
+    });
+    document.getElementById("jumpToday").addEventListener("click", () => {
+      weekStart = mondayOf(hktParts().ymd);
+      openState.clear();
+      renderWeek();
+    });
+
+    (async () => {
+      initWeek();
+      await loadEvents();
+      renderWeek();
+      if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      }
+    })();
+  </script>
+</body>
+</html>
