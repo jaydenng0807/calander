@@ -235,10 +235,18 @@
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
     }
-    .week-tabs::-webkit-scrollbar,
+    .week-tabs::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+    }
     .week-tabs::-webkit-scrollbar-thumb,
     .week-tabs::-webkit-scrollbar-track,
-    .week-tabs::-webkit-scrollbar-button {
+    .week-tabs::-webkit-scrollbar-button,
+    .week-tabs::-webkit-scrollbar-corner {
       display: none !important;
       width: 0 !important;
       height: 0 !important;
@@ -860,7 +868,7 @@
 
     const EMBEDDED = {
       "timezone": "Asia/Hong_Kong",
-      "updated": "2026-10-15T00:30:00+08:00",
+      "updated": "2026-10-15T00:50:48+08:00",
       "toddleBase": TODDLE_DEFAULT,
       "events": [
         {"id":"pe-dragon-dance-2026-10-15","date":"2026-10-15","title":"PE dragon dance performance","allDay":true,"type":"personal","color":"purple"},
@@ -1301,7 +1309,21 @@
         openTimetable();
       }
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        navigator.serviceWorker.register("./sw.js").catch(() => {});
+        // Force fresh sw.js fetch; network-first HTML so polish updates aren't stuck
+        navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" })
+          .then((reg) => { try { reg.update(); } catch (_) {} })
+          .catch(() => {});
+        // One-time hard refresh when a new SW takes control (clears stale cached shell)
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener("controllerchange", () => {
+          if (refreshing) return;
+          if (sessionStorage.getItem("cal-sw-reloaded") === "1") return;
+          refreshing = true;
+          sessionStorage.setItem("cal-sw-reloaded", "1");
+          location.reload();
+        });
+        // Allow a later update cycle to reload again next visit
+        setTimeout(() => { try { sessionStorage.removeItem("cal-sw-reloaded"); } catch (_) {} }, 15000);
       }
     })();
   </script>

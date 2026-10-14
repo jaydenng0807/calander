@@ -1,1 +1,1 @@
-SITE_URL=https://jaydenng0807.github.io/calander/
+https://jaydenng0807.github.io/calander/
