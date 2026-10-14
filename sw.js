@@ -1,4 +1,4 @@
-const CACHE = "jayden-cal-v4-polish";
+const CACHE = "jayden-cal-v5-clickfix";
 const ASSETS = [
   "./",
   "./index.html",

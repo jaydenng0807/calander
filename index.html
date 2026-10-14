@@ -170,7 +170,8 @@
       transition: background 0.15s, transform 0.1s, border-color 0.15s;
     }
     .nav-btn:hover { border-color: var(--border-strong); background: var(--surface-hover); }
-    .nav-btn:active { transform: scale(0.95); }
+    .nav-btn:active { transform: scale(0.94); }
+    .nav-btn:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
 
     .week-label { text-align: center; flex: 1; min-width: 0; }
     .week-label .range {
@@ -254,8 +255,47 @@
       appearance: none !important;
       -webkit-appearance: none !important;
     }
-    .week-tabs.is-dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
-    .week-tabs.is-dragging .day-tab { pointer-events: none; }
+    .week-tabs.is-dragging {
+      cursor: grabbing;
+      scroll-snap-type: none;
+      scroll-behavior: auto;
+      user-select: none;
+    }
+    /* Do NOT disable pointer-events on day tabs — that broke mouse clicks.
+       Clicks after a real drag are swallowed in JS instead. */
+
+    .week-tabs.is-week-changing {
+      pointer-events: none;
+    }
+    .week-tabs.week-drift-next .day-tab {
+      animation: weekDriftIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .week-tabs.week-drift-prev .day-tab {
+      animation: weekDriftInPrev 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .week-tabs.week-drift-next .day-tab:nth-child(1) { animation-delay: 0.00s; }
+    .week-tabs.week-drift-next .day-tab:nth-child(2) { animation-delay: 0.03s; }
+    .week-tabs.week-drift-next .day-tab:nth-child(3) { animation-delay: 0.06s; }
+    .week-tabs.week-drift-next .day-tab:nth-child(4) { animation-delay: 0.09s; }
+    .week-tabs.week-drift-next .day-tab:nth-child(5) { animation-delay: 0.12s; }
+    .week-tabs.week-drift-next .day-tab:nth-child(6) { animation-delay: 0.15s; }
+    .week-tabs.week-drift-next .day-tab:nth-child(7) { animation-delay: 0.18s; }
+    .week-tabs.week-drift-prev .day-tab:nth-child(1) { animation-delay: 0.00s; }
+    .week-tabs.week-drift-prev .day-tab:nth-child(2) { animation-delay: 0.03s; }
+    .week-tabs.week-drift-prev .day-tab:nth-child(3) { animation-delay: 0.06s; }
+    .week-tabs.week-drift-prev .day-tab:nth-child(4) { animation-delay: 0.09s; }
+    .week-tabs.week-drift-prev .day-tab:nth-child(5) { animation-delay: 0.12s; }
+    .week-tabs.week-drift-prev .day-tab:nth-child(6) { animation-delay: 0.15s; }
+    .week-tabs.week-drift-prev .day-tab:nth-child(7) { animation-delay: 0.18s; }
+
+    @keyframes weekDriftIn {
+      from { opacity: 0; transform: translateX(28px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes weekDriftInPrev {
+      from { opacity: 0; transform: translateX(-28px); }
+      to { opacity: 1; transform: none; }
+    }
 
     .day-tab {
       flex: 0 0 var(--tab-closed);
@@ -270,11 +310,13 @@
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       transition:
-        flex-basis 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-        width 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-        border-color 0.22s,
-        box-shadow 0.22s,
-        transform 0.22s;
+        flex-basis 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        max-width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.25s,
+        box-shadow 0.25s,
+        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.25s;
       will-change: flex-basis, width;
     }
 
@@ -432,21 +474,30 @@
     }
 
     .day-panel {
-      display: none;
-      padding: 0 14px 15px;
-      border-top: 1px solid var(--border);
-      animation: fadeIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .day-tab.is-open .day-panel {
       display: flex;
       flex-direction: column;
       gap: 9px;
-      padding-top: 13px;
+      padding: 0 14px;
+      border-top: 1px solid transparent;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-4px);
+      transition:
+        max-height 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.28s ease,
+        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.28s ease,
+        border-color 0.22s;
+      pointer-events: none;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-6px); }
-      to { opacity: 1; transform: none; }
+    .day-tab.is-open .day-panel {
+      max-height: 720px;
+      opacity: 1;
+      transform: none;
+      padding: 13px 14px 15px;
+      border-top-color: var(--border);
+      pointer-events: auto;
     }
 
     .empty-slot {
@@ -826,7 +877,7 @@
         </button>
         <button type="button" class="today-jump" id="jumpToday" style="margin:0">Jump to today</button>
       </div>
-      <p class="hint-line">Swipe or drag days · tap a day to open / close</p>
+      <p class="hint-line">Tap a day to open · swipe on phone · scroll sideways</p>
     </header>
   </div>
 
@@ -993,7 +1044,7 @@
       return ymd === todayYmd;
     }
 
-    function renderWeek() {
+    function renderWeek(opts) {
       const today = hktParts().ymd;
       const root = document.getElementById("weekTabs");
       const days = [];
@@ -1029,11 +1080,21 @@
       document.getElementById("weekHint").textContent = "Mon – Sun · Asia/Hong_Kong";
 
       root.querySelectorAll("[data-toggle]").forEach((btn) => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", (ev) => {
+          // If a drag just happened, the capture-phase blocker handles it;
+          // this is a normal mouse/touch click → expand / collapse.
+          ev.stopPropagation();
           const ymd = btn.getAttribute("data-toggle");
           const next = !isOpen(ymd, today);
           openState.set(ymd, next);
-          renderWeek();
+          // Toggle class in-place for smoother open/close (avoid full re-render flicker)
+          const tab = btn.closest(".day-tab");
+          if (tab) {
+            tab.classList.toggle("is-open", next);
+            btn.setAttribute("aria-expanded", String(next));
+          } else {
+            renderWeek();
+          }
           requestAnimationFrame(() => {
             const el = root.querySelector(`[data-date="${ymd}"]`);
             if (el) el.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
@@ -1042,6 +1103,11 @@
       });
 
       requestAnimationFrame(() => {
+        if (opts && opts.preferScroll === "start") {
+          const first = root.querySelector(".day-tab");
+          if (first) first.scrollIntoView({ inline: "start", block: "nearest", behavior: "smooth" });
+          return;
+        }
         const el = root.querySelector(".is-today.is-open") || root.querySelector(".is-today");
         if (el) el.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
       });
@@ -1065,70 +1131,118 @@
       openState.clear();
     }
 
-    document.getElementById("prevWeek").addEventListener("click", () => {
-      weekStart = addDaysYmd(weekStart, -7);
+    function changeWeek(deltaDays, driftDir) {
+      const root = document.getElementById("weekTabs");
+      weekStart = addDaysYmd(weekStart, deltaDays);
       openState.clear();
-      renderWeek();
-    });
-    document.getElementById("nextWeek").addEventListener("click", () => {
-      weekStart = addDaysYmd(weekStart, 7);
-      openState.clear();
-      renderWeek();
-    });
+      root.classList.add("is-week-changing");
+      root.classList.remove("week-drift-next", "week-drift-prev");
+      // Force reflow so the next animation always plays
+      void root.offsetWidth;
+      if (driftDir === "next") root.classList.add("week-drift-next");
+      if (driftDir === "prev") root.classList.add("week-drift-prev");
+      renderWeek({ preferScroll: "start" });
+      requestAnimationFrame(() => {
+        const first = root.querySelector(".day-tab");
+        if (first) first.scrollIntoView({ inline: "start", block: "nearest", behavior: "smooth" });
+        window.setTimeout(() => {
+          root.classList.remove("is-week-changing", "week-drift-next", "week-drift-prev");
+        }, 480);
+      });
+    }
+
+    document.getElementById("prevWeek").addEventListener("click", () => changeWeek(-7, "prev"));
+    document.getElementById("nextWeek").addEventListener("click", () => changeWeek(7, "next"));
     document.getElementById("jumpToday").addEventListener("click", () => {
       weekStart = mondayOf(hktParts().ymd);
       openState.clear();
+      const root = document.getElementById("weekTabs");
+      root.classList.add("is-week-changing");
+      root.classList.remove("week-drift-next", "week-drift-prev");
+      void root.offsetWidth;
+      root.classList.add("week-drift-prev");
       renderWeek();
+      window.setTimeout(() => {
+        root.classList.remove("is-week-changing", "week-drift-next", "week-drift-prev");
+      }, 480);
     });
 
 
-    // Pointer drag for scrollbar-free horizontal scrolling
+    // Drag-to-scroll: touch uses native momentum.
+    // Mouse/pen only become a drag after >8px movement so plain clicks still expand days.
     (function enableDragScroll() {
       const el = document.getElementById("weekTabs");
       if (!el) return;
-      let down = false;
-      let moved = false;
+      const THRESHOLD = 8;
+      let tracking = false;
+      let dragging = false;
       let startX = 0;
       let startScroll = 0;
       let pointerId = null;
+      let captured = false;
 
       el.addEventListener("pointerdown", (e) => {
-        if (e.pointerType === "touch") return; // native momentum
+        // Let touch scroll natively — never steal it
+        if (e.pointerType === "touch") return;
         if (e.button !== 0) return;
-        down = true;
-        moved = false;
+        // Ignore if the press started on a link (Toddle)
+        if (e.target.closest && e.target.closest("a")) return;
+        tracking = true;
+        dragging = false;
+        captured = false;
         startX = e.clientX;
         startScroll = el.scrollLeft;
         pointerId = e.pointerId;
-        try { el.setPointerCapture(pointerId); } catch (_) {}
+        // Do NOT setPointerCapture yet — that was stealing clicks from day toggles
       });
 
       el.addEventListener("pointermove", (e) => {
-        if (!down || e.pointerId !== pointerId) return;
+        if (!tracking || e.pointerId !== pointerId) return;
         const dx = e.clientX - startX;
-        if (!moved && Math.abs(dx) > 4) {
-          moved = true;
+        if (!dragging && Math.abs(dx) > THRESHOLD) {
+          dragging = true;
           el.classList.add("is-dragging");
+          try {
+            el.setPointerCapture(pointerId);
+            captured = true;
+          } catch (_) {}
         }
-        if (moved) {
+        if (dragging) {
           el.scrollLeft = startScroll - dx;
           e.preventDefault();
         }
       });
 
       function endDrag(e) {
-        if (!down || (e && e.pointerId !== pointerId)) return;
-        down = false;
+        if (!tracking || (e && e.pointerId !== pointerId)) return;
+        tracking = false;
         el.classList.remove("is-dragging");
-        if (moved) {
-          // swallow the click that follows a drag
-          const block = (ev) => { ev.stopPropagation(); ev.preventDefault(); el.removeEventListener("click", block, true); };
-          el.addEventListener("click", block, true);
+        if (captured) {
+          try { el.releasePointerCapture(pointerId); } catch (_) {}
         }
+        if (dragging) {
+          // Swallow only the click that follows a real drag
+          const block = (ev) => {
+            ev.stopPropagation();
+            ev.preventDefault();
+            el.removeEventListener("click", block, true);
+          };
+          el.addEventListener("click", block, true);
+          // Safety: remove blocker if no click comes
+          window.setTimeout(() => el.removeEventListener("click", block, true), 400);
+        }
+        dragging = false;
+        captured = false;
         pointerId = null;
       }
       el.addEventListener("pointerup", endDrag);
       el.addEventListener("pointercancel", endDrag);
+      el.addEventListener("lostpointercapture", () => {
+        tracking = false;
+        dragging = false;
+        captured = false;
+        el.classList.remove("is-dragging");
+      });
     })();
 
 
@@ -1310,7 +1424,7 @@
       }
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
         // Force fresh sw.js fetch; network-first HTML so polish updates aren't stuck
-        navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=5", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         // One-time hard refresh when a new SW takes control (clears stale cached shell)
