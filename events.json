@@ -1,6 +1,6 @@
 {
   "timezone": "Asia/Hong_Kong",
-  "updated": "2026-10-15T11:46:37+08:00",
+  "updated": "2026-10-15T14:20:00+08:00",
   "toddleBase": "https://web.toddleapp.com/platform/391418444458869835/todos",
   "events": [
     {
@@ -73,6 +73,15 @@
       "id": "food-design-crit-c-plan",
       "date": "2026-10-15",
       "title": "Food Design Crit C production plan",
+      "due": true,
+      "type": "school",
+      "color": "blue",
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
+    },
+    {
+      "id": "food-design-d1",
+      "date": "2026-10-16",
+      "title": "Food Design D1",
       "due": true,
       "type": "school",
       "color": "blue",
