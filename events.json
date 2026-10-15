@@ -1,8 +1,18 @@
 {
   "timezone": "Asia/Hong_Kong",
-  "updated": "2026-10-15T00:50:48+08:00",
+  "updated": "2026-10-15T11:14:44+08:00",
   "toddleBase": "https://web.toddleapp.com/platform/391418444458869835/todos",
   "events": [
+    {
+      "id": "food-design-crit-b-overdue",
+      "date": "2026-10-08",
+      "title": "Food Design Crit B",
+      "due": true,
+      "overdue": true,
+      "type": "school",
+      "color": "blue",
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
+    },
     {
       "id": "pe-dragon-dance-2026-10-15",
       "date": "2026-10-15",

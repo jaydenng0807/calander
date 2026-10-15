@@ -844,6 +844,170 @@
       gap: 6px 10px;
     }
 
+
+    /* School work tasks */
+    .sw-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 18px 22px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .sw-body::-webkit-scrollbar { display: none; }
+
+    .sw-task {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 12px;
+      margin-bottom: 10px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      position: relative;
+      overflow: hidden;
+    }
+    .sw-task::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--blue);
+    }
+    .sw-task.is-done {
+      opacity: 0.72;
+    }
+    .sw-task.is-done::before { background: #22c55e; }
+    .sw-task.is-bot-working::before { background: #38bdf8; }
+
+    .sw-done {
+      appearance: none;
+      border: none;
+      background: transparent;
+      padding: 6px;
+      margin: -6px;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+    .sw-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.12), 0 4px 12px rgba(0,0,0,0.35);
+      transition: background 0.15s, box-shadow 0.15s, transform 0.12s;
+    }
+    .sw-dot.is-red {
+      background: #ef4444;
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.35), 0 4px 14px rgba(239, 68, 68, 0.45);
+    }
+    .sw-dot.is-green {
+      background: #22c55e;
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.35), 0 4px 14px rgba(34, 197, 94, 0.45);
+    }
+    .sw-done:active .sw-dot { transform: scale(0.9); }
+
+    .sw-main {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      padding: 0;
+      cursor: pointer;
+    }
+    .sw-main.is-static { cursor: default; }
+    .sw-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+    .sw-meta {
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      align-items: center;
+    }
+    .sw-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text-soft);
+    }
+    .sw-pill.is-due {
+      border-color: rgba(251, 113, 133, 0.45);
+      color: #fda4af;
+      background: rgba(251, 113, 133, 0.12);
+    }
+    .sw-pill.is-overdue {
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.15);
+    }
+    .sw-pill.is-toddle {
+      border-color: rgba(74, 158, 255, 0.4);
+      color: #93c5fd;
+      background: rgba(74, 158, 255, 0.12);
+    }
+
+    .sw-bot {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(30, 30, 54, 0.85);
+      color: var(--text-soft);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
+    }
+    .sw-bot-lamp {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(148, 163, 184, 0.55);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .sw-bot.is-on {
+      border-color: rgba(56, 189, 248, 0.55);
+      color: #e0f2fe;
+      background: rgba(14, 165, 233, 0.18);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.2), 0 6px 18px rgba(14, 165, 233, 0.25);
+    }
+    .sw-bot.is-on .sw-bot-lamp {
+      background: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.85);
+    }
+    .sw-empty {
+      text-align: center;
+      padding: 36px 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
     .status {
       margin-top: 8px;
       font-size: 11px;
@@ -875,6 +1039,9 @@
         <button type="button" class="tt-btn" id="openTimetable" aria-haspopup="dialog">
           <span class="ico" aria-hidden="true">▦</span> School timetable
         </button>
+        <button type="button" class="tt-btn" id="openSchoolWork" aria-haspopup="dialog">
+          <span class="ico" aria-hidden="true">☑</span> School work
+        </button>
         <button type="button" class="today-jump" id="jumpToday" style="margin:0">Jump to today</button>
       </div>
       <p class="hint-line">Tap a day to open · swipe on phone · scroll sideways</p>
@@ -899,6 +1066,20 @@
     </div>
   </div>
 
+
+  <div class="tt-overlay" id="swOverlay" role="dialog" aria-modal="true" aria-labelledby="swTitle" hidden>
+    <div class="tt-panel">
+      <div class="tt-head">
+        <div>
+          <div class="tt-title" id="swTitle">School work</div>
+          <div class="tt-sub" id="swSub">Tasks to do · red = not done · green = done · blue = bot working</div>
+        </div>
+        <button type="button" class="tt-close" id="swClose" aria-label="Close">×</button>
+      </div>
+      <div class="sw-body" id="swBody"></div>
+    </div>
+  </div>
+
   <div class="week-rail">
     <main class="week-tabs" id="weekTabs" aria-live="polite"></main>
   </div>
@@ -919,9 +1100,10 @@
 
     const EMBEDDED = {
       "timezone": "Asia/Hong_Kong",
-      "updated": "2026-10-15T00:50:48+08:00",
+      "updated": "2026-10-15T11:14:44+08:00",
       "toddleBase": TODDLE_DEFAULT,
       "events": [
+        {"id":"food-design-crit-b-overdue","date":"2026-10-08","title":"Food Design Crit B","due":true,"overdue":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
         {"id":"pe-dragon-dance-2026-10-15","date":"2026-10-15","title":"PE dragon dance performance","allDay":true,"type":"personal","color":"purple"},
         {"id":"food-design-peer-2026-10-15","date":"2026-10-15","title":"Food Design peer feedback","time":"08:30","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
         {"id":"chinese-work-2026-10-15","date":"2026-10-15","title":"Chinese work","time":"15:30","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
@@ -1396,6 +1578,144 @@
       }
     }
 
+
+    // —— School work tasks ——
+    const SW_DONE_KEY = "jayden-cal-school-done";
+    const SW_BOT_KEY = "jayden-cal-school-bot";
+
+    function loadSwMap(key) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return {};
+        const obj = JSON.parse(raw);
+        return obj && typeof obj === "object" ? obj : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveSwMap(key, map) {
+      try { localStorage.setItem(key, JSON.stringify(map)); } catch (_) {}
+    }
+
+    let swDone = loadSwMap(SW_DONE_KEY);
+    let swBot = loadSwMap(SW_BOT_KEY);
+
+    function schoolTasks() {
+      const list = (eventsData.events || []).filter(e => e.type === "school");
+      const today = hktParts().ymd;
+      list.sort((a, b) => {
+        const ao = !!(a.overdue || (a.date && a.date < today));
+        const bo = !!(b.overdue || (b.date && b.date < today));
+        if (ao !== bo) return ao ? -1 : 1;
+        const dc = (a.date || "").localeCompare(b.date || "");
+        if (dc) return dc;
+        return (a.time || "").localeCompare(b.time || "");
+      });
+      return list;
+    }
+
+    function formatTaskDue(ev) {
+      const bits = [];
+      const today = hktParts().ymd;
+      const overdue = !!(ev.overdue || (ev.date && ev.date < today));
+      if (overdue) bits.push('<span class="sw-pill is-overdue">Overdue</span>');
+      else if (ev.due) bits.push('<span class="sw-pill is-due">Due</span>');
+      if (ev.date) {
+        const { m, d } = parseYmd(ev.date);
+        let label = `${MONTHS[m - 1]} ${d}`;
+        if (ev.time) label += ` · ${formatTime12(ev.time)}`;
+        else if (ev.allDay) label += " · All day";
+        bits.push(`<span>${label}</span>`);
+      } else if (ev.time) {
+        bits.push(`<span>${formatTime12(ev.time)}</span>`);
+      }
+      if (eventUrl(ev)) bits.push('<span class="sw-pill is-toddle">Toddle</span>');
+      return bits.join("");
+    }
+
+    function openSchoolWork() {
+      const ov = document.getElementById("swOverlay");
+      ov.hidden = false;
+      ov.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      renderSchoolWork();
+    }
+
+    function closeSchoolWork() {
+      const ov = document.getElementById("swOverlay");
+      ov.classList.remove("is-open");
+      ov.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    function renderSchoolWork() {
+      const tasks = schoolTasks();
+      const doneCount = tasks.filter(t => !!swDone[t.id]).length;
+      const botCount = tasks.filter(t => !!swBot[t.id]).length;
+      const sub = document.getElementById("swSub");
+      if (!tasks.length) {
+        sub.textContent = "No school tasks yet";
+      } else {
+        sub.textContent = `${tasks.length} task${tasks.length === 1 ? "" : "s"} · ${doneCount} done · ${botCount} bot working`;
+      }
+      const body = document.getElementById("swBody");
+      if (!tasks.length) {
+        body.innerHTML = `<div class="sw-empty">No school work tasks right now</div>`;
+        return;
+      }
+      body.innerHTML = tasks.map(ev => {
+        const done = !!swDone[ev.id];
+        const bot = !!swBot[ev.id];
+        const href = eventUrl(ev);
+        const rowCls = ["sw-task"];
+        if (done) rowCls.push("is-done");
+        if (bot) rowCls.push("is-bot-working");
+        const mainInner = `<div class="sw-title">${escapeHtml(ev.title)}</div><div class="sw-meta">${formatTaskDue(ev)}</div>`;
+        const main = href
+          ? `<a class="sw-main" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${mainInner}</a>`
+          : `<div class="sw-main is-static">${mainInner}</div>`;
+        return `<div class="${rowCls.join(" ")}" data-sw-id="${escapeAttr(ev.id)}">
+          <button type="button" class="sw-done" data-sw-done="${escapeAttr(ev.id)}" aria-label="${done ? "Mark not done" : "Mark done"}" title="${done ? "Done" : "Not done"}">
+            <span class="sw-dot ${done ? "is-green" : "is-red"}" aria-hidden="true"></span>
+          </button>
+          ${main}
+          <button type="button" class="sw-bot ${bot ? "is-on" : ""}" data-sw-bot="${escapeAttr(ev.id)}" aria-pressed="${bot ? "true" : "false"}" aria-label="${bot ? "Stop bot" : "Bot working"}" title="Bot working">
+            <span class="sw-bot-lamp" aria-hidden="true"></span>
+            Bot
+          </button>
+        </div>`;
+      }).join("");
+
+      body.querySelectorAll("[data-sw-done]").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = btn.getAttribute("data-sw-done");
+          swDone[id] = !swDone[id];
+          saveSwMap(SW_DONE_KEY, swDone);
+          renderSchoolWork();
+        });
+      });
+      body.querySelectorAll("[data-sw-bot]").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = btn.getAttribute("data-sw-bot");
+          swBot[id] = !swBot[id];
+          saveSwMap(SW_BOT_KEY, swBot);
+          renderSchoolWork();
+        });
+      });
+    }
+
+    document.getElementById("openSchoolWork").addEventListener("click", openSchoolWork);
+    document.getElementById("swClose").addEventListener("click", closeSchoolWork);
+    document.getElementById("swOverlay").addEventListener("click", (e) => {
+      if (e.target.id === "swOverlay") closeSchoolWork();
+    });
+
+
     document.getElementById("openTimetable").addEventListener("click", openTimetable);
     document.getElementById("ttClose").addEventListener("click", closeTimetable);
     document.getElementById("ttOverlay").addEventListener("click", (e) => {
@@ -1410,7 +1730,12 @@
       });
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && document.getElementById("ttOverlay").classList.contains("is-open")) {
+      if (e.key !== "Escape") return;
+      if (document.getElementById("swOverlay").classList.contains("is-open")) {
+        closeSchoolWork();
+        return;
+      }
+      if (document.getElementById("ttOverlay").classList.contains("is-open")) {
         closeTimetable();
       }
     });
@@ -1422,9 +1747,12 @@
       if (new URLSearchParams(location.search).has("tt")) {
         openTimetable();
       }
+      if (new URLSearchParams(location.search).has("sw")) {
+        openSchoolWork();
+      }
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
         // Force fresh sw.js fetch; network-first HTML so polish updates aren't stuck
-        navigator.serviceWorker.register("./sw.js?v=5", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=6", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         // One-time hard refresh when a new SW takes control (clears stale cached shell)
