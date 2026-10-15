@@ -114,7 +114,11 @@ The page polls `video-status.json` about every 8 seconds while that tab is open,
 
 ## Home weather
 
-The Home tab shows Hong Kong weather for Asia/Hong_Kong (about 22.3193, 114.1694). The page fetches it in the browser from the free [Open-Meteo](https://open-meteo.com/) forecast API — no key. It shows the current temperature, condition, feels-like and humidity, today’s high and low, tomorrow’s high, low, and condition, and an hourly temperature graph from now through tomorrow. A failed request leaves a short message and a Try again button. The last good forecast is kept in this tab’s session for about 20 minutes.
+Home shows a compact Hong Kong card (Asia/Hong_Kong, about 22.3193, 114.1694). It stays closed: today, tomorrow, and Red / Black rain percentages. Tap the card for the hourly temperature graph, rain marks, and a Close control. Tap again, or Close, to fold it back up.
+
+The forecast comes from the free [Open-Meteo](https://open-meteo.com/) API in the browser — no key. Red rain and Black rain percentages are the share of the upcoming forecast hours whose expected rainfall reaches Hong Kong Observatory rainstorm bands (Red about 50 mm in an hour, Black about 70 mm). Amber (about 30 mm) is marked on the graph when an hour reaches it. The card labels this as forecast hours, not an official Observatory probability. If no hour reaches those bands, the open graph says no rainstorm signal is expected.
+
+When the Observatory has a rainstorm warning out, the card also shows a short note from the HKO open-data warning summary (no key). A failed forecast leaves a Try again button. The last good forecast stays in this tab’s session for about 20 minutes.
 
 ## Local preview
 
