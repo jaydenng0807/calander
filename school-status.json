@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-15T16:22:08+08:00",
+  "updated": "2026-10-15T16:25:00+08:00",
   "tasks": {
     "food-design-crit-b-overdue": {
       "working": false,
@@ -7,9 +7,9 @@
       "done": false
     },
     "food-design-crit-c-plan": {
-      "working": true,
-      "bot": "SW-2",
-      "done": false
+      "working": false,
+      "bot": null,
+      "done": true
     },
     "food-design-d1": {
       "working": true,
