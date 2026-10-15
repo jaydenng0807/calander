@@ -1604,7 +1604,7 @@
     let swBot = loadSwMap(SW_BOT_KEY);
     /** server-authoritative working map: id -> { working, bot, done } */
     let swServer = {};
-    let swBotConfig = { webhookUrl: "", webhookKey: "" };
+    let swBotConfig = { webhookUrl: "", webhookKey: "", ntfyTopic: "" };
     let swPollTimer = null;
     let swStatusNote = "";
     const swBotInFlight = new Set();
@@ -1666,10 +1666,11 @@
         const data = await res.json();
         swBotConfig = {
           webhookUrl: (data && data.webhookUrl) ? String(data.webhookUrl) : "",
-          webhookKey: (data && data.webhookKey) ? String(data.webhookKey) : ""
+          webhookKey: (data && data.webhookKey) ? String(data.webhookKey) : "",
+          ntfyTopic: (data && data.ntfyTopic) ? String(data.ntfyTopic) : ""
         };
       } catch {
-        swBotConfig = { webhookUrl: "", webhookKey: "" };
+        swBotConfig = { webhookUrl: "", webhookKey: "", ntfyTopic: "" };
       }
     }
 
@@ -1710,7 +1711,7 @@
       (async () => {
         await fetchSchoolBotConfig();
         await fetchSchoolStatus();
-        if (!swBotConfig.webhookUrl) {
+        if (!(swBotConfig.ntfyTopic || swBotConfig.webhookUrl)) {
           swStatusNote = "Bot requests aren’t connected yet — tell Calander.";
         }
         if (document.getElementById("swOverlay").classList.contains("is-open")) {
@@ -1819,8 +1820,9 @@
       swStatusNote = "";
       renderSchoolWork();
 
+      const ntfyTopic = (swBotConfig.ntfyTopic || "").trim();
       const webhookUrl = (swBotConfig.webhookUrl || "").trim();
-      if (!webhookUrl) {
+      if (!ntfyTopic && !webhookUrl) {
         swStatusNote = "Bot requests aren’t connected yet — tell Calander.";
         swBotInFlight.delete(id);
         renderSchoolWork();
@@ -1838,17 +1840,33 @@
       };
 
       try {
-        const headers = { "Content-Type": "application/json" };
-        const key = (swBotConfig.webhookKey || "").trim();
-        if (key) headers["Authorization"] = `Bearer ${key}`;
-        const res = await fetch(webhookUrl, {
-          method: "POST",
-          headers,
-          body: JSON.stringify(payload),
-          mode: "cors"
-        });
+        let res;
+        if (ntfyTopic) {
+          res = await fetch(`https://ntfy.sh/${encodeURIComponent(ntfyTopic)}`, {
+            method: "POST",
+            headers: {
+              "Title": "calander-bot",
+              "Tags": "schoolwork",
+              "Content-Type": "text/plain"
+            },
+            body: JSON.stringify(payload),
+            mode: "cors"
+          });
+        } else {
+          const headers = { "Content-Type": "application/json" };
+          const key = (swBotConfig.webhookKey || "").trim();
+          if (key) headers["Authorization"] = `Bearer ${key}`;
+          res = await fetch(webhookUrl, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(payload),
+            mode: "cors"
+          });
+        }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        swStatusNote = next ? "Bot request sent" : "Stop request sent";
+        swStatusNote = next
+          ? (ntfyTopic ? "Requested — bot starting soon" : "Bot request sent")
+          : (ntfyTopic ? "Stop requested" : "Stop request sent");
         // Refresh server status soon
         setTimeout(() => { fetchSchoolStatus().then(() => {
           if (document.getElementById("swOverlay").classList.contains("is-open")) renderSchoolWork();
@@ -1918,7 +1936,7 @@
       }
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
         // Force fresh sw.js fetch; network-first HTML so polish updates aren't stuck
-        navigator.serviceWorker.register("./sw.js?v=7", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=8", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         // One-time hard refresh when a new SW takes control (clears stale cached shell)

@@ -1,4 +1,4 @@
-const CACHE = "jayden-cal-v7-botlive";
+const CACHE = "jayden-cal-v8-botntfy";
 const ASSETS = [
   "./",
   "./index.html",
