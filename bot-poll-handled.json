@@ -1,0 +1,17 @@
+{
+  "updated": "2026-10-15T16:22:08+08:00",
+  "handled": [
+    {
+      "msgId": "MnElkKgQBpBH",
+      "id": "food-design-crit-c-plan",
+      "action": "stop",
+      "at": "2026-10-15T16:10:30+08:00"
+    },
+    {
+      "msgId": "HiDX9OMbyHgM",
+      "id": "food-design-crit-c-plan",
+      "action": "start",
+      "at": "2026-10-15T16:22:08+08:00"
+    }
+  ]
+}
