@@ -1,6 +1,6 @@
 {
-  "name": "Calander — Welcome Jayden",
-  "short_name": "Calander",
+  "name": "Calendar — Welcome Jayden",
+  "short_name": "Calendar",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#08080f",

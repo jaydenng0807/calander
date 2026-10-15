@@ -1,8 +1,8 @@
-# Jayden Calendar (Calander)
+# Jayden Calendar
 
 Premium dark **week** calendar for Jayden (Asia/Hong_Kong).
 
-- Header: **Welcome Jayden** / **Calander**
+- Header: **Welcome Jayden** / **Calendar**
 - Days left → right as **collapsible tabs** (tap to open/close)
 - Today starts **open**; other days start **closed**
 - Empty days still appear
