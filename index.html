@@ -39,7 +39,7 @@
       --radius-sm: 16px;
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       --shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
-      --tab-closed: clamp(112px, 28vw, 160px);
+      --tab-closed: clamp(140px, 36vw, 180px);
       --tab-open: min(92vw, 400px);
       --edge: max(14px, env(safe-area-inset-left, 0px));
       --edge-r: max(14px, env(safe-area-inset-right, 0px));
@@ -231,7 +231,8 @@
       scroll-snap-type: x mandatory;
       padding: 6px var(--edge) 20px;
       min-height: 140px;
-      cursor: grab;
+      /* Mouse drag stays off so day taps and Add stay clean. */
+      cursor: default;
       /* hide ugly native white scrollbar */
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
@@ -351,8 +352,8 @@
       .day-tab:not(.is-open) {
         flex: 1 1 0;
         width: auto;
-        min-width: 108px;
-        max-width: 200px;
+        min-width: 140px;
+        max-width: 210px;
         scroll-snap-align: start;
       }
       .day-tab.is-open {
@@ -389,12 +390,53 @@
 
     .day-tab-toggle:active { opacity: 0.92; }
 
+    .day-tab-head { position: relative; }
+
     .tab-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 6px;
     }
+
+    .tab-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Reserves the spot the Add button sits in, beside the expand chevron. */
+    .add-slot {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .day-add {
+      position: absolute;
+      z-index: 2;
+      top: 15px;
+      right: 44px;
+      width: 24px;
+      height: 24px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+    .day-add:hover { border-color: var(--border-strong); color: var(--purple); }
+    .day-add:active { transform: scale(0.94); }
+    .day-add:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
 
     .dow {
       font-size: 11px;
@@ -492,7 +534,7 @@
       pointer-events: none;
     }
     .day-tab.is-open .day-panel {
-      max-height: 720px;
+      max-height: 980px;
       opacity: 1;
       transform: none;
       padding: 13px 14px 15px;
@@ -600,6 +642,25 @@
     .tag-due { color: var(--danger); background: var(--danger-soft); }
     .tag-allday { color: var(--purple); background: var(--purple-soft); }
     .tag-toddle { color: var(--blue); background: var(--blue-soft); }
+    .tag-yours { color: #ddd6fe; background: var(--purple-soft); }
+
+    .event-remove {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(12, 12, 26, 0.45);
+      color: var(--text-soft);
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      cursor: pointer;
+      flex-shrink: 0;
+      align-self: center;
+      font-size: 16px;
+      line-height: 1;
+      font-family: inherit;
+    }
+    .event-remove:hover { color: var(--danger); border-color: rgba(255, 122, 138, 0.45); }
+    .event-remove:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
 
     .footer {
       margin-top: 20px;
@@ -1031,6 +1092,23 @@
       background: #38bdf8;
       box-shadow: 0 0 10px rgba(56, 189, 248, 0.85);
     }
+
+    .sw-remove {
+      appearance: none;
+      border: 1px solid rgba(255, 122, 138, 0.35);
+      background: rgba(255, 122, 138, 0.1);
+      color: #fda4af;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .sw-remove:hover { border-color: rgba(255, 122, 138, 0.6); color: #fff; }
+    .sw-remove:active { transform: scale(0.96); }
+    .sw-remove:focus-visible { outline: 2px solid var(--danger); outline-offset: 2px; }
     .sw-empty {
       text-align: center;
       padding: 36px 16px;
@@ -1053,6 +1131,44 @@
       font-weight: 500;
       color: var(--text-muted);
       letter-spacing: -0.01em;
+    }
+
+    .hero-lead {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      min-width: 0;
+    }
+    .hero-copy { min-width: 0; }
+
+    /* Live clock in the empty top-left of the header.
+       It steps aside when the header is narrow, when .is-crowded is set
+       (more sections, or the tab row runs out of room), or once a 5th tab exists. */
+    .hub-clock {
+      margin: 4px 0 0;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 84px;
+      padding: 8px 12px;
+      border-radius: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .hero-top.is-crowded .hub-clock,
+    .hero:has(.hub-tab:nth-of-type(5)) .hub-clock {
+      display: none;
+    }
+    @media (max-width: 680px) {
+      .hub-clock { display: none; }
     }
 
     .hub-nav {
@@ -1322,16 +1438,95 @@
     #view-calendar .week-nav { margin-top: 4px; }
     #view-calendar .hero-actions { margin-top: 14px; }
 
+    .add-panel { width: min(440px, 100%); }
+    .add-form {
+      padding: 16px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .add-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .add-field input {
+      appearance: none;
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font: inherit;
+      font-size: 16px;
+      font-weight: 650;
+      padding: 12px 14px;
+      border-radius: 14px;
+      color-scheme: dark;
+    }
+    .add-field input::placeholder { color: var(--text-dim); }
+    .add-field input:focus {
+      outline: 2px solid var(--purple);
+      outline-offset: 1px;
+      border-color: var(--border-strong);
+    }
+    .add-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 2px;
+    }
+    .add-cancel,
+    .add-save {
+      appearance: none;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .add-cancel {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-soft);
+    }
+    .add-save {
+      border: none;
+      background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
+      color: #fff;
+      box-shadow: 0 6px 20px var(--purple-glow);
+    }
+    .add-cancel:active, .add-save:active { transform: scale(0.97); }
+    .add-cancel:focus-visible, .add-save:focus-visible {
+      outline: 2px solid var(--purple);
+      outline-offset: 2px;
+    }
+    .add-error {
+      min-height: 1.2em;
+      margin: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--danger);
+    }
+
   </style>
 </head>
 <body>
   <div class="shell">
     <header class="hero">
-      <div class="hero-top">
-        <div>
-          <h1 class="welcome">Welcome Jayden</h1>
-          <p class="brand">Home</p>
-          <p class="brand-sub">Your hub · Calendar · Debts · School</p>
+      <div class="hero-top" id="hubBar">
+        <div class="hero-lead">
+          <p class="hub-clock" id="hubClock">
+            <time id="hubClockTime">—</time>
+          </p>
+          <div class="hero-copy">
+            <h1 class="welcome">Welcome Jayden</h1>
+            <p class="brand">Home</p>
+            <p class="brand-sub">Your hub · Calendar · Debts · School</p>
+          </div>
         </div>
         <span class="tz-pill">HKT</span>
       </div>
@@ -1399,7 +1594,7 @@
         </button>
         <button type="button" class="today-jump" id="jumpToday" style="margin:0">Jump to today</button>
       </div>
-      <p class="hint-line">Tap a day to open · swipe on phone · scroll sideways</p>
+      <p class="hint-line">Tap a day to open · tap + to add · swipe on phone</p>
     </div>
 
   
@@ -1410,7 +1605,7 @@
   <div class="shell">
     <p class="footer">
       Calendar module · data from <strong>events.json</strong><br />
-      School items open Toddle when tapped.
+      Items you add stay on this device. School items open Toddle when tapped.
     </p>
     <p class="status" id="status"></p>
   </div>
@@ -1462,6 +1657,33 @@
         <button type="button" class="tt-close" id="swClose" aria-label="Close">×</button>
       </div>
       <div class="sw-body" id="swBody"></div>
+    </div>
+  </div>
+
+<div class="tt-overlay" id="addOverlay" role="dialog" aria-modal="true" aria-labelledby="addTitle" hidden>
+    <div class="tt-panel add-panel">
+      <div class="tt-head">
+        <div>
+          <div class="tt-title" id="addTitle">Add to this day</div>
+          <div class="tt-sub" id="addSub">Stays on this device</div>
+        </div>
+        <button type="button" class="tt-close" id="addClose" aria-label="Close">×</button>
+      </div>
+      <form class="add-form" id="addForm">
+        <label class="add-field">
+          Name
+          <input id="addLabel" type="text" maxlength="80" autocomplete="off" placeholder="What are you adding?" />
+        </label>
+        <label class="add-field">
+          Time, if you want one
+          <input id="addTime" type="time" />
+        </label>
+        <p class="add-error" id="addError" role="alert"></p>
+        <div class="add-actions">
+          <button type="button" class="add-cancel" id="addCancel">Cancel</button>
+          <button type="submit" class="add-save">Add</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -1549,8 +1771,50 @@
       return `${MONTHS[a.m - 1]} ${a.d}, ${a.y} – ${MONTHS[b.m - 1]} ${b.d}, ${b.y}`;
     }
 
+    const CUSTOM_KEY = "jayden-cal-custom-events";
+
+    function loadCustomEvents() {
+      try {
+        const raw = localStorage.getItem(CUSTOM_KEY);
+        if (!raw) return [];
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr)) return [];
+        return arr.map(cleanCustomEvent).filter(Boolean);
+      } catch {
+        return [];
+      }
+    }
+
+    function cleanCustomEvent(e) {
+      if (!e || typeof e !== "object") return null;
+      const id = String(e.id || "");
+      const date = String(e.date || "");
+      const title = String(e.title || "").replace(/\s+/g, " ").trim().slice(0, 80);
+      if (!id.startsWith("custom-")) return null;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+      if (!title) return null;
+      const time = (e.time && /^\d{2}:\d{2}$/.test(String(e.time))) ? String(e.time) : "";
+      return {
+        id,
+        date,
+        title,
+        time: time || undefined,
+        allDay: !time,
+        type: "personal",
+        color: "purple",
+        custom: true
+      };
+    }
+
+    function saveCustomEvents() {
+      try { localStorage.setItem(CUSTOM_KEY, JSON.stringify(customEvents)); } catch (_) {}
+    }
+
+    let customEvents = loadCustomEvents();
+
     function eventsForDate(ymd) {
-      const list = (eventsData.events || []).filter(e => e.date === ymd);
+      const list = (eventsData.events || []).filter(e => e.date === ymd)
+        .concat(customEvents.filter(e => e.date === ymd));
       list.sort((a, b) => {
         if (a.allDay && !b.allDay) return -1;
         if (!a.allDay && b.allDay) return 1;
@@ -1577,19 +1841,23 @@
 
     function renderEvent(ev) {
       const color = ev.color === "blue" ? "color-blue" : "color-purple";
-      const timeLabel = ev.allDay ? "All day" : formatTime12(ev.time);
-      const href = eventUrl(ev);
+      const timeLabel = ev.allDay ? "All day" : (ev.time ? formatTime12(ev.time) : "Anytime");
+      const href = ev.custom ? "" : eventUrl(ev);
       const tags = [];
       if (ev.due) tags.push('<span class="tag tag-due">Due</span>');
       if (ev.allDay) tags.push('<span class="tag tag-allday">All day</span>');
+      if (ev.custom) tags.push('<span class="tag tag-yours">Added</span>');
       if (href) tags.push('<span class="tag tag-toddle">Toddle</span>');
       const openHint = href ? '<span class="open-hint">Open ↗</span>' : "";
+      const remove = ev.custom
+        ? `<button type="button" class="event-remove" data-remove-custom="${escapeAttr(ev.id)}" aria-label="Remove ${escapeAttr(ev.title)}">×</button>`
+        : "";
       const inner = `
           <div class="event-meta">
             <div class="event-time">${timeLabel}${openHint}</div>
             <div class="event-title">${escapeHtml(ev.title)}</div>
             ${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}
-          </div>`;
+          </div>${remove}`;
       if (href) {
         return `<a class="event ${color} is-link" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${inner}</a>`;
       }
@@ -1604,6 +1872,7 @@
     function renderWeek(opts) {
       const today = hktParts().ymd;
       const root = document.getElementById("weekTabs");
+      const keepScroll = opts && opts.preserve ? root.scrollLeft : null;
       const days = [];
       for (let i = 0; i < 7; i++) {
         const ymd = addDaysYmd(weekStart, i);
@@ -1615,20 +1884,27 @@
           ? evs.map(renderEvent).join("")
           : `<div class="empty-slot"><span class="dash">— — —</span>Nothing scheduled</div>`;
         const countLabel = evs.length === 0 ? "Empty" : (evs.length === 1 ? "1 item" : `${evs.length} items`);
+        const addLabel = `Add something on ${DOW[i]}, ${MONTHS[m - 1]} ${d}`;
         days.push(`
           <section class="day-tab ${isToday ? "is-today" : ""} ${open ? "is-open" : ""}" data-date="${ymd}">
-            <button type="button" class="day-tab-toggle" aria-expanded="${open}" data-toggle="${ymd}">
-              <div class="tab-top">
-                <span class="dow">${DOW[i]}</span>
-                <span class="chev" aria-hidden="true">›</span>
-              </div>
-              <div class="dom">
-                <span class="dom-num">${d}</span>
-                <span class="dom-month">${MONTHS[m - 1]}</span>
-                <span class="today-badge">Today</span>
-              </div>
-              <span class="count-pill ${evs.length ? "has" : ""}">${countLabel}</span>
-            </button>
+            <div class="day-tab-head">
+              <button type="button" class="day-tab-toggle" aria-expanded="${open}" data-toggle="${ymd}" aria-label="${open ? "Close" : "Open"} ${DOW[i]}, ${MONTHS[m - 1]} ${d}">
+                <div class="tab-top">
+                  <span class="dow">${DOW[i]}</span>
+                  <span class="tab-icons" aria-hidden="true">
+                    <span class="add-slot"></span>
+                    <span class="chev">›</span>
+                  </span>
+                </div>
+                <div class="dom">
+                  <span class="dom-num">${d}</span>
+                  <span class="dom-month">${MONTHS[m - 1]}</span>
+                  <span class="today-badge">Today</span>
+                </div>
+                <span class="count-pill ${evs.length ? "has" : ""}">${countLabel}</span>
+              </button>
+              <button type="button" class="day-add" data-add="${ymd}" aria-label="${escapeAttr(addLabel)}">+</button>
+            </div>
             <div class="day-panel">${body}</div>
           </section>`);
       }
@@ -1659,7 +1935,32 @@
         });
       });
 
+      root.querySelectorAll("[data-add]").forEach((btn) => {
+        btn.addEventListener("pointerdown", (ev) => ev.stopPropagation());
+        btn.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          openAddForDay(btn.getAttribute("data-add"));
+        });
+      });
+
+      root.querySelectorAll("[data-remove-custom]").forEach((btn) => {
+        btn.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const id = btn.getAttribute("data-remove-custom");
+          customEvents = customEvents.filter((item) => item.id !== id);
+          saveCustomEvents();
+          renderWeek({ preserve: true });
+          renderHomeGlance();
+        });
+      });
+
       requestAnimationFrame(() => {
+        if (keepScroll != null) {
+          root.scrollLeft = keepScroll;
+          return;
+        }
         if (opts && opts.preferScroll === "start") {
           const first = root.querySelector(".day-tab");
           if (first) first.scrollIntoView({ inline: "start", block: "nearest", behavior: "smooth" });
@@ -1754,82 +2055,8 @@
     });
 
 
-    // Drag-to-scroll: touch uses native momentum.
-    // Mouse/pen only become a drag after >8px movement so plain clicks still expand days.
-    (function enableDragScroll() {
-      const el = document.getElementById("weekTabs");
-      if (!el) return;
-      const THRESHOLD = 8;
-      let tracking = false;
-      let dragging = false;
-      let startX = 0;
-      let startScroll = 0;
-      let pointerId = null;
-      let captured = false;
-
-      el.addEventListener("pointerdown", (e) => {
-        // Let touch scroll natively — never steal it
-        if (e.pointerType === "touch") return;
-        if (e.button !== 0) return;
-        // Ignore if the press started on a link (Toddle)
-        if (e.target.closest && e.target.closest("a")) return;
-        tracking = true;
-        dragging = false;
-        captured = false;
-        startX = e.clientX;
-        startScroll = el.scrollLeft;
-        pointerId = e.pointerId;
-        // Do NOT setPointerCapture yet — that was stealing clicks from day toggles
-      });
-
-      el.addEventListener("pointermove", (e) => {
-        if (!tracking || e.pointerId !== pointerId) return;
-        const dx = e.clientX - startX;
-        if (!dragging && Math.abs(dx) > THRESHOLD) {
-          dragging = true;
-          el.classList.add("is-dragging");
-          try {
-            el.setPointerCapture(pointerId);
-            captured = true;
-          } catch (_) {}
-        }
-        if (dragging) {
-          el.scrollLeft = startScroll - dx;
-          e.preventDefault();
-        }
-      });
-
-      function endDrag(e) {
-        if (!tracking || (e && e.pointerId !== pointerId)) return;
-        tracking = false;
-        el.classList.remove("is-dragging");
-        if (captured) {
-          try { el.releasePointerCapture(pointerId); } catch (_) {}
-        }
-        if (dragging) {
-          // Swallow only the click that follows a real drag
-          const block = (ev) => {
-            ev.stopPropagation();
-            ev.preventDefault();
-            el.removeEventListener("click", block, true);
-          };
-          el.addEventListener("click", block, true);
-          // Safety: remove blocker if no click comes
-          window.setTimeout(() => el.removeEventListener("click", block, true), 400);
-        }
-        dragging = false;
-        captured = false;
-        pointerId = null;
-      }
-      el.addEventListener("pointerup", endDrag);
-      el.addEventListener("pointercancel", endDrag);
-      el.addEventListener("lostpointercapture", () => {
-        tracking = false;
-        dragging = false;
-        captured = false;
-        el.classList.remove("is-dragging");
-      });
-    })();
+    // Mouse drag stays off so a tap on a day or + is just a tap.
+    // Phone swipe still scrolls the week sideways on its own.
 
 
     // —— School timetable (fortnightly Week A/B) ——
@@ -2013,6 +2240,7 @@
     // —— School work tasks ——
     const SW_DONE_KEY = "jayden-cal-school-done";
     const SW_BOT_KEY = "jayden-cal-school-bot";
+    const SW_HIDDEN_KEY = "jayden-cal-school-hidden";
 
     function loadSwMap(key) {
       try {
@@ -2031,6 +2259,7 @@
 
     let swDone = loadSwMap(SW_DONE_KEY);
     let swBot = loadSwMap(SW_BOT_KEY);
+    let swHidden = loadSwMap(SW_HIDDEN_KEY);
     /** server-authoritative working map: id -> { working, bot, done } */
     let swServer = {};
     let swBotConfig = { webhookUrl: "", webhookKey: "", ntfyTopic: "" };
@@ -2039,7 +2268,7 @@
     const swBotInFlight = new Set();
 
     function schoolTasks() {
-      const list = (eventsData.events || []).filter(e => e.type === "school");
+      const list = (eventsData.events || []).filter(e => e.type === "school" && !swHidden[e.id]);
       const today = hktParts().ymd;
       list.sort((a, b) => {
         const ao = !!(a.overdue || (a.date && a.date < today));
@@ -2163,19 +2392,22 @@
 
     function renderSchoolWork() {
       const tasks = schoolTasks();
+      const hiddenCount = Object.keys(swHidden).filter(id => swHidden[id]).length;
       const doneCount = tasks.filter(t => isTaskDone(t.id)).length;
       const botCount = tasks.filter(t => isBotWorking(t.id)).length;
       const sub = document.getElementById("swSub");
       let base;
       if (!tasks.length) {
-        base = "No school tasks yet";
+        base = hiddenCount ? "Nothing left on your list" : "No school tasks yet";
       } else {
         base = `${tasks.length} task${tasks.length === 1 ? "" : "s"} · ${doneCount} done · ${botCount} bot working`;
       }
       sub.textContent = swStatusNote ? `${base} · ${swStatusNote}` : base;
       const body = document.getElementById("swBody");
       if (!tasks.length) {
-        body.innerHTML = `<div class="sw-empty">No school work tasks right now</div>`;
+        body.innerHTML = hiddenCount
+          ? `<div class="sw-empty">Nothing on your list. Removed tasks stay off on this device.</div>`
+          : `<div class="sw-empty">No school work tasks right now</div>`;
         return;
       }
       body.innerHTML = tasks.map(ev => {
@@ -2199,6 +2431,7 @@
             <span class="sw-bot-lamp" aria-hidden="true"></span>
             Bot
           </button>
+          <button type="button" class="sw-remove" data-sw-remove="${escapeAttr(ev.id)}" aria-label="Remove ${escapeAttr(ev.title)}">Remove</button>
         </div>`;
       }).join("");
 
@@ -2221,6 +2454,18 @@
           e.stopPropagation();
           const id = btn.getAttribute("data-sw-bot");
           requestBotToggle(id);
+        });
+      });
+      body.querySelectorAll("[data-sw-remove]").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = btn.getAttribute("data-sw-remove");
+          if (!id) return;
+          swHidden[id] = true;
+          saveSwMap(SW_HIDDEN_KEY, swHidden);
+          renderSchoolWork();
+          renderHomeGlance();
         });
       });
     }
@@ -2637,8 +2882,123 @@
         renderTimetable();
       });
     });
+    let addForYmd = null;
+
+    function openAddForDay(ymd) {
+      if (!ymd) return;
+      addForYmd = ymd;
+      const { m, d } = parseYmd(ymd);
+      const dow = DOW[weekdayIndexMon0(ymd)];
+      const sub = document.getElementById("addSub");
+      if (sub) sub.textContent = `${dow} · ${MONTHS[m - 1]} ${d} · stays on this device`;
+      const label = document.getElementById("addLabel");
+      const time = document.getElementById("addTime");
+      const err = document.getElementById("addError");
+      if (label) label.value = "";
+      if (time) time.value = "";
+      if (err) err.textContent = "";
+      openOverlay(document.getElementById("addOverlay"));
+      window.setTimeout(() => { try { label && label.focus(); } catch (_) {} }, 280);
+    }
+
+    function closeAdd() {
+      closeOverlay(document.getElementById("addOverlay"));
+      addForYmd = null;
+    }
+
+    function submitAdd(ev) {
+      if (ev) ev.preventDefault();
+      const labelEl = document.getElementById("addLabel");
+      const timeEl = document.getElementById("addTime");
+      const err = document.getElementById("addError");
+      const title = String(labelEl && labelEl.value || "").replace(/\s+/g, " ").trim().slice(0, 80);
+      if (!title) {
+        if (err) err.textContent = "Type a name first.";
+        if (labelEl) labelEl.focus();
+        return;
+      }
+      if (!addForYmd) return;
+      const time = String(timeEl && timeEl.value || "");
+      const item = cleanCustomEvent({
+        id: "custom-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8),
+        date: addForYmd,
+        title,
+        time: /^\d{2}:\d{2}$/.test(time) ? time : ""
+      });
+      if (!item) return;
+      customEvents.push(item);
+      saveCustomEvents();
+      openState.set(item.date, true);
+      const ymd = item.date;
+      closeAdd();
+      renderWeek({ preserve: true });
+      renderHomeGlance();
+      requestAnimationFrame(() => {
+        const el = document.querySelector(`#weekTabs [data-date="${ymd}"]`);
+        if (el) el.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      });
+    }
+
+    document.getElementById("addForm")?.addEventListener("submit", submitAdd);
+    document.getElementById("addCancel")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeAdd();
+    });
+    document.getElementById("addClose")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeAdd();
+    });
+    document.getElementById("addOverlay")?.addEventListener("click", (e) => {
+      if (e.target.id === "addOverlay") closeAdd();
+    });
+
+    function formatHubClock(d) {
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: TZ,
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      }).format(d || new Date());
+    }
+
+    function tickHubClock() {
+      const el = document.getElementById("hubClockTime");
+      if (!el) return;
+      const label = formatHubClock(new Date());
+      el.textContent = label;
+      el.setAttribute("aria-label", `Hong Kong time, ${label}`);
+    }
+
+    function syncHubClockRoom() {
+      const bar = document.getElementById("hubBar");
+      const nav = document.querySelector(".hub-nav");
+      if (!bar) return;
+      const tabs = document.querySelectorAll(".hub-tab").length;
+      const narrow = bar.clientWidth < 680;
+      const many = tabs >= 5;
+      const navTight = !!(nav && nav.scrollWidth > nav.clientWidth + 2);
+      bar.classList.toggle("is-crowded", narrow || many || navTight);
+    }
+
+    tickHubClock();
+    setInterval(tickHubClock, 1000);
+    syncHubClockRoom();
+    window.addEventListener("resize", syncHubClockRoom);
+    if (typeof ResizeObserver !== "undefined") {
+      const bar = document.getElementById("hubBar");
+      const nav = document.querySelector(".hub-nav");
+      const ro = new ResizeObserver(() => syncHubClockRoom());
+      if (bar) ro.observe(bar);
+      if (nav) ro.observe(nav);
+    }
+
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
+      if (document.getElementById("addOverlay").classList.contains("is-open")) {
+        closeAdd();
+        return;
+      }
       if (document.getElementById("swOverlay").classList.contains("is-open")) {
         closeSchoolWork();
         return;
@@ -2665,7 +3025,7 @@
       if (params.has("sw")) openSchoolWork();
 
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        navigator.serviceWorker.register("./sw.js?v=11", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=12", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         let refreshing = false;
