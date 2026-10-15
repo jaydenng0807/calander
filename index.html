@@ -666,8 +666,11 @@
     }
     .tt-overlay.is-closing {
       opacity: 0;
-      visibility: hidden;
+      visibility: visible;
       pointer-events: none;
+      transition:
+        opacity 0.3s ease,
+        visibility 0s linear 0.3s;
     }
     .tt-overlay[hidden] { display: none !important; }
 
@@ -1430,6 +1433,39 @@
     </div>
   </section>
 
+
+<div class="tt-overlay" id="ttOverlay" role="dialog" aria-modal="true" aria-labelledby="ttTitle" hidden>
+    <div class="tt-panel">
+      <div class="tt-head">
+        <div>
+          <div class="tt-title" id="ttTitle">School timetable</div>
+          <div class="tt-sub" id="ttSub">Loading…</div>
+        </div>
+        <button type="button" class="tt-close" id="ttClose" aria-label="Close">×</button>
+      </div>
+      <div class="tt-tabs">
+        <button type="button" class="tt-cycle" data-cycle="A">Week A</button>
+        <button type="button" class="tt-cycle" data-cycle="B">Week B</button>
+      </div>
+      <div class="tt-day-pills" id="ttDayPills"></div>
+      <div class="tt-body" id="ttBody"></div>
+    </div>
+  </div>
+
+<div class="tt-overlay" id="swOverlay" role="dialog" aria-modal="true" aria-labelledby="swTitle" hidden>
+    <div class="tt-panel">
+      <div class="tt-head">
+        <div>
+          <div class="tt-title" id="swTitle">School work</div>
+          <div class="tt-sub" id="swSub">Tasks to do · red = not done · green = done · blue = bot working</div>
+        </div>
+        <button type="button" class="tt-close" id="swClose" aria-label="Close">×</button>
+      </div>
+      <div class="sw-body" id="swBody"></div>
+    </div>
+  </div>
+
+
   <script>
     const TZ = "Asia/Hong_Kong";
     const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -1674,18 +1710,47 @@
 
     document.getElementById("prevWeek").addEventListener("click", () => changeWeek(-7, "prev"));
     document.getElementById("nextWeek").addEventListener("click", () => changeWeek(7, "next"));
-    document.getElementById("jumpToday").addEventListener("click", () => {
+    function scrollWeekToToday(behavior) {
+      const root = document.getElementById("weekTabs");
+      if (!root) return;
+      const el = root.querySelector(".is-today.is-open") || root.querySelector(".is-today");
+      if (el) {
+        el.scrollIntoView({
+          inline: "center",
+          block: "nearest",
+          behavior: behavior || "smooth"
+        });
+      }
+    }
+
+    function jumpToToday(opts) {
+      const optsSafe = opts || {};
       weekStart = mondayOf(hktParts().ymd);
       openState.clear();
       const root = document.getElementById("weekTabs");
-      root.classList.add("is-week-changing");
-      root.classList.remove("week-drift-next", "week-drift-prev");
-      void root.offsetWidth;
-      root.classList.add("week-drift-prev");
+      if (root && optsSafe.animate) {
+        root.classList.add("is-week-changing");
+        root.classList.remove("week-drift-next", "week-drift-prev");
+        void root.offsetWidth;
+        root.classList.add("week-drift-prev");
+        window.setTimeout(() => {
+          root.classList.remove("is-week-changing", "week-drift-next", "week-drift-prev");
+        }, 480);
+      }
       renderWeek();
-      window.setTimeout(() => {
-        root.classList.remove("is-week-changing", "week-drift-next", "week-drift-prev");
-      }, 480);
+      // Double rAF so scroll works after hub tab becomes visible (hidden parents skip scrollIntoView)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          scrollWeekToToday(optsSafe.instant ? "auto" : "smooth");
+          if (!optsSafe.instant) {
+            setTimeout(() => scrollWeekToToday("smooth"), 80);
+          }
+        });
+      });
+    }
+
+    document.getElementById("jumpToday").addEventListener("click", () => {
+      jumpToToday({ animate: true });
     });
 
 
@@ -2407,7 +2472,17 @@
         if (!optsSafe.skipUrl) setTabUrl(tab);
         if (tab === "calendar") {
           requestAnimationFrame(() => {
-            try { renderWeek(); } catch (_) {}
+            try {
+              if (!weekStart) weekStart = mondayOf(hktParts().ymd);
+              const todayMon = mondayOf(hktParts().ymd);
+              if (weekStart === todayMon) {
+                renderWeek();
+                scrollWeekToToday("auto");
+                setTimeout(() => scrollWeekToToday("smooth"), 60);
+              } else {
+                renderWeek();
+              }
+            } catch (_) {}
           });
         }
         if (tab === "debts") renderDebts();
@@ -2534,16 +2609,24 @@
     });
 
 
-    document.getElementById("openSchoolWork").addEventListener("click", openSchoolWork);
-    document.getElementById("swClose").addEventListener("click", closeSchoolWork);
-    document.getElementById("swOverlay").addEventListener("click", (e) => {
+    document.getElementById("openSchoolWork")?.addEventListener("click", openSchoolWork);
+    document.getElementById("swClose")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeSchoolWork();
+    });
+    document.getElementById("swOverlay")?.addEventListener("click", (e) => {
       if (e.target.id === "swOverlay") closeSchoolWork();
     });
 
 
-    document.getElementById("openTimetable").addEventListener("click", openTimetable);
-    document.getElementById("ttClose").addEventListener("click", closeTimetable);
-    document.getElementById("ttOverlay").addEventListener("click", (e) => {
+    document.getElementById("openTimetable")?.addEventListener("click", openTimetable);
+    document.getElementById("ttClose")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeTimetable();
+    });
+    document.getElementById("ttOverlay")?.addEventListener("click", (e) => {
       if (e.target.id === "ttOverlay") closeTimetable();
     });
     document.querySelectorAll(".tt-cycle").forEach(btn => {
@@ -2576,11 +2659,13 @@
       let startTab = (params.get("tab") || "home").toLowerCase();
       if (params.has("tt") || params.has("sw")) startTab = "calendar";
       showTab(startTab, { force: true, skipUrl: startTab === "home" && !params.get("tab") });
+      // Always land on the current HKT week (no need to tap Jump to today)
+      jumpToToday({ instant: true });
       if (params.has("tt")) openTimetable();
       if (params.has("sw")) openSchoolWork();
 
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        navigator.serviceWorker.register("./sw.js?v=10", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=11", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         let refreshing = false;
@@ -2595,36 +2680,5 @@
       }
     })();
   </script>
-
-<div class="tt-overlay" id="ttOverlay" role="dialog" aria-modal="true" aria-labelledby="ttTitle" hidden>
-    <div class="tt-panel">
-      <div class="tt-head">
-        <div>
-          <div class="tt-title" id="ttTitle">School timetable</div>
-          <div class="tt-sub" id="ttSub">Loading…</div>
-        </div>
-        <button type="button" class="tt-close" id="ttClose" aria-label="Close">×</button>
-      </div>
-      <div class="tt-tabs">
-        <button type="button" class="tt-cycle" data-cycle="A">Week A</button>
-        <button type="button" class="tt-cycle" data-cycle="B">Week B</button>
-      </div>
-      <div class="tt-day-pills" id="ttDayPills"></div>
-      <div class="tt-body" id="ttBody"></div>
-    </div>
-  </div>
-
-<div class="tt-overlay" id="swOverlay" role="dialog" aria-modal="true" aria-labelledby="swTitle" hidden>
-    <div class="tt-panel">
-      <div class="tt-head">
-        <div>
-          <div class="tt-title" id="swTitle">School work</div>
-          <div class="tt-sub" id="swSub">Tasks to do · red = not done · green = done · blue = bot working</div>
-        </div>
-        <button type="button" class="tt-close" id="swClose" aria-label="Close">×</button>
-      </div>
-      <div class="sw-body" id="swBody"></div>
-    </div>
-  </div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE = "jayden-cal-v10-hub";
+const CACHE = "jayden-cal-v11-hub";
 const ASSETS = [
   "./",
   "./index.html",
