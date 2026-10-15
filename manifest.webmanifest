@@ -1,10 +1,10 @@
 {
-  "name": "Calendar — Welcome Jayden",
-  "short_name": "Calendar",
+  "name": "Jayden — Home",
+  "short_name": "Jayden",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#08080f",
-  "theme_color": "#08080f",
-  "description": "Jayden's week calendar — Hong Kong time",
+  "background_color": "#070712",
+  "theme_color": "#070712",
+  "description": "Jayden's hub — Calendar, school work, debts · Hong Kong time",
   "icons": []
 }

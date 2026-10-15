@@ -1,8 +1,11 @@
 # Jayden Calendar
 
-Premium dark **week** calendar for Jayden (Asia/Hong_Kong).
+Jayden's personal **hub** (Asia/Hong_Kong) — Home, Calendar, Debts.
 
-- Header: **Welcome Jayden** / **Calendar**
+- Header: **Welcome Jayden** / **Home**
+- Tabs: Home · Calendar · Debts (`?tab=`)
+- Debts from `debts.json` (interest countdown)
+- Calendar module keeps week tabs, timetable, school work bots
 - Days left → right as **collapsible tabs** (tap to open/close)
 - Today starts **open**; other days start **closed**
 - Empty days still appear

@@ -6,8 +6,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#070712" />
-  <meta name="description" content="Jayden's week calendar — Hong Kong time" />
-  <title>Calendar — Welcome Jayden</title>
+  <meta name="description" content="Jayden's hub — Calendar, school work, debts · Hong Kong time" />
+  <title>Jayden — Home</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
     :root {
@@ -485,10 +485,10 @@
       transform: translateY(-4px);
       transition:
         max-height 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.28s ease,
-        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-        padding 0.28s ease,
-        border-color 0.22s;
+        opacity 0.34s ease,
+        transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.34s ease,
+        border-color 0.28s;
       pointer-events: none;
     }
     .day-tab.is-open .day-panel {
@@ -648,12 +648,28 @@
       background: rgba(4, 4, 12, 0.72);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      display: none;
+      display: flex;
       align-items: flex-end;
       justify-content: center;
       padding: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
     }
-    .tt-overlay.is-open { display: flex; }
+    .tt-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .tt-overlay.is-closing {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .tt-overlay[hidden] { display: none !important; }
 
     .tt-panel {
       width: min(720px, 100%);
@@ -667,15 +683,27 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      animation: ttSlide 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity: 0;
+      transform: translateY(28px) scale(0.985);
+      transition:
+        opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .tt-overlay.is-open .tt-panel {
+      opacity: 1;
+      transform: none;
+    }
+    .tt-overlay.is-closing .tt-panel {
+      opacity: 0;
+      transform: translateY(20px) scale(0.985);
     }
     @media (min-width: 720px) {
       .tt-overlay { align-items: center; padding: 24px; }
       .tt-panel { border-radius: 24px; max-height: min(88dvh, 860px); }
-    }
-    @keyframes ttSlide {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: none; }
+      .tt-overlay:not(.is-open):not(.is-closing) .tt-panel,
+      .tt-overlay.is-closing .tt-panel {
+        transform: translateY(16px) scale(0.98);
+      }
     }
 
     .tt-head {
@@ -1014,6 +1042,283 @@
       color: var(--text-dim);
       text-align: center;
     }
+
+    /* —— Hub shell —— */
+    .brand-sub {
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: -0.01em;
+    }
+
+    .hub-nav {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 6px;
+      background: rgba(22, 22, 40, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .hub-nav::-webkit-scrollbar { display: none; }
+
+    .hub-tab {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      padding: 10px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex: 1 1 0;
+      min-width: 0;
+      transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+    }
+    .hub-tab:hover { color: var(--text-soft); background: rgba(255,255,255,0.04); }
+    .hub-tab.is-active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
+      border-color: transparent;
+      box-shadow: 0 4px 16px var(--purple-glow);
+    }
+
+    .hub-view {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    .hub-view.is-active {
+      display: block;
+      animation: hubViewIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hub-view.is-leaving {
+      display: block;
+      animation: hubViewOut 0.22s ease both;
+      pointer-events: none;
+    }
+    @keyframes hubViewIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes hubViewOut {
+      from { opacity: 1; transform: none; }
+      to { opacity: 0; transform: translateY(8px); }
+    }
+
+    .home-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    @media (min-width: 720px) {
+      .home-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .home-card.is-wide { grid-column: 1 / -1; }
+    }
+
+    .home-card {
+      appearance: none;
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: inherit;
+      border-radius: var(--radius-sm);
+      padding: 16px 16px 14px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: border-color 0.15s, transform 0.12s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+    .home-card:hover { border-color: var(--border-strong); }
+    .home-card:active { transform: scale(0.985); }
+    .home-card-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 8px;
+    }
+    .home-card-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .home-card-body {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.45;
+    }
+    .home-card-meta {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .home-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text-soft);
+    }
+    .home-chip.is-hot {
+      border-color: rgba(251, 113, 133, 0.45);
+      color: #fda4af;
+      background: rgba(251, 113, 133, 0.12);
+    }
+    .home-chip.is-money {
+      border-color: rgba(52, 211, 153, 0.4);
+      color: #6ee7b7;
+      background: rgba(52, 211, 153, 0.1);
+    }
+    .home-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    /* —— Debts —— */
+    .debts-hero {
+      margin-top: 18px;
+      padding: 18px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-strong);
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 0%, rgba(139, 108, 255, 0.28), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 80%, rgba(52, 211, 153, 0.12), transparent 50%),
+        var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .debts-total-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .debts-total {
+      margin-top: 6px;
+      font-size: clamp(28px, 7vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, #fff 0%, #d4c4ff 50%, #6ee7b7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .debts-rate {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .debts-countdown-box {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(179, 154, 255, 0.28);
+      background: rgba(139, 108, 255, 0.12);
+    }
+    .debts-countdown-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--purple);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .debts-countdown {
+      margin-top: 4px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    .debts-countdown-sub {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .debts-list {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .debt-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      position: relative;
+      overflow: hidden;
+    }
+    .debt-row::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--purple);
+    }
+    .debt-name {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .debt-after {
+      margin-top: 3px;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .debt-amt {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      color: #a7f3d0;
+      flex-shrink: 0;
+    }
+    .debts-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--text-dim);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    #view-calendar .week-nav { margin-top: 4px; }
+    #view-calendar .hero-actions { margin-top: 14px; }
+
   </style>
 </head>
 <body>
@@ -1022,11 +1327,58 @@
       <div class="hero-top">
         <div>
           <h1 class="welcome">Welcome Jayden</h1>
-          <p class="brand">Calendar</p>
+          <p class="brand">Home</p>
+          <p class="brand-sub">Your hub · Calendar · Debts · School</p>
         </div>
         <span class="tz-pill">HKT</span>
       </div>
+      <nav class="hub-nav" role="tablist" aria-label="Hub sections">
+        <button type="button" class="hub-tab is-active" role="tab" aria-selected="true" data-tab="home" id="tab-home">Home</button>
+        <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="calendar" id="tab-calendar">Calendar</button>
+        <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="debts" id="tab-debts">Debts</button>
+      </nav>
+    </header>
 
+    <section class="hub-view is-active" id="view-home" role="tabpanel" aria-labelledby="tab-home">
+      <div class="home-grid" id="homeGrid">
+        <button type="button" class="home-card is-wide" data-go="calendar">
+          <div class="home-card-kicker">Today · HKT</div>
+          <div class="home-card-title" id="homeTodayTitle">Loading…</div>
+          <div class="home-card-body" id="homeTodayBody">Open Calendar for the week view</div>
+          <div class="home-card-meta" id="homeTodayMeta"></div>
+        </button>
+        <button type="button" class="home-card" data-go="school">
+          <div class="home-card-kicker">School work</div>
+          <div class="home-card-title" id="homeSchoolTitle">Next due</div>
+          <div class="home-card-body" id="homeSchoolBody">Loading tasks…</div>
+          <div class="home-card-meta" id="homeSchoolMeta"></div>
+        </button>
+        <button type="button" class="home-card" data-go="debts">
+          <div class="home-card-kicker">Friend debts</div>
+          <div class="home-card-title" id="homeDebtTitle">HK$602</div>
+          <div class="home-card-body" id="homeDebtBody">Interest bump countdown</div>
+          <div class="home-card-meta" id="homeDebtMeta"></div>
+        </button>
+      </div>
+      <div class="home-actions">
+        <button type="button" class="tt-btn" id="homeOpenCalendar">
+          <span class="ico" aria-hidden="true">▦</span> Open Calendar
+        </button>
+        <button type="button" class="tt-btn" id="homeOpenSchoolWork" aria-haspopup="dialog">
+          <span class="ico" aria-hidden="true">☑</span> School work
+        </button>
+        <button type="button" class="tt-btn" id="homeOpenTimetable" aria-haspopup="dialog">
+          <span class="ico" aria-hidden="true">▦</span> Timetable
+        </button>
+        <button type="button" class="tt-btn" id="homeOpenDebts">
+          <span class="ico" aria-hidden="true">$</span> Debts
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <section class="hub-view" id="view-calendar" role="tabpanel" aria-labelledby="tab-calendar" hidden>
+    <div class="shell">
       <div class="week-nav">
         <button type="button" class="nav-btn" id="prevWeek" aria-label="Previous week">‹</button>
         <div class="week-label">
@@ -1045,52 +1397,38 @@
         <button type="button" class="today-jump" id="jumpToday" style="margin:0">Jump to today</button>
       </div>
       <p class="hint-line">Tap a day to open · swipe on phone · scroll sideways</p>
-    </header>
-  </div>
-
-  <div class="tt-overlay" id="ttOverlay" role="dialog" aria-modal="true" aria-labelledby="ttTitle" hidden>
-    <div class="tt-panel">
-      <div class="tt-head">
-        <div>
-          <div class="tt-title" id="ttTitle">School timetable</div>
-          <div class="tt-sub" id="ttSub">Loading…</div>
-        </div>
-        <button type="button" class="tt-close" id="ttClose" aria-label="Close">×</button>
-      </div>
-      <div class="tt-tabs">
-        <button type="button" class="tt-cycle" data-cycle="A">Week A</button>
-        <button type="button" class="tt-cycle" data-cycle="B">Week B</button>
-      </div>
-      <div class="tt-day-pills" id="ttDayPills"></div>
-      <div class="tt-body" id="ttBody"></div>
     </div>
-  </div>
 
-
-  <div class="tt-overlay" id="swOverlay" role="dialog" aria-modal="true" aria-labelledby="swTitle" hidden>
-    <div class="tt-panel">
-      <div class="tt-head">
-        <div>
-          <div class="tt-title" id="swTitle">School work</div>
-          <div class="tt-sub" id="swSub">Tasks to do · red = not done · green = done · blue = bot working</div>
-        </div>
-        <button type="button" class="tt-close" id="swClose" aria-label="Close">×</button>
-      </div>
-      <div class="sw-body" id="swBody"></div>
-    </div>
-  </div>
-
-  <div class="week-rail">
+  
+<div class="week-rail">
     <main class="week-tabs" id="weekTabs" aria-live="polite"></main>
   </div>
 
   <div class="shell">
     <p class="footer">
-      Week tabs · data from <strong>events.json</strong><br />
+      Calendar module · data from <strong>events.json</strong><br />
       School items open Toddle when tapped.
     </p>
     <p class="status" id="status"></p>
   </div>
+  </section>
+
+  <section class="hub-view" id="view-debts" role="tabpanel" aria-labelledby="tab-debts" hidden>
+    <div class="shell">
+      <div class="debts-hero">
+        <div class="debts-total-label">Total owed to you</div>
+        <div class="debts-total" id="debtsTotal">HK$602</div>
+        <div class="debts-rate" id="debtsRate">6.7% interest · 1st of each month · 9:03 AM HKT</div>
+        <div class="debts-countdown-box">
+          <div class="debts-countdown-label">Next interest bump</div>
+          <div class="debts-countdown" id="debtsCountdown">—</div>
+          <div class="debts-countdown-sub" id="debtsCountdownSub">Nov 1, 2026 · 9:03 AM HKT</div>
+        </div>
+      </div>
+      <div class="debts-list" id="debtsList"></div>
+      <p class="debts-note">Read-only for now · balances update when Calendar republishes <strong>debts.json</strong></p>
+    </div>
+  </section>
 
   <script>
     const TZ = "Asia/Hong_Kong";
@@ -1495,19 +1833,45 @@
       return { cycle: asOfHit ? asOfHit.cycle : "B", day };
     }
 
-    function openTimetable() {
-      const ov = document.getElementById("ttOverlay");
+    function openOverlay(ov) {
+      if (!ov) return;
+      if (ov._closeTimer) {
+        clearTimeout(ov._closeTimer);
+        ov._closeTimer = null;
+      }
       ov.hidden = false;
+      ov.classList.remove("is-closing");
+      // force reflow so open transition always plays
+      void ov.offsetWidth;
       ov.classList.add("is-open");
       document.body.style.overflow = "hidden";
+    }
+
+    function closeOverlay(ov) {
+      if (!ov) return;
+      if (ov.hidden && !ov.classList.contains("is-open")) return;
+      if (ov.classList.contains("is-closing")) return;
+      ov.classList.remove("is-open");
+      ov.classList.add("is-closing");
+      const finish = () => {
+        ov.classList.remove("is-closing");
+        ov.hidden = true;
+        if (!document.querySelector(".tt-overlay.is-open")) {
+          document.body.style.overflow = "";
+        }
+        ov._closeTimer = null;
+      };
+      if (ov._closeTimer) clearTimeout(ov._closeTimer);
+      ov._closeTimer = setTimeout(finish, 340);
+    }
+
+    function openTimetable() {
+      openOverlay(document.getElementById("ttOverlay"));
       renderTimetable();
     }
 
     function closeTimetable() {
-      const ov = document.getElementById("ttOverlay");
-      ov.classList.remove("is-open");
-      ov.hidden = true;
-      document.body.style.overflow = "";
+      closeOverlay(document.getElementById("ttOverlay"));
     }
 
     function renderTimetable() {
@@ -1703,9 +2067,7 @@
 
     function openSchoolWork() {
       const ov = document.getElementById("swOverlay");
-      ov.hidden = false;
-      ov.classList.add("is-open");
-      document.body.style.overflow = "hidden";
+      openOverlay(ov);
       swStatusNote = "";
       renderSchoolWork();
       (async () => {
@@ -1727,10 +2089,7 @@
     }
 
     function closeSchoolWork() {
-      const ov = document.getElementById("swOverlay");
-      ov.classList.remove("is-open");
-      ov.hidden = true;
-      document.body.style.overflow = "";
+      closeOverlay(document.getElementById("swOverlay"));
       if (swPollTimer) {
         clearInterval(swPollTimer);
         swPollTimer = null;
@@ -1893,6 +2252,288 @@
       }
     }
 
+
+    // —— Debts ——
+    const EMBEDDED_DEBTS = {
+      "currency": "HKD",
+      "updated": "2026-10-15T12:04:00+08:00",
+      "interestRate": 0.067,
+      "interestDay": 1,
+      "interestTime": "09:03",
+      "timezone": "Asia/Hong_Kong",
+      "nextInterest": "2026-11-01T09:03:00+08:00",
+      "people": [
+        {"id": "evander", "name": "Evander", "balance": 55},
+        {"id": "liam", "name": "Liam", "balance": 177},
+        {"id": "colby", "name": "Colby", "balance": 165},
+        {"id": "jameson", "name": "Jameson", "balance": 120},
+        {"id": "scout", "name": "Scout", "balance": 85}
+      ]
+    };
+    let debtsData = EMBEDDED_DEBTS;
+    let debtsTimer = null;
+
+    function moneyHKD(n) {
+      const v = Math.round(Number(n) * 100) / 100;
+      const s = (Number.isInteger(v) ? String(v) : v.toFixed(2));
+      return `HK$${s}`;
+    }
+
+    function afterInterest(bal, rate) {
+      return Math.round(bal * (1 + rate) * 100) / 100;
+    }
+
+    function parseInterestDate(iso) {
+      // "2026-11-01T09:03:00+08:00"
+      if (!iso) return null;
+      const d = new Date(iso);
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function formatCountdown(ms) {
+      if (ms <= 0) return "Interest due now";
+      const totalSec = Math.floor(ms / 1000);
+      const days = Math.floor(totalSec / 86400);
+      const hours = Math.floor((totalSec % 86400) / 3600);
+      const mins = Math.floor((totalSec % 3600) / 60);
+      const parts = [];
+      if (days > 0) parts.push(`${days}d`);
+      parts.push(`${hours}h`);
+      parts.push(`${mins}m`);
+      return parts.join(" ");
+    }
+
+    function prettyInterestWhen(d) {
+      if (!d) return "";
+      const fmt = new Intl.DateTimeFormat("en-US", {
+        timeZone: TZ,
+        month: "short", day: "numeric", year: "numeric",
+        hour: "numeric", minute: "2-digit", hour12: true
+      });
+      return fmt.format(d) + " HKT";
+    }
+
+    function renderDebts() {
+      const people = debtsData.people || [];
+      const rate = Number(debtsData.interestRate) || 0.067;
+      const total = people.reduce((s, p) => s + Number(p.balance || 0), 0);
+      const elTotal = document.getElementById("debtsTotal");
+      if (elTotal) elTotal.textContent = moneyHKD(total);
+      const elRate = document.getElementById("debtsRate");
+      if (elRate) {
+        elRate.textContent = `${(rate * 100).toFixed(1)}% interest · 1st of each month · 9:03 AM HKT`;
+      }
+      const next = parseInterestDate(debtsData.nextInterest);
+      const ms = next ? (next.getTime() - Date.now()) : 0;
+      const cd = document.getElementById("debtsCountdown");
+      if (cd) cd.textContent = formatCountdown(ms);
+      const sub = document.getElementById("debtsCountdownSub");
+      if (sub) sub.textContent = next ? (`Next bump · ${prettyInterestWhen(next)}`) : "Next bump TBA";
+
+      const list = document.getElementById("debtsList");
+      if (list) {
+        list.innerHTML = people.map(p => {
+          const bal = Number(p.balance || 0);
+          const after = afterInterest(bal, rate);
+          return `<div class="debt-row">
+            <div>
+              <div class="debt-name">${escapeHtml(p.name)}</div>
+              <div class="debt-after">After interest · ${moneyHKD(after)}</div>
+            </div>
+            <div class="debt-amt">${moneyHKD(bal)}</div>
+          </div>`;
+        }).join("");
+      }
+    }
+
+    async function loadDebts() {
+      try {
+        const res = await fetch(`debts.json?t=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) throw new Error("debts");
+        debtsData = await res.json();
+      } catch {
+        debtsData = EMBEDDED_DEBTS;
+      }
+      renderDebts();
+    }
+
+    function startDebtsCountdown() {
+      if (debtsTimer) clearInterval(debtsTimer);
+      debtsTimer = setInterval(() => {
+        renderDebts();
+        renderHomeGlance();
+      }, 30000);
+    }
+
+    // —— Hub tabs ——
+    let activeTab = "home";
+    let tabSwitching = false;
+
+    function setTabUrl(tab) {
+      try {
+        const u = new URL(location.href);
+        if (tab === "home") u.searchParams.delete("tab");
+        else u.searchParams.set("tab", tab);
+        // keep tt/sw only meaningful on calendar
+        history.replaceState({}, "", u);
+      } catch (_) {}
+    }
+
+    function showTab(tab, opts) {
+      const optsSafe = opts || {};
+      if (!["home", "calendar", "debts"].includes(tab)) tab = "home";
+      if (tab === activeTab && !optsSafe.force) return;
+      if (tabSwitching) return;
+      const prev = document.getElementById(`view-${activeTab}`);
+      const next = document.getElementById(`view-${tab}`);
+      if (!next) return;
+
+      document.querySelectorAll(".hub-tab").forEach(btn => {
+        const on = btn.getAttribute("data-tab") === tab;
+        btn.classList.toggle("is-active", on);
+        btn.setAttribute("aria-selected", on ? "true" : "false");
+      });
+
+      const finish = () => {
+        if (prev && prev !== next) {
+          prev.classList.remove("is-active", "is-leaving");
+          prev.hidden = true;
+        }
+        next.hidden = false;
+        next.classList.remove("is-leaving");
+        next.classList.add("is-active");
+        activeTab = tab;
+        tabSwitching = false;
+        if (!optsSafe.skipUrl) setTabUrl(tab);
+        if (tab === "calendar") {
+          requestAnimationFrame(() => {
+            try { renderWeek(); } catch (_) {}
+          });
+        }
+        if (tab === "debts") renderDebts();
+        if (tab === "home") renderHomeGlance();
+      };
+
+      if (prev && prev !== next && prev.classList.contains("is-active")) {
+        tabSwitching = true;
+        prev.classList.remove("is-active");
+        prev.classList.add("is-leaving");
+        setTimeout(finish, 220);
+      } else {
+        finish();
+      }
+    }
+
+    function nextDueSchool() {
+      const today = hktParts().ymd;
+      const tasks = schoolTasks();
+      const open = tasks.filter(t => !isTaskDone(t.id));
+      if (!open.length) return null;
+      // prefer overdue, then soonest date
+      open.sort((a, b) => {
+        const ao = !!(a.overdue || (a.date && a.date < today));
+        const bo = !!(b.overdue || (b.date && b.date < today));
+        if (ao !== bo) return ao ? -1 : 1;
+        return (a.date || "").localeCompare(b.date || "");
+      });
+      return open[0];
+    }
+
+    function renderHomeGlance() {
+      const today = hktParts();
+      const title = document.getElementById("homeTodayTitle");
+      const body = document.getElementById("homeTodayBody");
+      const meta = document.getElementById("homeTodayMeta");
+      if (title) {
+        const wd = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date(today.ymd + "T12:00:00+08:00").getDay()];
+        title.textContent = `${wd} · ${MONTHS[today.m - 1]} ${today.d}`;
+      }
+      const evs = eventsForDate(today.ymd);
+      if (body) {
+        body.textContent = evs.length
+          ? (evs.length === 1 ? evs[0].title : `${evs.length} items on the calendar today`)
+          : "Nothing scheduled today — open Calendar for the week";
+      }
+      if (meta) {
+        const chips = [];
+        if (evs.some(e => e.title && /holiday/i.test(e.title))) {
+          chips.push('<span class="home-chip is-hot">Holiday</span>');
+        }
+        chips.push(`<span class="home-chip">${evs.length} today</span>`);
+        meta.innerHTML = chips.join("");
+      }
+
+      const due = nextDueSchool();
+      const st = document.getElementById("homeSchoolTitle");
+      const sb = document.getElementById("homeSchoolBody");
+      const sm = document.getElementById("homeSchoolMeta");
+      if (due) {
+        if (st) st.textContent = due.title;
+        if (sb) {
+          const overdue = !!(due.overdue || (due.date && due.date < today.ymd));
+          const { m, d } = parseYmd(due.date || today.ymd);
+          sb.textContent = overdue
+            ? `Overdue · was ${MONTHS[m - 1]} ${d}`
+            : `Due ${MONTHS[m - 1]} ${d}${due.time ? " · " + formatTime12(due.time) : ""}`;
+        }
+        if (sm) {
+          const working = isBotWorking(due.id);
+          sm.innerHTML = working
+            ? '<span class="home-chip" style="border-color:rgba(56,189,248,.5);color:#bae6fd">Bot working</span>'
+            : '<span class="home-chip is-hot">Needs doing</span>';
+        }
+      } else {
+        if (st) st.textContent = "All clear";
+        if (sb) sb.textContent = "No open school tasks";
+        if (sm) sm.innerHTML = '<span class="home-chip">Nice</span>';
+      }
+
+      const people = debtsData.people || [];
+      const rate = Number(debtsData.interestRate) || 0.067;
+      const total = people.reduce((s, p) => s + Number(p.balance || 0), 0);
+      const next = parseInterestDate(debtsData.nextInterest);
+      const ms = next ? (next.getTime() - Date.now()) : 0;
+      const dt = document.getElementById("homeDebtTitle");
+      const db = document.getElementById("homeDebtBody");
+      const dm = document.getElementById("homeDebtMeta");
+      if (dt) dt.textContent = moneyHKD(total);
+      if (db) db.textContent = next
+        ? `Next interest · ${formatCountdown(ms)}`
+        : `${(rate * 100).toFixed(1)}% on the 1st`;
+      if (dm) {
+        dm.innerHTML = `<span class="home-chip is-money">${people.length} friends</span>
+          <span class="home-chip">${(rate * 100).toFixed(1)}% / mo</span>`;
+      }
+    }
+
+    document.querySelectorAll(".hub-tab").forEach(btn => {
+      btn.addEventListener("click", () => showTab(btn.getAttribute("data-tab")));
+    });
+    document.getElementById("homeOpenCalendar")?.addEventListener("click", () => showTab("calendar"));
+    document.getElementById("homeOpenDebts")?.addEventListener("click", () => showTab("debts"));
+    document.getElementById("homeOpenSchoolWork")?.addEventListener("click", () => {
+      showTab("calendar");
+      openSchoolWork();
+    });
+    document.getElementById("homeOpenTimetable")?.addEventListener("click", () => {
+      showTab("calendar");
+      openTimetable();
+    });
+    document.querySelectorAll("#homeGrid [data-go]").forEach(card => {
+      card.addEventListener("click", () => {
+        const go = card.getAttribute("data-go");
+        if (go === "school") {
+          showTab("calendar");
+          openSchoolWork();
+        } else if (go === "debts") {
+          showTab("debts");
+        } else if (go === "calendar") {
+          showTab("calendar");
+        }
+      });
+    });
+
+
     document.getElementById("openSchoolWork").addEventListener("click", openSchoolWork);
     document.getElementById("swClose").addEventListener("click", closeSchoolWork);
     document.getElementById("swOverlay").addEventListener("click", (e) => {
@@ -1926,20 +2567,22 @@
 
     (async () => {
       initWeek();
-      await Promise.all([loadEvents(), loadTimetable()]);
+      await Promise.all([loadEvents(), loadTimetable(), loadDebts(), fetchSchoolStatus()]);
       renderWeek();
-      if (new URLSearchParams(location.search).has("tt")) {
-        openTimetable();
-      }
-      if (new URLSearchParams(location.search).has("sw")) {
-        openSchoolWork();
-      }
+      renderHomeGlance();
+      startDebtsCountdown();
+
+      const params = new URLSearchParams(location.search);
+      let startTab = (params.get("tab") || "home").toLowerCase();
+      if (params.has("tt") || params.has("sw")) startTab = "calendar";
+      showTab(startTab, { force: true, skipUrl: startTab === "home" && !params.get("tab") });
+      if (params.has("tt")) openTimetable();
+      if (params.has("sw")) openSchoolWork();
+
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        // Force fresh sw.js fetch; network-first HTML so polish updates aren't stuck
-        navigator.serviceWorker.register("./sw.js?v=8", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=10", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
-        // One-time hard refresh when a new SW takes control (clears stale cached shell)
         let refreshing = false;
         navigator.serviceWorker.addEventListener("controllerchange", () => {
           if (refreshing) return;
@@ -1948,10 +2591,40 @@
           sessionStorage.setItem("cal-sw-reloaded", "1");
           location.reload();
         });
-        // Allow a later update cycle to reload again next visit
         setTimeout(() => { try { sessionStorage.removeItem("cal-sw-reloaded"); } catch (_) {} }, 15000);
       }
     })();
   </script>
+
+<div class="tt-overlay" id="ttOverlay" role="dialog" aria-modal="true" aria-labelledby="ttTitle" hidden>
+    <div class="tt-panel">
+      <div class="tt-head">
+        <div>
+          <div class="tt-title" id="ttTitle">School timetable</div>
+          <div class="tt-sub" id="ttSub">Loading…</div>
+        </div>
+        <button type="button" class="tt-close" id="ttClose" aria-label="Close">×</button>
+      </div>
+      <div class="tt-tabs">
+        <button type="button" class="tt-cycle" data-cycle="A">Week A</button>
+        <button type="button" class="tt-cycle" data-cycle="B">Week B</button>
+      </div>
+      <div class="tt-day-pills" id="ttDayPills"></div>
+      <div class="tt-body" id="ttBody"></div>
+    </div>
+  </div>
+
+<div class="tt-overlay" id="swOverlay" role="dialog" aria-modal="true" aria-labelledby="swTitle" hidden>
+    <div class="tt-panel">
+      <div class="tt-head">
+        <div>
+          <div class="tt-title" id="swTitle">School work</div>
+          <div class="tt-sub" id="swSub">Tasks to do · red = not done · green = done · blue = bot working</div>
+        </div>
+        <button type="button" class="tt-close" id="swClose" aria-label="Close">×</button>
+      </div>
+      <div class="sw-body" id="swBody"></div>
+    </div>
+  </div>
 </body>
 </html>
