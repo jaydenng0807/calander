@@ -1100,7 +1100,7 @@
 
     const EMBEDDED = {
       "timezone": "Asia/Hong_Kong",
-      "updated": "2026-10-15T11:14:44+08:00",
+      "updated": "2026-10-15T11:46:37+08:00",
       "toddleBase": TODDLE_DEFAULT,
       "events": [
         {"id":"food-design-crit-b-overdue","date":"2026-10-08","title":"Food Design Crit B","due":true,"overdue":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
@@ -1109,7 +1109,8 @@
         {"id":"chinese-work-2026-10-15","date":"2026-10-15","title":"Chinese work","time":"15:30","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
         {"id":"holiday-2026-10-16","date":"2026-10-16","title":"Holiday","allDay":true,"type":"personal","color":"purple"},
         {"id":"chinese-reading-2026-10-16","date":"2026-10-16","title":"Chinese reading notes","time":"13:00","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
-        {"id":"dragon-blog-2026-10-16","date":"2026-10-16","title":"Dragon dance blog","time":"17:00","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT}
+        {"id":"dragon-blog-2026-10-16","date":"2026-10-16","title":"Dragon dance blog","time":"17:00","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT},
+        {"id":"food-design-crit-c-plan","date":"2026-10-15","title":"Food Design Crit C production plan","due":true,"type":"school","color":"blue","url":TODDLE_DEFAULT}
       ]
     };
 
@@ -1579,6 +1580,7 @@
     }
 
 
+
     // —— School work tasks ——
     const SW_DONE_KEY = "jayden-cal-school-done";
     const SW_BOT_KEY = "jayden-cal-school-bot";
@@ -1600,6 +1602,12 @@
 
     let swDone = loadSwMap(SW_DONE_KEY);
     let swBot = loadSwMap(SW_BOT_KEY);
+    /** server-authoritative working map: id -> { working, bot, done } */
+    let swServer = {};
+    let swBotConfig = { webhookUrl: "", webhookKey: "" };
+    let swPollTimer = null;
+    let swStatusNote = "";
+    const swBotInFlight = new Set();
 
     function schoolTasks() {
       const list = (eventsData.events || []).filter(e => e.type === "school");
@@ -1631,7 +1639,65 @@
         bits.push(`<span>${formatTime12(ev.time)}</span>`);
       }
       if (eventUrl(ev)) bits.push('<span class="sw-pill is-toddle">Toddle</span>');
+      const srv = swServer[ev.id];
+      if (srv && srv.working && srv.bot) {
+        bits.push(`<span class="sw-pill is-toddle">${escapeHtml(String(srv.bot))}</span>`);
+      }
       return bits.join("");
+    }
+
+    function isTaskDone(id) {
+      if (swServer[id] && swServer[id].done === true) return true;
+      return !!swDone[id];
+    }
+
+    function isBotWorking(id) {
+      // Server working wins when we have a server entry for this id
+      if (Object.prototype.hasOwnProperty.call(swServer, id)) {
+        return !!swServer[id].working;
+      }
+      return !!swBot[id];
+    }
+
+    async function fetchSchoolBotConfig() {
+      try {
+        const res = await fetch(`school-bot-config.json?t=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) throw new Error("config");
+        const data = await res.json();
+        swBotConfig = {
+          webhookUrl: (data && data.webhookUrl) ? String(data.webhookUrl) : "",
+          webhookKey: (data && data.webhookKey) ? String(data.webhookKey) : ""
+        };
+      } catch {
+        swBotConfig = { webhookUrl: "", webhookKey: "" };
+      }
+    }
+
+    async function fetchSchoolStatus() {
+      try {
+        const res = await fetch(`school-status.json?t=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) throw new Error("status");
+        const data = await res.json();
+        const tasks = (data && data.tasks && typeof data.tasks === "object") ? data.tasks : {};
+        const next = {};
+        for (const [id, info] of Object.entries(tasks)) {
+          if (!info || typeof info !== "object") continue;
+          next[id] = {
+            working: !!info.working,
+            bot: info.bot || null,
+            done: !!info.done
+          };
+          // Mirror server working into local cache so offline still shows last known
+          swBot[id] = !!info.working;
+          if (info.done === true) swDone[id] = true;
+        }
+        swServer = next;
+        saveSwMap(SW_BOT_KEY, swBot);
+        saveSwMap(SW_DONE_KEY, swDone);
+        return true;
+      } catch {
+        return false;
+      }
     }
 
     function openSchoolWork() {
@@ -1639,7 +1705,24 @@
       ov.hidden = false;
       ov.classList.add("is-open");
       document.body.style.overflow = "hidden";
+      swStatusNote = "";
       renderSchoolWork();
+      (async () => {
+        await fetchSchoolBotConfig();
+        await fetchSchoolStatus();
+        if (!swBotConfig.webhookUrl) {
+          swStatusNote = "Bot requests aren’t connected yet — tell Calander.";
+        }
+        if (document.getElementById("swOverlay").classList.contains("is-open")) {
+          renderSchoolWork();
+        }
+      })();
+      if (swPollTimer) clearInterval(swPollTimer);
+      swPollTimer = setInterval(async () => {
+        if (!document.getElementById("swOverlay").classList.contains("is-open")) return;
+        const ok = await fetchSchoolStatus();
+        if (ok) renderSchoolWork();
+      }, 8000);
     }
 
     function closeSchoolWork() {
@@ -1647,26 +1730,33 @@
       ov.classList.remove("is-open");
       ov.hidden = true;
       document.body.style.overflow = "";
+      if (swPollTimer) {
+        clearInterval(swPollTimer);
+        swPollTimer = null;
+      }
     }
 
     function renderSchoolWork() {
       const tasks = schoolTasks();
-      const doneCount = tasks.filter(t => !!swDone[t.id]).length;
-      const botCount = tasks.filter(t => !!swBot[t.id]).length;
+      const doneCount = tasks.filter(t => isTaskDone(t.id)).length;
+      const botCount = tasks.filter(t => isBotWorking(t.id)).length;
       const sub = document.getElementById("swSub");
+      let base;
       if (!tasks.length) {
-        sub.textContent = "No school tasks yet";
+        base = "No school tasks yet";
       } else {
-        sub.textContent = `${tasks.length} task${tasks.length === 1 ? "" : "s"} · ${doneCount} done · ${botCount} bot working`;
+        base = `${tasks.length} task${tasks.length === 1 ? "" : "s"} · ${doneCount} done · ${botCount} bot working`;
       }
+      sub.textContent = swStatusNote ? `${base} · ${swStatusNote}` : base;
       const body = document.getElementById("swBody");
       if (!tasks.length) {
         body.innerHTML = `<div class="sw-empty">No school work tasks right now</div>`;
         return;
       }
       body.innerHTML = tasks.map(ev => {
-        const done = !!swDone[ev.id];
-        const bot = !!swBot[ev.id];
+        const done = isTaskDone(ev.id);
+        const bot = isBotWorking(ev.id);
+        const busy = swBotInFlight.has(ev.id);
         const href = eventUrl(ev);
         const rowCls = ["sw-task"];
         if (done) rowCls.push("is-done");
@@ -1680,7 +1770,7 @@
             <span class="sw-dot ${done ? "is-green" : "is-red"}" aria-hidden="true"></span>
           </button>
           ${main}
-          <button type="button" class="sw-bot ${bot ? "is-on" : ""}" data-sw-bot="${escapeAttr(ev.id)}" aria-pressed="${bot ? "true" : "false"}" aria-label="${bot ? "Stop bot" : "Bot working"}" title="Bot working">
+          <button type="button" class="sw-bot ${bot ? "is-on" : ""}" data-sw-bot="${escapeAttr(ev.id)}" aria-pressed="${bot ? "true" : "false"}" aria-label="${bot ? "Stop bot" : "Bot working"}" title="Bot working" ${busy ? "disabled" : ""}>
             <span class="sw-bot-lamp" aria-hidden="true"></span>
             Bot
           </button>
@@ -1692,7 +1782,10 @@
           e.preventDefault();
           e.stopPropagation();
           const id = btn.getAttribute("data-sw-done");
-          swDone[id] = !swDone[id];
+          const next = !isTaskDone(id);
+          swDone[id] = next;
+          // If server had done:true and user marks not done, keep local false until server updates
+          if (swServer[id]) swServer[id].done = next;
           saveSwMap(SW_DONE_KEY, swDone);
           renderSchoolWork();
         });
@@ -1702,11 +1795,84 @@
           e.preventDefault();
           e.stopPropagation();
           const id = btn.getAttribute("data-sw-bot");
-          swBot[id] = !swBot[id];
-          saveSwMap(SW_BOT_KEY, swBot);
-          renderSchoolWork();
+          requestBotToggle(id);
         });
       });
+    }
+
+    async function requestBotToggle(id) {
+      if (swBotInFlight.has(id)) return;
+      const ev = (eventsData.events || []).find(e => e.id === id) || { id, title: id };
+      const currently = isBotWorking(id);
+      const next = !currently;
+      const action = next ? "start" : "stop";
+
+      // Optimistic UI
+      swBot[id] = next;
+      if (swServer[id]) {
+        swServer[id].working = next;
+      } else {
+        swServer[id] = { working: next, bot: null, done: !!swDone[id] };
+      }
+      saveSwMap(SW_BOT_KEY, swBot);
+      swBotInFlight.add(id);
+      swStatusNote = "";
+      renderSchoolWork();
+
+      const webhookUrl = (swBotConfig.webhookUrl || "").trim();
+      if (!webhookUrl) {
+        swStatusNote = "Bot requests aren’t connected yet — tell Calander.";
+        swBotInFlight.delete(id);
+        renderSchoolWork();
+        return;
+      }
+
+      const payload = {
+        action,
+        id: ev.id,
+        title: ev.title || "",
+        date: ev.date || "",
+        time: ev.time || "",
+        url: eventUrl(ev) || "",
+        source: "calander-site"
+      };
+
+      try {
+        const headers = { "Content-Type": "application/json" };
+        const key = (swBotConfig.webhookKey || "").trim();
+        if (key) headers["Authorization"] = `Bearer ${key}`;
+        const res = await fetch(webhookUrl, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(payload),
+          mode: "cors"
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        swStatusNote = next ? "Bot request sent" : "Stop request sent";
+        // Refresh server status soon
+        setTimeout(() => { fetchSchoolStatus().then(() => {
+          if (document.getElementById("swOverlay").classList.contains("is-open")) renderSchoolWork();
+        }); }, 1200);
+      } catch (err) {
+        // Revert optimistic state
+        swBot[id] = currently;
+        if (swServer[id]) swServer[id].working = currently;
+        saveSwMap(SW_BOT_KEY, swBot);
+        swStatusNote = "Bot request failed — try again";
+      } finally {
+        swBotInFlight.delete(id);
+        renderSchoolWork();
+        // Clear brief status after a few seconds unless it's the disconnected note
+        if (swStatusNote && !swStatusNote.includes("aren’t connected")) {
+          const note = swStatusNote;
+          setTimeout(() => {
+            if (swStatusNote === note) {
+              swStatusNote = "";
+              if (document.getElementById("swOverlay").classList.contains("is-open")) renderSchoolWork();
+            }
+          }, 3500);
+        }
+      }
     }
 
     document.getElementById("openSchoolWork").addEventListener("click", openSchoolWork);
@@ -1752,7 +1918,7 @@
       }
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
         // Force fresh sw.js fetch; network-first HTML so polish updates aren't stuck
-        navigator.serviceWorker.register("./sw.js?v=6", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=7", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         // One-time hard refresh when a new SW takes control (clears stale cached shell)
