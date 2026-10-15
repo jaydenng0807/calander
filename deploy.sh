@@ -63,7 +63,7 @@ deploy_github_pages() {
   # Only publish site files (not previews / netlify drop screenshots)
   git add -A
   git reset HEAD -- preview.png preview-mobile.png live-unlocked.png netlify-drop-done.png 2>/dev/null || true
-  git add index.html events.json timetable.json manifest.webmanifest sw.js README.md calendar-standalone.html deploy.sh deploy.config SITE_URL.txt 2>/dev/null || true
+  git add index.html events.json timetable.json tasks.json manifest.webmanifest sw.js README.md calendar-standalone.html deploy.sh deploy.config SITE_URL.txt 2>/dev/null || true
   git -c user.email="calander@local" -c user.name="Calander" commit -m "Update Calander $(date -Iseconds)" || echo "(no new commit)"
   git push -u origin "$BRANCH"
 
