@@ -1,9 +1,10 @@
-const CACHE = "jayden-cal-v5-clickfix";
+const CACHE = "jayden-cal-v6-schoolwork";
 const ASSETS = [
   "./",
   "./index.html",
   "./events.json",
   "./timetable.json",
+  "./tasks.json",
   "./manifest.webmanifest"
 ];
 
@@ -63,7 +64,8 @@ self.addEventListener("fetch", (e) => {
     path.endsWith("index.html");
   const isJson =
     path.endsWith("events.json") ||
-    path.endsWith("timetable.json");
+    path.endsWith("timetable.json") ||
+    path.endsWith("tasks.json");
 
   if (isHtml || isJson) {
     e.respondWith(networkFirst(req));

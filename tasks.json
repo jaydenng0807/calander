@@ -1,0 +1,26 @@
+{
+  "updated": "2026-10-15T03:10:00+08:00",
+  "note": "School tasks already on the calendar (events.json, type school) are listed automatically, using those plain-English titles and Toddle links. Match an id here to set a starting done or bot flag, or add an extra task that is not on the calendar (id, title, optional date, time, url, note). Titles must stay plain English — never raw Toddle Chinese. After a dot or Bot is tapped on a phone, that phone remembers the new status.",
+  "tasks": [
+    {
+      "id": "food-design-peer-2026-10-15",
+      "done": false,
+      "bot": false
+    },
+    {
+      "id": "chinese-work-2026-10-15",
+      "done": false,
+      "bot": false
+    },
+    {
+      "id": "chinese-reading-2026-10-16",
+      "done": false,
+      "bot": false
+    },
+    {
+      "id": "dragon-blog-2026-10-16",
+      "done": false,
+      "bot": false
+    }
+  ]
+}

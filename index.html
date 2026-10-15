@@ -844,6 +844,193 @@
       gap: 6px 10px;
     }
 
+    /* —— School work sheet —— */
+    .work-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      padding: 12px 18px 2px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .work-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .legend-swatch.todo {
+      background: #ff4d61;
+      box-shadow: 0 0 8px rgba(255, 77, 97, 0.85);
+    }
+    .legend-swatch.done {
+      background: #3dd68c;
+      box-shadow: 0 0 8px rgba(61, 214, 140, 0.85);
+    }
+    .legend-swatch.bot {
+      background: #c5e6ff;
+      box-shadow: 0 0 8px rgba(197, 230, 255, 0.95);
+    }
+
+    .work-body {
+      padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .work-day {
+      margin: 16px 0 8px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .work-day:first-child { margin-top: 6px; }
+    .work-day.is-today { color: var(--purple); }
+
+    .work-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+
+    .work-dot,
+    .work-bot {
+      appearance: none;
+      font-family: inherit;
+      cursor: pointer;
+      flex-shrink: 0;
+      min-height: 58px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 6px 6px;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    }
+    .work-dot:active,
+    .work-bot:active { transform: scale(0.96); }
+    .work-dot:focus-visible,
+    .work-bot:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+
+    .work-dot {
+      width: 72px;
+      border: 1px solid rgba(255, 77, 97, 0.5);
+      background: rgba(255, 77, 97, 0.14);
+      color: #ff9aa6;
+    }
+    .work-dot.is-done {
+      border-color: rgba(61, 214, 140, 0.6);
+      background: rgba(61, 214, 140, 0.16);
+      color: #8ef0c0;
+    }
+    .work-dot-core,
+    .work-bot-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .work-dot-core {
+      background: #ff4d61;
+      box-shadow: 0 0 0 3px rgba(255, 77, 97, 0.28), 0 0 12px rgba(255, 77, 97, 0.9);
+    }
+    .work-dot.is-done .work-dot-core {
+      background: #3dd68c;
+      box-shadow: 0 0 0 3px rgba(61, 214, 140, 0.3), 0 0 12px rgba(61, 214, 140, 0.95);
+    }
+    .work-dot-label,
+    .work-bot-label {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      line-height: 1.15;
+      text-align: center;
+    }
+
+    .work-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: inherit;
+      text-decoration: none;
+    }
+    a.work-main.is-link { cursor: pointer; }
+    a.work-main.is-link:active { opacity: 0.88; }
+    .work-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+    .work-title.is-done {
+      color: var(--text-muted);
+      text-decoration: line-through;
+      text-decoration-thickness: 1.5px;
+    }
+    .work-meta {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+    .work-open {
+      color: var(--blue);
+      font-weight: 800;
+    }
+    .work-note {
+      font-size: 11px;
+      color: var(--text-soft);
+      line-height: 1.35;
+    }
+
+    .work-bot {
+      min-width: 76px;
+      border: 1px solid var(--border);
+      background: rgba(22, 22, 40, 0.65);
+      color: var(--text-muted);
+    }
+    .work-bot-dot {
+      background: #4c4c68;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+    }
+    .work-bot.is-working {
+      border-color: rgba(186, 224, 255, 0.9);
+      background: rgba(168, 216, 255, 0.24);
+      color: #f2f9ff;
+      box-shadow: 0 0 0 1px rgba(186, 224, 255, 0.4), 0 0 18px rgba(168, 216, 255, 0.45);
+    }
+    .work-bot.is-working .work-bot-dot {
+      background: #c5e6ff;
+      box-shadow: 0 0 0 3px rgba(197, 230, 255, 0.4), 0 0 12px #d6efff;
+      animation: workBotPulse 1.3s ease-in-out infinite;
+    }
+    @keyframes workBotPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.16); opacity: 0.75; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .work-bot.is-working .work-bot-dot { animation: none; }
+    }
+
     .status {
       margin-top: 8px;
       font-size: 11px;
@@ -875,6 +1062,9 @@
         <button type="button" class="tt-btn" id="openTimetable" aria-haspopup="dialog">
           <span class="ico" aria-hidden="true">▦</span> School timetable
         </button>
+        <button type="button" class="tt-btn" id="openSchoolWork" aria-haspopup="dialog" aria-expanded="false" aria-controls="workOverlay">
+          <span class="ico" aria-hidden="true">✓</span> School work
+        </button>
         <button type="button" class="today-jump" id="jumpToday" style="margin:0">Jump to today</button>
       </div>
       <p class="hint-line">Tap a day to open · swipe on phone · scroll sideways</p>
@@ -899,14 +1089,32 @@
     </div>
   </div>
 
+  <div class="tt-overlay" id="workOverlay" role="dialog" aria-modal="true" aria-labelledby="workTitle" hidden>
+    <div class="tt-panel">
+      <div class="tt-head">
+        <div>
+          <div class="tt-title" id="workTitle">School work</div>
+          <div class="tt-sub" id="workSub">Loading…</div>
+        </div>
+        <button type="button" class="tt-close" id="workClose" aria-label="Close">×</button>
+      </div>
+      <div class="work-legend" aria-hidden="true">
+        <span><i class="legend-swatch todo"></i> Not done</span>
+        <span><i class="legend-swatch done"></i> Done</span>
+        <span><i class="legend-swatch bot"></i> Bot working</span>
+      </div>
+      <div class="tt-body work-body" id="workBody"></div>
+    </div>
+  </div>
+
   <div class="week-rail">
     <main class="week-tabs" id="weekTabs" aria-live="polite"></main>
   </div>
 
   <div class="shell">
     <p class="footer">
-      Week tabs · data from <strong>events.json</strong><br />
-      School items open Toddle when tapped.
+      Week tabs · school tasks from <strong>events.json</strong><br />
+      School items open Toddle when tapped. Done and bot status stay on this phone.
     </p>
     <p class="status" id="status"></p>
   </div>
@@ -1313,6 +1521,9 @@
     }
 
     function openTimetable() {
+      if (document.getElementById("workOverlay") && document.getElementById("workOverlay").classList.contains("is-open")) {
+        closeSchoolWork();
+      }
       const ov = document.getElementById("ttOverlay");
       ov.hidden = false;
       ov.classList.add("is-open");
@@ -1410,21 +1621,310 @@
       });
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && document.getElementById("ttOverlay").classList.contains("is-open")) {
+      if (e.key !== "Escape") return;
+      if (document.getElementById("workOverlay").classList.contains("is-open")) {
+        closeSchoolWork();
+        return;
+      }
+      if (document.getElementById("ttOverlay").classList.contains("is-open")) {
         closeTimetable();
+      }
+    });
+
+
+    // —— School work (tasks). Done + bot status stay in localStorage. ——
+    const WORK_STORE_KEY = "jayden-cal-school-work-v1";
+    let tasksExtra = { tasks: [] };
+
+    function hasCjk(s) {
+      return /[\u3400-\u9FFF]/.test(String(s || ""));
+    }
+
+    function loadWorkState() {
+      try {
+        const raw = localStorage.getItem(WORK_STORE_KEY);
+        const data = raw ? JSON.parse(raw) : {};
+        if (!data || typeof data !== "object" || Array.isArray(data)) return {};
+        return data;
+      } catch {
+        return {};
+      }
+    }
+
+    function saveWorkState(state) {
+      try {
+        localStorage.setItem(WORK_STORE_KEY, JSON.stringify(state));
+      } catch (_) {}
+    }
+
+    function schoolTasks() {
+      const byId = new Map();
+      for (const ev of (eventsData.events || [])) {
+        if (ev.type !== "school") continue;
+        const title = String(ev.title || "").trim();
+        if (!title || hasCjk(title)) continue;
+        const id = String(ev.id || `${ev.date || "day"}-${title}`);
+        byId.set(id, {
+          id,
+          title,
+          date: ev.date || "",
+          time: ev.time || "",
+          allDay: !!ev.allDay,
+          due: !!ev.due,
+          url: eventUrl(ev),
+          note: ""
+        });
+      }
+      for (const t of (tasksExtra.tasks || [])) {
+        if (!t || typeof t !== "object") continue;
+        const title = String(t.title || "").trim();
+        const id = String(t.id || "").trim();
+        if (!id) continue;
+        if (byId.has(id)) {
+          const cur = byId.get(id);
+          if (t.note && !hasCjk(t.note)) cur.note = String(t.note);
+          if (typeof t.done === "boolean") cur.done = t.done;
+          if (typeof t.bot === "boolean") cur.bot = t.bot;
+          continue;
+        }
+        if (!title || hasCjk(title)) continue;
+        const url = t.url || t.toddleUrl || "";
+        byId.set(id, {
+          id,
+          title,
+          date: t.date || "",
+          time: t.time || "",
+          allDay: !!t.allDay,
+          due: !!t.due,
+          url: typeof url === "string" ? url : "",
+          note: t.note && !hasCjk(t.note) ? String(t.note) : "",
+          done: !!t.done,
+          bot: !!t.bot
+        });
+      }
+      return [...byId.values()].sort((a, b) => {
+        const d = (a.date || "9999-99-99").localeCompare(b.date || "9999-99-99");
+        if (d) return d;
+        return (a.time || "99:99").localeCompare(b.time || "99:99");
+      });
+    }
+
+    function workStatus(task) {
+      const saved = loadWorkState()[task.id];
+      if (saved && typeof saved === "object") {
+        return { done: !!saved.done, bot: !!saved.bot };
+      }
+      return { done: !!task.done, bot: !!task.bot };
+    }
+
+    function setWorkStatus(task, patch) {
+      const all = loadWorkState();
+      const prev = workStatus(task);
+      all[task.id] = {
+        done: patch.done !== undefined ? !!patch.done : prev.done,
+        bot: patch.bot !== undefined ? !!patch.bot : prev.bot
+      };
+      saveWorkState(all);
+      return all[task.id];
+    }
+
+    function taskWhenLabel(task) {
+      const bits = [];
+      if (task.due) bits.push("Due");
+      if (task.time) bits.push(formatTime12(task.time));
+      else if (task.allDay) bits.push("All day");
+      return bits.join(" · ");
+    }
+
+    function taskDayHeading(ymd) {
+      if (!ymd) return "No date";
+      const { m, d } = parseYmd(ymd);
+      const today = hktParts().ymd;
+      const label = `${DOW[weekdayIndexMon0(ymd)]} ${d} ${MONTHS[m - 1]}`;
+      return ymd === today ? `${label} · Today` : label;
+    }
+
+    function paintWorkRow(row, task, st) {
+      const done = !!st.done;
+      const working = !!st.bot;
+      const dot = row.querySelector("[data-work-done]");
+      const bot = row.querySelector("[data-work-bot]");
+      if (dot) {
+        dot.classList.toggle("is-done", done);
+        dot.setAttribute("aria-pressed", String(done));
+        dot.setAttribute("aria-label", done
+          ? `Done. Mark ${task.title} not done`
+          : `Not done. Mark ${task.title} done`);
+        const label = dot.querySelector(".work-dot-label");
+        if (label) label.textContent = done ? "Done" : "Not done";
+      }
+      const title = row.querySelector(".work-title");
+      if (title) title.classList.toggle("is-done", done);
+      if (bot) {
+        bot.classList.toggle("is-working", working);
+        bot.setAttribute("aria-pressed", String(working));
+        bot.setAttribute("aria-label", working
+          ? `School-work bot is working on ${task.title}. Tap to clear`
+          : `Mark a school-work bot working on ${task.title}`);
+        const label = bot.querySelector(".work-bot-label");
+        if (label) label.textContent = working ? "Working" : "Bot";
+      }
+    }
+
+    function updateWorkSummary(tasks) {
+      const list = tasks || schoolTasks();
+      const sub = document.getElementById("workSub");
+      if (!list.length) {
+        sub.textContent = "No school tasks yet";
+        return;
+      }
+      let done = 0;
+      let bots = 0;
+      for (const task of list) {
+        const st = workStatus(task);
+        if (st.done) done += 1;
+        if (st.bot) bots += 1;
+      }
+      const left = list.length - done;
+      const botBit = bots ? ` · ${bots} bot working` : "";
+      sub.textContent = `${left} not done · ${done} done${botBit}`;
+    }
+
+    function renderWorkRow(task, st) {
+      const done = !!st.done;
+      const working = !!st.bot;
+      const href = task.url || "";
+      const when = taskWhenLabel(task);
+      const metaBits = [];
+      if (when) metaBits.push(escapeHtml(when));
+      if (href) metaBits.push('<span class="work-open">Open ↗</span>');
+      const note = task.note
+        ? `<div class="work-note">${escapeHtml(task.note)}</div>`
+        : "";
+      const inner = `
+        <div class="work-title ${done ? "is-done" : ""}">${escapeHtml(task.title)}</div>
+        ${metaBits.length ? `<div class="work-meta">${metaBits.join(" · ")}</div>` : ""}
+        ${note}`;
+      const main = href
+        ? `<a class="work-main is-link" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${inner}</a>`
+        : `<div class="work-main">${inner}</div>`;
+      return `<article class="work-row" data-work-id="${escapeAttr(task.id)}">
+        <button type="button" class="work-dot ${done ? "is-done" : ""}" data-work-done="${escapeAttr(task.id)}" aria-pressed="${done}" aria-label="${escapeAttr(done ? `Done. Mark ${task.title} not done` : `Not done. Mark ${task.title} done`)}">
+          <span class="work-dot-core" aria-hidden="true"></span>
+          <span class="work-dot-label">${done ? "Done" : "Not done"}</span>
+        </button>
+        ${main}
+        <button type="button" class="work-bot ${working ? "is-working" : ""}" data-work-bot="${escapeAttr(task.id)}" aria-pressed="${working}" aria-label="${escapeAttr(working ? `School-work bot is working on ${task.title}. Tap to clear` : `Mark a school-work bot working on ${task.title}`)}">
+          <span class="work-bot-dot" aria-hidden="true"></span>
+          <span class="work-bot-label">${working ? "Working" : "Bot"}</span>
+        </button>
+      </article>`;
+    }
+
+    function renderSchoolWork() {
+      const tasks = schoolTasks();
+      const body = document.getElementById("workBody");
+      updateWorkSummary(tasks);
+      if (!tasks.length) {
+        body.innerHTML = `<div class="empty-slot"><span class="dash">— — —</span>No school tasks yet</div>`;
+        return;
+      }
+      const today = hktParts().ymd;
+      let lastDate = null;
+      const chunks = [];
+      for (const task of tasks) {
+        const date = task.date || "";
+        if (date !== lastDate) {
+          lastDate = date;
+          chunks.push(`<h3 class="work-day ${date === today ? "is-today" : ""}">${escapeHtml(taskDayHeading(date))}</h3>`);
+        }
+        chunks.push(renderWorkRow(task, workStatus(task)));
+      }
+      body.innerHTML = chunks.join("");
+    }
+
+    function findWorkRow(id) {
+      const rows = document.querySelectorAll(".work-row");
+      for (const row of rows) {
+        if (row.getAttribute("data-work-id") === id) return row;
+      }
+      return null;
+    }
+
+    function toggleWork(id, field) {
+      const task = schoolTasks().find((t) => t.id === id);
+      if (!task) return;
+      const cur = workStatus(task);
+      const next = setWorkStatus(task, { ...cur, [field]: !cur[field] });
+      const row = findWorkRow(id);
+      if (row) paintWorkRow(row, task, next);
+      updateWorkSummary();
+    }
+
+    function openSchoolWork() {
+      if (document.getElementById("ttOverlay").classList.contains("is-open")) closeTimetable();
+      renderSchoolWork();
+      const ov = document.getElementById("workOverlay");
+      ov.hidden = false;
+      ov.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      document.getElementById("openSchoolWork").setAttribute("aria-expanded", "true");
+    }
+
+    function closeSchoolWork() {
+      const ov = document.getElementById("workOverlay");
+      ov.classList.remove("is-open");
+      ov.hidden = true;
+      document.body.style.overflow = "";
+      document.getElementById("openSchoolWork").setAttribute("aria-expanded", "false");
+    }
+
+    async function loadTasks() {
+      try {
+        const res = await fetch("tasks.json", { cache: "no-store" });
+        if (!res.ok) throw new Error("bad");
+        const data = await res.json();
+        tasksExtra = data && typeof data === "object" ? data : { tasks: [] };
+        if (!Array.isArray(tasksExtra.tasks)) tasksExtra.tasks = [];
+      } catch {
+        tasksExtra = { tasks: [] };
+      }
+    }
+
+    document.getElementById("openSchoolWork").addEventListener("click", openSchoolWork);
+    document.getElementById("workClose").addEventListener("click", closeSchoolWork);
+    document.getElementById("workOverlay").addEventListener("click", (e) => {
+      if (e.target.id === "workOverlay") closeSchoolWork();
+    });
+    document.getElementById("workBody").addEventListener("click", (e) => {
+      const dot = e.target.closest("[data-work-done]");
+      if (dot) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleWork(dot.getAttribute("data-work-done"), "done");
+        return;
+      }
+      const bot = e.target.closest("[data-work-bot]");
+      if (bot) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleWork(bot.getAttribute("data-work-bot"), "bot");
       }
     });
 
     (async () => {
       initWeek();
-      await Promise.all([loadEvents(), loadTimetable()]);
+      await Promise.all([loadEvents(), loadTimetable(), loadTasks()]);
       renderWeek();
-      if (new URLSearchParams(location.search).has("tt")) {
+      const params = new URLSearchParams(location.search);
+      if (params.has("work")) {
+        openSchoolWork();
+      } else if (params.has("tt")) {
         openTimetable();
       }
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
         // Force fresh sw.js fetch; network-first HTML so polish updates aren't stuck
-        navigator.serviceWorker.register("./sw.js?v=5", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=6", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         // One-time hard refresh when a new SW takes control (clears stale cached shell)

@@ -54,6 +54,16 @@ Optional Netlify path: set `METHOD=netlify` in `deploy.config` and log in with `
 
 Toddle todos base: `https://web.toddleapp.com/platform/391418444458869835/todos`
 
+## School work
+
+The **School work** button (next to School timetable) lists every `type: "school"` item in `events.json`. Titles stay plain English. Tap a title to open its Toddle link.
+
+- Red **Not done** / green **Done** — tap the dot to switch.
+- **Bot** turns light blue while a school-work bot is marked as working. Tap again to clear.
+- Both states are saved in this browser only (`localStorage`). Nothing is sent to a bot yet.
+
+`tasks.json` can set a starting `done` / `bot` flag for an existing id, or add an extra task (`id`, `title`, optional `date`, `time`, `url`, `note`). A phone that has already toggled that task keeps its own saved status.
+
 ## Local preview
 
 ```bash
