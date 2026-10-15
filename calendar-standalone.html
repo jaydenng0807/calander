@@ -310,13 +310,17 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
+      /* Close eases out over the same 0.42s. A softer ease-out than open, so the shrink stays visible the whole time. */
       transition:
-        flex-basis 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-        width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-        max-width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        flex-basis 0.42s cubic-bezier(0, 0, 0.58, 1),
+        flex-grow 0.42s cubic-bezier(0, 0, 0.58, 1),
+        flex-shrink 0.42s cubic-bezier(0, 0, 0.58, 1),
+        width 0.42s cubic-bezier(0, 0, 0.58, 1),
+        min-width 0.42s cubic-bezier(0, 0, 0.58, 1),
+        max-width 0.42s cubic-bezier(0, 0, 0.58, 1),
         border-color 0.25s,
         box-shadow 0.25s,
-        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.25s cubic-bezier(0, 0, 0.58, 1),
         opacity 0.25s;
       will-change: flex-basis, width;
     }
@@ -326,6 +330,17 @@
       width: var(--tab-open);
       border-color: var(--border-strong);
       box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(179, 154, 255, 0.12);
+      transition:
+        flex-basis 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        flex-grow 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        flex-shrink 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        min-width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        max-width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.25s,
+        box-shadow 0.25s,
+        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.25s;
     }
 
     .day-tab.is-today {
@@ -356,10 +371,14 @@
         max-width: 210px;
         scroll-snap-align: start;
       }
+      .day-tab,
+      .day-tab.is-open {
+        width: auto;
+      }
       .day-tab.is-open {
         flex: 0 0 var(--tab-open);
-        width: var(--tab-open);
-        max-width: none;
+        min-width: 140px;
+        max-width: var(--tab-open);
         scroll-snap-align: center;
       }
     }
@@ -457,13 +476,14 @@
       place-items: center;
       font-size: 12px;
       color: var(--text-muted);
-      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s, border-color 0.2s;
+      transition: transform 0.28s cubic-bezier(0, 0, 0.58, 1), color 0.2s, border-color 0.2s;
       flex-shrink: 0;
     }
     .day-tab.is-open .chev {
       transform: rotate(90deg);
       color: var(--purple);
       border-color: var(--border-strong);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s, border-color 0.2s;
     }
 
     .dom {
@@ -516,30 +536,42 @@
     }
 
     .day-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
+      display: grid;
+      grid-template-rows: 0fr;
       padding: 0 14px;
       border-top: 1px solid transparent;
-      max-height: 0;
       opacity: 0;
       overflow: hidden;
       transform: translateY(-4px);
+      /* Close uses the real row height for 0.42s. Softer ease-out than open so it does not dump shut. */
       transition:
-        max-height 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.34s ease,
-        transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-        padding 0.34s ease,
+        grid-template-rows 0.42s cubic-bezier(0, 0, 0.58, 1),
+        opacity 0.42s cubic-bezier(0, 0, 0.58, 1),
+        transform 0.42s cubic-bezier(0, 0, 0.58, 1),
+        padding 0.42s cubic-bezier(0, 0, 0.58, 1),
         border-color 0.28s;
       pointer-events: none;
     }
     .day-tab.is-open .day-panel {
-      max-height: 980px;
+      grid-template-rows: 1fr;
       opacity: 1;
       transform: none;
       padding: 13px 14px 15px;
       border-top-color: var(--border);
       pointer-events: auto;
+      transition:
+        grid-template-rows 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.34s ease,
+        transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.34s ease,
+        border-color 0.28s;
+    }
+    .day-panel-clip {
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
     }
 
     .empty-slot {
@@ -716,22 +748,23 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+      /* Close backdrop eases out across the full 0.34s, then visibility drops. */
       transition:
-        opacity 0.3s ease,
-        visibility 0.3s ease;
+        opacity 0.34s cubic-bezier(0, 0, 0.58, 1),
+        visibility 0s linear 0.34s;
     }
     .tt-overlay.is-open {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
+      transition:
+        opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s linear 0s;
     }
     .tt-overlay.is-closing {
       opacity: 0;
       visibility: visible;
       pointer-events: none;
-      transition:
-        opacity 0.3s ease,
-        visibility 0s linear 0.3s;
     }
     .tt-overlay[hidden] { display: none !important; }
 
@@ -750,22 +783,24 @@
       opacity: 0;
       transform: translateY(28px) scale(0.985);
       transition:
-        opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+        opacity 0.34s cubic-bezier(0, 0, 0.58, 1),
+        transform 0.34s cubic-bezier(0, 0, 0.58, 1);
     }
     .tt-overlay.is-open .tt-panel {
       opacity: 1;
       transform: none;
+      transition:
+        opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .tt-overlay.is-closing .tt-panel {
       opacity: 0;
-      transform: translateY(20px) scale(0.985);
+      transform: translateY(28px) scale(0.985);
     }
     @media (min-width: 720px) {
       .tt-overlay { align-items: center; padding: 24px; }
       .tt-panel { border-radius: 24px; max-height: min(88dvh, 860px); }
-      .tt-overlay:not(.is-open):not(.is-closing) .tt-panel,
-      .tt-overlay.is-closing .tt-panel {
+      .tt-overlay:not(.is-open) .tt-panel {
         transform: translateY(16px) scale(0.98);
       }
     }
@@ -1223,7 +1258,7 @@
     }
     .hub-view.is-leaving {
       display: block;
-      animation: hubViewOut 0.22s ease both;
+      animation: hubViewOut 0.34s cubic-bezier(0, 0, 0.58, 1) both;
       pointer-events: none;
     }
     @keyframes hubViewIn {
@@ -1232,7 +1267,7 @@
     }
     @keyframes hubViewOut {
       from { opacity: 1; transform: none; }
-      to { opacity: 0; transform: translateY(8px); }
+      to { opacity: 0; transform: translateY(12px); }
     }
 
     .home-grid {
@@ -1427,6 +1462,80 @@
       color: #a7f3d0;
       flex-shrink: 0;
     }
+    .debt-edit { flex: 1; min-width: 0; }
+    .debt-name-input,
+    .debt-amt-input {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      color: inherit;
+      font: inherit;
+      border-radius: 10px;
+      color-scheme: dark;
+    }
+    .debt-name-input {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      padding: 2px 6px;
+      margin-left: -6px;
+    }
+    .debt-amt-wrap {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .debt-amt-prefix {
+      font-size: 13px;
+      font-weight: 800;
+      color: #a7f3d0;
+    }
+    .debt-amt-input {
+      width: 6.2em;
+      text-align: right;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #a7f3d0;
+      padding: 4px 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .debt-name-input:focus,
+    .debt-amt-input:focus {
+      outline: none;
+      border-color: var(--border-strong);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .debt-remove {
+      appearance: none;
+      margin-top: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+    .debt-remove:hover { border-color: rgba(255, 122, 138, 0.55); color: var(--danger); }
+    .debt-remove:focus-visible { outline: 2px solid var(--danger); outline-offset: 2px; }
+    .debt-add {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px dashed rgba(179, 154, 255, 0.35);
+      background: rgba(22, 22, 40, 0.55);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .debt-add-actions { display: flex; justify-content: flex-end; }
     .debts-note {
       margin-top: 14px;
       font-size: 12px;
@@ -1434,6 +1543,23 @@
       text-align: center;
       line-height: 1.5;
     }
+    .debt-reset {
+      appearance: none;
+      margin: 8px auto 0;
+      display: block;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .debt-reset[hidden] { display: none !important; }
+    .debt-reset:hover { color: var(--text-soft); }
+    .debt-reset:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
 
     #view-calendar .week-nav { margin-top: 4px; }
     #view-calendar .hero-actions { margin-top: 14px; }
@@ -1624,7 +1750,22 @@
         </div>
       </div>
       <div class="debts-list" id="debtsList"></div>
-      <p class="debts-note">Read-only for now · balances update when Calendar republishes <strong>debts.json</strong></p>
+      <form class="debt-add" id="debtAddForm" autocomplete="off">
+        <label class="add-field">
+          Name
+          <input id="debtAddName" type="text" maxlength="40" placeholder="New person" autocomplete="off" required />
+        </label>
+        <label class="add-field">
+          Amount owed (HK$)
+          <input id="debtAddAmount" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0" required />
+        </label>
+        <div class="debt-add-actions">
+          <button type="submit" class="add-save">Add person</button>
+        </div>
+        <p class="add-error" id="debtAddError" hidden></p>
+      </form>
+      <p class="debts-note">Saved on this device. Original balances stay in <strong>debts.json</strong>.</p>
+      <button type="button" class="debt-reset" id="debtReset" hidden>Reset to original balances</button>
     </div>
   </section>
 
@@ -1905,7 +2046,7 @@
               </button>
               <button type="button" class="day-add" data-add="${ymd}" aria-label="${escapeAttr(addLabel)}">+</button>
             </div>
-            <div class="day-panel">${body}</div>
+            <div class="day-panel"><div class="day-panel-clip">${body}</div></div>
           </section>`);
       }
       root.innerHTML = days.join("");
@@ -2125,12 +2266,22 @@
       return { cycle: asOfHit ? asOfHit.cycle : "B", day };
     }
 
-    function openOverlay(ov) {
+    function clearOverlayClose(ov) {
       if (!ov) return;
       if (ov._closeTimer) {
         clearTimeout(ov._closeTimer);
         ov._closeTimer = null;
       }
+      if (ov._onCloseEnd) {
+        const panel = ov.querySelector(".tt-panel");
+        if (panel) panel.removeEventListener("transitionend", ov._onCloseEnd);
+        ov._onCloseEnd = null;
+      }
+    }
+
+    function openOverlay(ov) {
+      if (!ov) return;
+      clearOverlayClose(ov);
       ov.hidden = false;
       ov.classList.remove("is-closing");
       // force reflow so open transition always plays
@@ -2143,18 +2294,38 @@
       if (!ov) return;
       if (ov.hidden && !ov.classList.contains("is-open")) return;
       if (ov.classList.contains("is-closing")) return;
+      clearOverlayClose(ov);
       ov.classList.remove("is-open");
       ov.classList.add("is-closing");
+      const panel = ov.querySelector(".tt-panel");
+      let finished = false;
+      const pending = new Set(["opacity", "transform"]);
       const finish = () => {
+        if (finished) return;
+        if (ov.classList.contains("is-open")) {
+          finished = true;
+          clearOverlayClose(ov);
+          return;
+        }
+        finished = true;
+        clearOverlayClose(ov);
         ov.classList.remove("is-closing");
         ov.hidden = true;
         if (!document.querySelector(".tt-overlay.is-open")) {
           document.body.style.overflow = "";
         }
-        ov._closeTimer = null;
       };
-      if (ov._closeTimer) clearTimeout(ov._closeTimer);
-      ov._closeTimer = setTimeout(finish, 340);
+      const onEnd = (e) => {
+        if (!panel || e.target !== panel) return;
+        if (!pending.has(e.propertyName)) return;
+        if (ov.classList.contains("is-open")) return;
+        pending.delete(e.propertyName);
+        if (pending.size === 0) finish();
+      };
+      ov._onCloseEnd = onEnd;
+      if (panel) panel.addEventListener("transitionend", onEnd);
+      // Fallback is longer than the 0.34s close so hidden never cuts the transition.
+      ov._closeTimer = setTimeout(finish, 420);
     }
 
     function openTimetable() {
@@ -2580,8 +2751,106 @@
         {"id": "scout", "name": "Scout", "balance": 85}
       ]
     };
+    const DEBT_OVERLAY_KEY = "jayden-debts-overlay-v1";
+    let debtsBase = EMBEDDED_DEBTS;
+    let debtOverlay = { edits: {}, added: [] };
     let debtsData = EMBEDDED_DEBTS;
     let debtsTimer = null;
+
+    function readDebtOverlay() {
+      try {
+        const raw = localStorage.getItem(DEBT_OVERLAY_KEY);
+        if (!raw) return { edits: {}, added: [] };
+        const data = JSON.parse(raw);
+        return {
+          edits: data && data.edits && typeof data.edits === "object" ? data.edits : {},
+          added: Array.isArray(data && data.added) ? data.added : []
+        };
+      } catch {
+        return { edits: {}, added: [] };
+      }
+    }
+
+    function cleanDebtName(raw) {
+      return String(raw || "").replace(/\s+/g, " ").trim().slice(0, 40);
+    }
+
+    function parseDebtAmount(raw) {
+      const t = String(raw ?? "").trim();
+      if (!t || t === ".") return null;
+      const n = Number(t);
+      if (!Number.isFinite(n) || n < 0 || n > 999999.99) return null;
+      return Math.round(n * 100) / 100;
+    }
+
+    function amountInputValue(n) {
+      const v = Math.round(Number(n) * 100) / 100;
+      if (!Number.isFinite(v)) return "";
+      return Number.isInteger(v) ? String(v) : v.toFixed(2);
+    }
+
+    function mergeDebts(base, overlay) {
+      const people = (base.people || []).map((p) => {
+        const edit = overlay.edits && overlay.edits[p.id];
+        const next = {
+          id: p.id,
+          name: p.name,
+          balance: Number(p.balance || 0)
+        };
+        if (!edit) return next;
+        const name = cleanDebtName(edit.name);
+        const balance = parseDebtAmount(edit.balance);
+        if (name) next.name = name;
+        if (balance != null && edit.balance !== undefined && edit.balance !== "") next.balance = balance;
+        return next;
+      });
+      const known = new Set(people.map((p) => p.id));
+      for (const extra of overlay.added || []) {
+        if (!extra || !extra.id || known.has(extra.id)) continue;
+        const name = cleanDebtName(extra.name);
+        const balance = parseDebtAmount(extra.balance);
+        if (!name || balance == null) continue;
+        people.push({ id: String(extra.id), name, balance, custom: true });
+        known.add(extra.id);
+      }
+      return { ...base, people };
+    }
+
+    function debtOverlayDirty() {
+      return Object.keys(debtOverlay.edits || {}).length > 0 || (debtOverlay.added || []).length > 0;
+    }
+
+    function syncDebtReset() {
+      const btn = document.getElementById("debtReset");
+      if (btn) btn.hidden = !debtOverlayDirty();
+    }
+
+    function persistDebtOverlay() {
+      const baseById = {};
+      for (const p of debtsBase.people || []) baseById[p.id] = p;
+      const edits = {};
+      const added = [];
+      for (const p of debtsData.people || []) {
+        const name = cleanDebtName(p.name);
+        const balance = parseDebtAmount(p.balance);
+        const base = baseById[p.id];
+        if (!base) {
+          if (!name || balance == null) continue;
+          added.push({ id: p.id, name, balance });
+          continue;
+        }
+        const patch = {};
+        if (name && name !== base.name) patch.name = name;
+        if (balance != null && balance !== Number(base.balance)) patch.balance = balance;
+        if (Object.keys(patch).length) edits[p.id] = patch;
+      }
+      debtOverlay = { edits, added };
+      try {
+        if (!debtOverlayDirty()) localStorage.removeItem(DEBT_OVERLAY_KEY);
+        else localStorage.setItem(DEBT_OVERLAY_KEY, JSON.stringify(debtOverlay));
+      } catch (_) {}
+      syncDebtReset();
+    }
 
     function moneyHKD(n) {
       const v = Math.round(Number(n) * 100) / 100;
@@ -2623,7 +2892,8 @@
       return fmt.format(d) + " HKT";
     }
 
-    function renderDebts() {
+    function renderDebts(opts) {
+      const rebuildList = !opts || opts.list !== false;
       const people = debtsData.people || [];
       const rate = Number(debtsData.interestRate) || 0.067;
       const total = people.reduce((s, p) => s + Number(p.balance || 0), 0);
@@ -2639,41 +2909,173 @@
       if (cd) cd.textContent = formatCountdown(ms);
       const sub = document.getElementById("debtsCountdownSub");
       if (sub) sub.textContent = next ? (`Next bump · ${prettyInterestWhen(next)}`) : "Next bump TBA";
+      syncDebtReset();
 
+      if (!rebuildList) return;
       const list = document.getElementById("debtsList");
-      if (list) {
-        list.innerHTML = people.map(p => {
-          const bal = Number(p.balance || 0);
-          const after = afterInterest(bal, rate);
-          return `<div class="debt-row">
-            <div>
-              <div class="debt-name">${escapeHtml(p.name)}</div>
-              <div class="debt-after">After interest · ${moneyHKD(after)}</div>
-            </div>
-            <div class="debt-amt">${moneyHKD(bal)}</div>
-          </div>`;
-        }).join("");
-      }
+      if (!list) return;
+      const baseIds = new Set((debtsBase.people || []).map((p) => p.id));
+      list.innerHTML = people.map((p) => {
+        const bal = Number(p.balance || 0);
+        const after = afterInterest(bal, rate);
+        const remove = baseIds.has(p.id)
+          ? ""
+          : `<button type="button" class="debt-remove" data-debt-remove="${escapeAttr(p.id)}">Remove</button>`;
+        return `<div class="debt-row" data-id="${escapeAttr(p.id)}">
+          <div class="debt-edit">
+            <input class="debt-name-input" type="text" maxlength="40" aria-label="Name" value="${escapeAttr(p.name)}" />
+            <div class="debt-after">After interest · ${moneyHKD(after)}</div>
+            ${remove}
+          </div>
+          <label class="debt-amt-wrap">
+            <span class="debt-amt-prefix">HK$</span>
+            <input class="debt-amt-input" type="number" inputmode="decimal" min="0" step="0.01" aria-label="Amount ${escapeAttr(p.name)} owes" value="${escapeAttr(amountInputValue(bal))}" />
+          </label>
+        </div>`;
+      }).join("");
+    }
+
+    function refreshDebtDerived() {
+      renderDebts({ list: false });
+      renderHomeGlance();
     }
 
     async function loadDebts() {
+      debtOverlay = readDebtOverlay();
       try {
         const res = await fetch(`debts.json?t=${Date.now()}`, { cache: "no-store" });
         if (!res.ok) throw new Error("debts");
-        debtsData = await res.json();
+        debtsBase = await res.json();
       } catch {
-        debtsData = EMBEDDED_DEBTS;
+        debtsBase = EMBEDDED_DEBTS;
       }
+      debtsData = mergeDebts(debtsBase, debtOverlay);
       renderDebts();
     }
 
     function startDebtsCountdown() {
       if (debtsTimer) clearInterval(debtsTimer);
       debtsTimer = setInterval(() => {
-        renderDebts();
+        renderDebts({ list: false });
         renderHomeGlance();
       }, 30000);
     }
+
+    function debtPersonFromRow(row) {
+      if (!row) return null;
+      const id = row.getAttribute("data-id");
+      return (debtsData.people || []).find((p) => p.id === id) || null;
+    }
+
+    document.getElementById("debtsList")?.addEventListener("input", (e) => {
+      const row = e.target.closest(".debt-row");
+      const person = debtPersonFromRow(row);
+      if (!person) return;
+      const rate = Number(debtsData.interestRate) || 0.067;
+      if (e.target.classList.contains("debt-name-input")) {
+        const name = cleanDebtName(e.target.value);
+        if (!name) return;
+        person.name = name;
+        const amt = row.querySelector(".debt-amt-input");
+        if (amt) amt.setAttribute("aria-label", `Amount ${name} owes`);
+      } else if (e.target.classList.contains("debt-amt-input")) {
+        const amount = parseDebtAmount(e.target.value);
+        if (amount == null) return;
+        person.balance = amount;
+        const after = row.querySelector(".debt-after");
+        if (after) after.textContent = `After interest · ${moneyHKD(afterInterest(amount, rate))}`;
+      } else {
+        return;
+      }
+      persistDebtOverlay();
+      refreshDebtDerived();
+    });
+
+    document.getElementById("debtsList")?.addEventListener("focusout", (e) => {
+      const row = e.target.closest(".debt-row");
+      const person = debtPersonFromRow(row);
+      if (!person) return;
+      if (e.target.classList.contains("debt-name-input")) {
+        const name = cleanDebtName(e.target.value);
+        if (!name) {
+          e.target.value = person.name;
+          return;
+        }
+        person.name = name;
+        e.target.value = name;
+      } else if (e.target.classList.contains("debt-amt-input")) {
+        const amount = parseDebtAmount(e.target.value);
+        if (amount == null) {
+          e.target.value = amountInputValue(person.balance);
+          return;
+        }
+        person.balance = amount;
+        e.target.value = amountInputValue(amount);
+        const after = row.querySelector(".debt-after");
+        const rate = Number(debtsData.interestRate) || 0.067;
+        if (after) after.textContent = `After interest · ${moneyHKD(afterInterest(amount, rate))}`;
+      } else {
+        return;
+      }
+      persistDebtOverlay();
+      refreshDebtDerived();
+    });
+
+    document.getElementById("debtsList")?.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-debt-remove]");
+      if (!btn) return;
+      const id = btn.getAttribute("data-debt-remove");
+      debtsData.people = (debtsData.people || []).filter((p) => p.id !== id);
+      persistDebtOverlay();
+      renderDebts();
+      renderHomeGlance();
+    });
+
+    document.getElementById("debtAddForm")?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nameEl = document.getElementById("debtAddName");
+      const amtEl = document.getElementById("debtAddAmount");
+      const err = document.getElementById("debtAddError");
+      const name = cleanDebtName(nameEl && nameEl.value);
+      const amount = parseDebtAmount(amtEl && amtEl.value);
+      if (!name) {
+        if (err) {
+          err.hidden = false;
+          err.textContent = "Add a name.";
+        }
+        if (nameEl) nameEl.focus();
+        return;
+      }
+      if (amount == null) {
+        if (err) {
+          err.hidden = false;
+          err.textContent = "Add an amount of 0 or more.";
+        }
+        if (amtEl) amtEl.focus();
+        return;
+      }
+      if (err) err.hidden = true;
+      const id = `custom-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+      debtsData.people = debtsData.people || [];
+      debtsData.people.push({ id, name, balance: amount, custom: true });
+      persistDebtOverlay();
+      renderDebts();
+      renderHomeGlance();
+      if (nameEl) nameEl.value = "";
+      if (amtEl) amtEl.value = "";
+      if (nameEl) nameEl.focus();
+    });
+
+    document.getElementById("debtReset")?.addEventListener("click", () => {
+      debtOverlay = { edits: {}, added: [] };
+      try { localStorage.removeItem(DEBT_OVERLAY_KEY); } catch (_) {}
+      debtsData = mergeDebts(debtsBase, debtOverlay);
+      const err = document.getElementById("debtAddError");
+      if (err) err.hidden = true;
+      renderDebts();
+      renderHomeGlance();
+      syncDebtReset();
+    });
 
     // —— Hub tabs ——
     let activeTab = "home";
@@ -2737,8 +3139,22 @@
       if (prev && prev !== next && prev.classList.contains("is-active")) {
         tabSwitching = true;
         prev.classList.remove("is-active");
+        prev.hidden = false;
         prev.classList.add("is-leaving");
-        setTimeout(finish, 220);
+        let leaveDone = false;
+        const finishLeave = () => {
+          if (leaveDone) return;
+          leaveDone = true;
+          prev.removeEventListener("animationend", onAnim);
+          finish();
+        };
+        const onAnim = (e) => {
+          if (e.target !== prev || e.animationName !== "hubViewOut") return;
+          finishLeave();
+        };
+        prev.addEventListener("animationend", onAnim);
+        // Fallback after the 0.34s leave so hidden is not applied early.
+        setTimeout(finishLeave, 420);
       } else {
         finish();
       }
@@ -3025,7 +3441,7 @@
       if (params.has("sw")) openSchoolWork();
 
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        navigator.serviceWorker.register("./sw.js?v=12", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=13", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         let refreshing = false;
