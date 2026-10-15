@@ -112,6 +112,10 @@ Example when it failed:
 
 The page polls `video-status.json` about every 8 seconds while that tab is open, or while a job is still queued or working. `done: true` wins over `working`. A non-empty `error` with `done` not true shows as failed.
 
+## Home weather
+
+The Home tab shows Hong Kong weather for Asia/Hong_Kong (about 22.3193, 114.1694). The page fetches it in the browser from the free [Open-Meteo](https://open-meteo.com/) forecast API — no key. It shows the current temperature, condition, feels-like and humidity, today’s high and low, tomorrow’s high, low, and condition, and an hourly temperature graph from now through tomorrow. A failed request leaves a short message and a Try again button. The last good forecast is kept in this tab’s session for about 20 minutes.
+
 ## Local preview
 
 ```bash

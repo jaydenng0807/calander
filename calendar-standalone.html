@@ -1355,6 +1355,202 @@
       margin-top: 16px;
     }
 
+    /* —— Home weather (Open-Meteo, Hong Kong) —— */
+    .weather-panel {
+      margin-top: 18px;
+      padding: 16px 16px 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-strong);
+      background:
+        radial-gradient(ellipse 80% 60% at 0% 0%, rgba(110, 182, 255, 0.18), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 100% 100%, rgba(139, 108, 255, 0.22), transparent 52%),
+        var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .weather-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .weather-head .home-card-kicker { margin-bottom: 0; }
+    .weather-updated {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+    .weather-days {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .weather-col + .weather-col {
+      border-left: 1px solid var(--border);
+      padding-left: 14px;
+    }
+    .weather-when {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .weather-temp {
+      margin-top: 4px;
+      font-size: clamp(34px, 8vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .weather-temp.is-range {
+      font-size: clamp(26px, 6.2vw, 34px);
+      letter-spacing: -0.03em;
+    }
+    .weather-cond {
+      margin-top: 6px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .weather-detail {
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .weather-chart-label {
+      margin-top: 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .weather-plot {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .weather-ywrap {
+      position: relative;
+      flex: 0 0 34px;
+      width: 34px;
+      height: 148px;
+    }
+    .weather-ywrap span {
+      position: absolute;
+      right: 0;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-dim);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .weather-plot-main { flex: 1 1 auto; min-width: 0; }
+    .weather-svg-wrap { position: relative; }
+    .weather-chart {
+      width: 100%;
+      height: 148px;
+      display: block;
+      overflow: visible;
+    }
+    .weather-now-dot {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      margin: 0;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #c4b5fd;
+      box-shadow: 0 0 0 4px rgba(179, 154, 255, 0.28);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .weather-now-dot[hidden],
+    .weather-chart-empty[hidden],
+    .weather-body[hidden],
+    .weather-msg[hidden] { display: none; }
+    .weather-chart-empty {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+    .weather-xlabels {
+      position: relative;
+      height: 16px;
+      margin-top: 6px;
+    }
+    .weather-xlabel {
+      position: absolute;
+      top: 0;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-dim);
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .weather-xlabel.is-start { transform: none; }
+    .weather-xlabel.is-mid { transform: translateX(-50%); }
+    .weather-xlabel.is-end { transform: translateX(-100%); }
+    .weather-note {
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+    .weather-msg {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .weather-retry {
+      appearance: none;
+      border: 1px solid var(--border-strong);
+      background: var(--purple-soft);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .weather-retry:hover { border-color: var(--purple); }
+    .weather-retry:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+    .weather-body.is-in {
+      animation: hubViewIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @media (max-width: 520px) {
+      .weather-ywrap,
+      .weather-chart { height: 128px; }
+    }
+    @media (max-width: 380px) {
+      .weather-days { grid-template-columns: 1fr; }
+      .weather-col + .weather-col {
+        border-left: 0;
+        padding-left: 0;
+        border-top: 1px solid var(--border);
+        padding-top: 12px;
+      }
+    }
+
     /* —— Debts —— */
     .debts-hero {
       margin-top: 18px;
@@ -1880,6 +2076,61 @@
     </header>
 
     <section class="hub-view is-active" id="view-home" role="tabpanel" aria-labelledby="tab-home">
+      <article class="weather-panel" id="weatherPanel" data-state="loading" aria-labelledby="weatherHeading">
+        <div class="weather-head">
+          <div class="home-card-kicker" id="weatherHeading">Hong Kong weather</div>
+          <div class="weather-updated" id="weatherUpdated"></div>
+        </div>
+        <div class="weather-body" id="weatherBody">
+          <div class="weather-days">
+            <div class="weather-col">
+              <div class="weather-when">Today</div>
+              <div class="weather-temp" id="weatherNowTemp">—</div>
+              <div class="weather-cond" id="weatherNowCond">Loading…</div>
+              <div class="weather-detail" id="weatherNowFeel"></div>
+              <div class="weather-detail" id="weatherNowRange"></div>
+            </div>
+            <div class="weather-col">
+              <div class="weather-when">Tomorrow</div>
+              <div class="weather-temp is-range" id="weatherTmrTemp">—</div>
+              <div class="weather-cond" id="weatherTmrCond">Loading…</div>
+              <div class="weather-detail" id="weatherTmrDetail">High and low</div>
+            </div>
+          </div>
+          <div class="weather-chart-label">Hourly temperature · today into tomorrow</div>
+          <div class="weather-plot">
+            <div class="weather-ywrap" aria-hidden="true">
+              <span id="weatherYHi"></span>
+              <span id="weatherYMid"></span>
+              <span id="weatherYLo"></span>
+            </div>
+            <div class="weather-plot-main">
+              <div class="weather-svg-wrap">
+                <svg class="weather-chart" id="weatherChart" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Hourly temperature chart, loading">
+                  <defs>
+                    <linearGradient id="wxArea" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#b39aff" stop-opacity="0.42" />
+                      <stop offset="100%" stop-color="#4a9eff" stop-opacity="0.02" />
+                    </linearGradient>
+                    <linearGradient id="wxLine" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stop-color="#e4dcff" />
+                      <stop offset="100%" stop-color="#6eb6ff" />
+                    </linearGradient>
+                  </defs>
+                  <g id="weatherChartGrid"></g>
+                  <path id="weatherArea" fill="url(#wxArea)" d=""></path>
+                  <path id="weatherLine" fill="none" stroke="url(#wxLine)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" d=""></path>
+                </svg>
+                <span class="weather-now-dot" id="weatherNowDot" hidden></span>
+                <p class="weather-chart-empty" id="weatherChartEmpty">Loading the hourly graph…</p>
+              </div>
+              <div class="weather-xlabels" id="weatherX" aria-hidden="true"></div>
+            </div>
+          </div>
+          <p class="weather-note">Open-Meteo · Hong Kong</p>
+        </div>
+        <p class="weather-msg" id="weatherMsg" role="status" hidden></p>
+      </article>
       <div class="home-grid" id="homeGrid">
         <button type="button" class="home-card is-wide" data-go="calendar">
           <div class="home-card-kicker">Today · HKT</div>
@@ -3969,7 +4220,11 @@
           });
         }
         if (tab === "debts") renderDebts();
-        if (tab === "home") renderHomeGlance();
+        if (tab === "home") {
+          renderHomeGlance();
+          loadWeather();
+          if (weatherPoints.length) layoutWeatherLabels(weatherPoints);
+        }
         if (tab === "video") {
           renderVideoSlots();
           renderVideoJobs();
@@ -4085,6 +4340,433 @@
         dm.innerHTML = `<span class="home-chip is-money">${people.length} friends</span>
           <span class="home-chip">${(rate * 100).toFixed(1)}% / mo</span>`;
       }
+    }
+
+    // Hong Kong forecast. Coords are the city centre; Open-Meteo needs no key.
+    const WEATHER_HK = {
+      latitude: 22.3193,
+      longitude: 114.1694,
+      timezone: TZ,
+      place: "Hong Kong"
+    };
+    const WEATHER_FRESH_MS = 20 * 60 * 1000;
+    const WEATHER_CACHE_KEY = "jayden-hk-weather-v1";
+    let weatherBusy = false;
+    let weatherLoadedAt = 0;
+    let weatherPoints = [];
+
+    function formatTemp(n) {
+      const v = Number(n);
+      if (!Number.isFinite(v)) return "—";
+      return Math.round(v) + "°";
+    }
+
+    function weatherPhrase(code) {
+      const c = Number(code);
+      if (c === 0) return "Clear";
+      if (c === 1) return "Mainly clear";
+      if (c === 2) return "Partly cloudy";
+      if (c === 3) return "Overcast";
+      if (c === 45 || c === 48) return "Fog";
+      if (c === 51) return "Light drizzle";
+      if (c === 53) return "Drizzle";
+      if (c === 55) return "Heavy drizzle";
+      if (c === 56 || c === 57) return "Freezing drizzle";
+      if (c === 61) return "Light rain";
+      if (c === 63) return "Rain";
+      if (c === 65) return "Heavy rain";
+      if (c === 66 || c === 67) return "Freezing rain";
+      if (c === 71) return "Light snow";
+      if (c === 73) return "Snow";
+      if (c === 75) return "Heavy snow";
+      if (c === 77) return "Snow grains";
+      if (c === 80) return "Light showers";
+      if (c === 81) return "Showers";
+      if (c === 82) return "Heavy showers";
+      if (c === 85) return "Light snow showers";
+      if (c === 86) return "Snow showers";
+      if (c === 95) return "Thunderstorm";
+      if (c === 96 || c === 99) return "Thunderstorm with hail";
+      return "Unknown conditions";
+    }
+
+    function weatherForecastUrl() {
+      const q = new URLSearchParams({
+        latitude: String(WEATHER_HK.latitude),
+        longitude: String(WEATHER_HK.longitude),
+        current: "temperature_2m,relative_humidity_2m,apparent_temperature,weather_code",
+        hourly: "temperature_2m",
+        daily: "weather_code,temperature_2m_max,temperature_2m_min",
+        timezone: WEATHER_HK.timezone,
+        forecast_days: "2"
+      });
+      return "https://api.open-meteo.com/v1/forecast?" + q.toString();
+    }
+
+    function weatherPayloadOk(data) {
+      return !!(data
+        && data.current
+        && Number.isFinite(Number(data.current.temperature_2m))
+        && data.daily
+        && Array.isArray(data.daily.time)
+        && data.daily.time.length >= 1
+        && data.hourly
+        && Array.isArray(data.hourly.time)
+        && Array.isArray(data.hourly.temperature_2m));
+    }
+
+    function readWeatherCache() {
+      try {
+        const parsed = JSON.parse(sessionStorage.getItem(WEATHER_CACHE_KEY) || "null");
+        if (!parsed || !parsed.at || !weatherPayloadOk(parsed.data)) return null;
+        return parsed;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function hktHourKey(date) {
+      const fmt = new Intl.DateTimeFormat("en-CA", {
+        timeZone: TZ,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        hourCycle: "h23"
+      });
+      const parts = Object.fromEntries(fmt.formatToParts(date).map(p => [p.type, p.value]));
+      return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}`;
+    }
+
+    function weatherClockLabel(iso) {
+      const h = Number(iso.slice(11, 13));
+      const ampm = h >= 12 ? "PM" : "AM";
+      const h12 = h % 12 || 12;
+      return `${h12} ${ampm}`;
+    }
+
+    function weatherDayName(iso) {
+      const ymd = iso.slice(0, 10);
+      return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][new Date(ymd + "T12:00:00+08:00").getDay()];
+    }
+
+    function setWeatherMessage(text, withRetry) {
+      const msg = document.getElementById("weatherMsg");
+      if (!msg) return;
+      msg.hidden = !text;
+      msg.textContent = "";
+      if (!text) return;
+      const span = document.createElement("span");
+      span.textContent = text;
+      msg.appendChild(span);
+      if (withRetry) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "weather-retry";
+        btn.textContent = "Try again";
+        btn.addEventListener("click", () => loadWeather(true));
+        msg.appendChild(btn);
+      }
+    }
+
+    function smoothLine(pts) {
+      if (!pts.length) return "";
+      const f = (n) => Number(n).toFixed(2);
+      if (pts.length === 1) return `M ${f(pts[0].x)} ${f(pts[0].y)}`;
+      let d = `M ${f(pts[0].x)} ${f(pts[0].y)}`;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[Math.min(pts.length - 1, i + 2)];
+        const c1x = p1.x + (p2.x - p0.x) / 6;
+        const c1y = p1.y + (p2.y - p0.y) / 6;
+        const c2x = p2.x - (p3.x - p1.x) / 6;
+        const c2y = p2.y - (p3.y - p1.y) / 6;
+        d += ` C ${f(c1x)} ${f(c1y)}, ${f(c2x)} ${f(c2y)}, ${f(p2.x)} ${f(p2.y)}`;
+      }
+      return d;
+    }
+
+    function upcomingHourly(data) {
+      const times = data.hourly.time;
+      const temps = data.hourly.temperature_2m;
+      const nowKey = hktHourKey(new Date());
+      let start = times.findIndex(t => String(t).slice(0, 13) >= nowKey);
+      if (start < 0) start = Math.max(0, times.length - 1);
+      const points = [];
+      for (let i = start; i < times.length; i++) {
+        const temp = Number(temps[i]);
+        if (!Number.isFinite(temp)) continue;
+        points.push({ iso: String(times[i]), temp });
+      }
+      return points;
+    }
+
+    function layoutWeatherLabels(points) {
+      const host = document.getElementById("weatherX");
+      const wrap = document.querySelector(".weather-svg-wrap");
+      if (!host || !wrap || !points.length) return false;
+      const width = wrap.clientWidth;
+      if (width < 20) return false;
+      const n = points.length;
+      const step = width < 420 ? 12 : 6;
+      const minGap = width < 380 ? 72 : 56;
+      const want = [];
+      points.forEach((p, i) => {
+        const hour = Number(p.iso.slice(11, 13));
+        if (i === 0 || i === n - 1 || hour % step === 0) want.push(i);
+      });
+      const picked = [];
+      want.forEach((i) => {
+        const xPct = n === 1 ? 50 : 1.5 + (i / (n - 1)) * 97;
+        const x = (xPct / 100) * width;
+        const prev = picked[picked.length - 1];
+        if (prev && x - prev.x < minGap) {
+          if (i === n - 1 && picked.length > 1) picked.pop();
+          else return;
+        }
+        picked.push({ i, x });
+      });
+      host.textContent = "";
+      picked.forEach(({ i, x }) => {
+        const el = document.createElement("span");
+        const hour = Number(points[i].iso.slice(11, 13));
+        const dayBreak = i > 0 && points[i].iso.slice(0, 10) !== points[i - 1].iso.slice(0, 10);
+        let label = weatherClockLabel(points[i].iso);
+        if (i === 0) label = "Now";
+        else if (dayBreak && hour === 0) label = weatherDayName(points[i].iso);
+        el.className = "weather-xlabel " + (i === 0 ? "is-start" : (i === n - 1 ? "is-end" : "is-mid"));
+        el.style.left = ((x / width) * 100) + "%";
+        el.textContent = label;
+        host.appendChild(el);
+      });
+      return true;
+    }
+
+    function drawWeatherChart(points) {
+      const grid = document.getElementById("weatherChartGrid");
+      const area = document.getElementById("weatherArea");
+      const line = document.getElementById("weatherLine");
+      const dot = document.getElementById("weatherNowDot");
+      const empty = document.getElementById("weatherChartEmpty");
+      const svg = document.getElementById("weatherChart");
+      const yHi = document.getElementById("weatherYHi");
+      const yMid = document.getElementById("weatherYMid");
+      const yLo = document.getElementById("weatherYLo");
+      weatherPoints = points || [];
+      if (!grid || !area || !line || !svg) return;
+      const clearY = () => {
+        [yHi, yMid, yLo].forEach(el => { if (el) el.textContent = ""; });
+      };
+      if (!weatherPoints.length) {
+        area.setAttribute("d", "");
+        line.setAttribute("d", "");
+        grid.textContent = "";
+        if (dot) dot.hidden = true;
+        clearY();
+        if (empty) {
+          empty.hidden = false;
+          empty.textContent = "No hourly temperatures for this stretch.";
+        }
+        svg.setAttribute("aria-label", "Hourly temperature chart is empty");
+        return;
+      }
+      if (empty) empty.hidden = true;
+      const temps = weatherPoints.map(p => p.temp);
+      const tMin = Math.min(...temps);
+      const tMax = Math.max(...temps);
+      let lo = tMin;
+      let hi = tMax;
+      if (hi - lo < 1.2) {
+        const mid = (hi + lo) / 2;
+        lo = mid - 0.8;
+        hi = mid + 0.8;
+      } else {
+        const pad = (hi - lo) * 0.18;
+        lo -= pad;
+        hi += pad;
+      }
+      const n = weatherPoints.length;
+      const xy = weatherPoints.map((p, i) => ({
+        x: n === 1 ? 50 : 1.5 + (i / (n - 1)) * 97,
+        y: 10 + (1 - (p.temp - lo) / (hi - lo)) * 80
+      }));
+      const d = smoothLine(xy);
+      line.setAttribute("d", d);
+      const last = xy[xy.length - 1];
+      const first = xy[0];
+      area.setAttribute("d", `${d} L ${last.x.toFixed(2)} 100 L ${first.x.toFixed(2)} 100 Z`);
+      grid.textContent = "";
+      [10, 50, 90].forEach((y) => {
+        const ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        ln.setAttribute("x1", "0");
+        ln.setAttribute("x2", "100");
+        ln.setAttribute("y1", String(y));
+        ln.setAttribute("y2", String(y));
+        ln.setAttribute("stroke", "rgba(255,255,255,0.08)");
+        ln.setAttribute("stroke-width", "1");
+        ln.setAttribute("vector-effect", "non-scaling-stroke");
+        grid.appendChild(ln);
+      });
+      for (let i = 1; i < weatherPoints.length; i++) {
+        if (weatherPoints[i].iso.slice(0, 10) !== weatherPoints[i - 1].iso.slice(0, 10)) {
+          const ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          ln.setAttribute("x1", xy[i].x.toFixed(2));
+          ln.setAttribute("x2", xy[i].x.toFixed(2));
+          ln.setAttribute("y1", "8");
+          ln.setAttribute("y2", "92");
+          ln.setAttribute("stroke", "rgba(179,154,255,0.4)");
+          ln.setAttribute("stroke-width", "1");
+          ln.setAttribute("stroke-dasharray", "3 3");
+          ln.setAttribute("vector-effect", "non-scaling-stroke");
+          grid.appendChild(ln);
+          break;
+        }
+      }
+      if (dot) {
+        dot.hidden = false;
+        dot.style.left = first.x + "%";
+        dot.style.top = first.y + "%";
+      }
+      const yOf = (temp) => (10 + (1 - (temp - lo) / (hi - lo)) * 80) + "%";
+      if (Math.round(tMax) === Math.round(tMin)) {
+        if (yHi) yHi.textContent = "";
+        if (yLo) yLo.textContent = "";
+        if (yMid) {
+          yMid.textContent = formatTemp((tMax + tMin) / 2);
+          yMid.style.top = yOf((tMax + tMin) / 2);
+        }
+      } else {
+        if (yHi) { yHi.textContent = formatTemp(tMax); yHi.style.top = yOf(tMax); }
+        if (yLo) { yLo.textContent = formatTemp(tMin); yLo.style.top = yOf(tMin); }
+        if (yMid) {
+          const mid = (tMax + tMin) / 2;
+          if (Math.round(mid) === Math.round(tMax) || Math.round(mid) === Math.round(tMin)) {
+            yMid.textContent = "";
+          } else {
+            yMid.textContent = formatTemp(mid);
+            yMid.style.top = yOf(mid);
+          }
+        }
+      }
+      const hours = Math.max(1, n - 1);
+      svg.setAttribute("aria-label",
+        `Hourly temperature in Hong Kong for the next ${hours} hours, from now through tomorrow. Now ${formatTemp(weatherPoints[0].temp)}, ending ${formatTemp(weatherPoints[n - 1].temp)}. Low ${formatTemp(tMin)}, high ${formatTemp(tMax)}.`
+      );
+      layoutWeatherLabels(weatherPoints);
+    }
+
+    function renderWeather(data, opts) {
+      const safe = opts || {};
+      const panel = document.getElementById("weatherPanel");
+      const body = document.getElementById("weatherBody");
+      if (body) body.hidden = false;
+      setWeatherMessage("");
+      if (panel) {
+        panel.dataset.state = "ready";
+        if (!panel.dataset.seen && body) {
+          panel.dataset.seen = "1";
+          body.classList.add("is-in");
+        }
+      }
+      weatherLoadedAt = safe.at || Date.now();
+
+      const today = hktParts().ymd;
+      const tomorrow = addDaysYmd(today, 1);
+      const days = data.daily.time || [];
+      const iToday = Math.max(0, days.indexOf(today));
+      const iTmr = days.indexOf(tomorrow);
+      const cur = data.current || {};
+      const nowTemp = document.getElementById("weatherNowTemp");
+      const nowCond = document.getElementById("weatherNowCond");
+      const nowFeel = document.getElementById("weatherNowFeel");
+      const nowRange = document.getElementById("weatherNowRange");
+      if (nowTemp) nowTemp.textContent = formatTemp(cur.temperature_2m);
+      if (nowCond) nowCond.textContent = weatherPhrase(cur.weather_code);
+      if (nowFeel) {
+        const bits = [];
+        if (Number.isFinite(Number(cur.apparent_temperature))) bits.push("Feels like " + formatTemp(cur.apparent_temperature));
+        if (Number.isFinite(Number(cur.relative_humidity_2m))) bits.push("Humidity " + Math.round(Number(cur.relative_humidity_2m)) + "%");
+        nowFeel.textContent = bits.join(" · ");
+      }
+      if (nowRange) {
+        const hi = data.daily.temperature_2m_max && data.daily.temperature_2m_max[iToday];
+        const lo = data.daily.temperature_2m_min && data.daily.temperature_2m_min[iToday];
+        nowRange.textContent = (Number.isFinite(Number(hi)) && Number.isFinite(Number(lo)))
+          ? `High ${formatTemp(hi)} · Low ${formatTemp(lo)}`
+          : "";
+      }
+      const tmrTemp = document.getElementById("weatherTmrTemp");
+      const tmrCond = document.getElementById("weatherTmrCond");
+      const tmrDetail = document.getElementById("weatherTmrDetail");
+      if (iTmr >= 0) {
+        const hi = data.daily.temperature_2m_max[iTmr];
+        const lo = data.daily.temperature_2m_min[iTmr];
+        if (tmrTemp) tmrTemp.textContent = `${formatTemp(hi)} / ${formatTemp(lo)}`;
+        if (tmrCond) tmrCond.textContent = weatherPhrase(data.daily.weather_code[iTmr]);
+        if (tmrDetail) tmrDetail.textContent = "High and low";
+      } else {
+        if (tmrTemp) tmrTemp.textContent = "—";
+        if (tmrCond) tmrCond.textContent = "No forecast yet";
+        if (tmrDetail) tmrDetail.textContent = "";
+      }
+      const updated = document.getElementById("weatherUpdated");
+      if (updated) {
+        const hhmm = String(cur.time || "").slice(11, 16);
+        const when = /^\d{2}:\d{2}$/.test(hhmm) ? formatTime12(hhmm) : "";
+        updated.textContent = (safe.stale ? "Saved forecast" : "Updated") + (when ? " " + when : "");
+      }
+      drawWeatherChart(upcomingHourly(data));
+    }
+
+    function loadWeather(force) {
+      if (weatherBusy) return;
+      const cached = readWeatherCache();
+      const age = cached ? Date.now() - cached.at : Infinity;
+      const fresh = age < WEATHER_FRESH_MS;
+      if (!force && weatherLoadedAt && Date.now() - weatherLoadedAt < WEATHER_FRESH_MS) {
+        if (weatherPoints.length) layoutWeatherLabels(weatherPoints);
+        return;
+      }
+      if (cached) renderWeather(cached.data, { at: cached.at, stale: !fresh });
+      if (!force && fresh) return;
+
+      weatherBusy = true;
+      const panel = document.getElementById("weatherPanel");
+      if (!cached) {
+        const body = document.getElementById("weatherBody");
+        if (body) body.hidden = false;
+        setWeatherMessage("");
+        if (panel) panel.dataset.state = "loading";
+      }
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 12000);
+      fetch(weatherForecastUrl(), { signal: ctrl.signal, cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error(String(res.status));
+          return res.json();
+        })
+        .then((data) => {
+          if (!weatherPayloadOk(data)) throw new Error("shape");
+          const at = Date.now();
+          try { sessionStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({ at, data })); } catch (_) {}
+          renderWeather(data, { at, stale: false });
+        })
+        .catch(() => {
+          if (cached || weatherLoadedAt) {
+            setWeatherMessage("Could not refresh. Showing the last forecast.");
+            return;
+          }
+          const body = document.getElementById("weatherBody");
+          if (body) body.hidden = true;
+          if (panel) panel.dataset.state = "error";
+          setWeatherMessage("Could not load Hong Kong weather.", true);
+        })
+        .finally(() => {
+          clearTimeout(timer);
+          weatherBusy = false;
+        });
     }
 
     document.querySelectorAll(".hub-tab").forEach(btn => {
@@ -4248,7 +4930,10 @@
     tickHubClock();
     setInterval(tickHubClock, 1000);
     syncHubClockRoom();
-    window.addEventListener("resize", syncHubClockRoom);
+    window.addEventListener("resize", () => {
+      syncHubClockRoom();
+      if (weatherPoints.length) layoutWeatherLabels(weatherPoints);
+    });
     if (typeof ResizeObserver !== "undefined") {
       const bar = document.getElementById("hubBar");
       const nav = document.querySelector(".hub-nav");
@@ -4273,6 +4958,7 @@
     });
 
     (async () => {
+      loadWeather();
       initWeek();
       loadVideoJobs();
       bindVideoBoard();
@@ -4291,7 +4977,7 @@
       if (params.has("sw")) openSchoolWork();
 
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        navigator.serviceWorker.register("./sw.js?v=14", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=15", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         let refreshing = false;
