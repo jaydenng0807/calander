@@ -1,6 +1,6 @@
 {
   "timezone": "Asia/Hong_Kong",
-  "updated": "2026-10-16T00:05:00+08:00",
+  "updated": "2026-10-17T00:05:00+08:00",
   "toddleBase": "https://web.toddleapp.com/platform/391418444458869835/todos",
   "events": [
     {
@@ -33,17 +33,6 @@
       "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
     },
     {
-      "id": "chinese-work-2026-10-15",
-      "date": "2026-10-15",
-      "title": "Chinese work",
-      "time": "15:30",
-      "due": true,
-      "overdue": true,
-      "type": "school",
-      "color": "blue",
-      "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
-    },
-    {
       "id": "holiday-2026-10-16",
       "date": "2026-10-16",
       "title": "Holiday",
@@ -57,6 +46,7 @@
       "title": "Chinese reading notes",
       "time": "13:00",
       "due": true,
+      "overdue": true,
       "type": "school",
       "color": "blue",
       "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
@@ -66,6 +56,25 @@
       "date": "2026-10-16",
       "title": "Dragon dance blog",
       "time": "17:00",
+      "due": true,
+      "overdue": true,
+      "type": "school",
+      "color": "blue",
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
+    },
+    {
+      "id": "gdc-intro-2026-10-26",
+      "date": "2026-10-26",
+      "title": "GDC intro",
+      "due": true,
+      "type": "school",
+      "color": "blue",
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos"
+    },
+    {
+      "id": "chinese-work-2026-10-27",
+      "date": "2026-10-27",
+      "title": "Chinese work",
       "due": true,
       "type": "school",
       "color": "blue",
