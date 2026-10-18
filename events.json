@@ -1,6 +1,6 @@
 {
   "timezone": "Asia/Hong_Kong",
-  "updated": "2026-10-18T00:12:26+08:00",
+  "updated": "2026-10-19T00:07:16+08:00",
   "toddleBase": "https://web.toddleapp.com/platform/391418444458869835/todos",
   "events": [
     {
@@ -64,6 +64,30 @@
       "url": "https://web.toddleapp.com/platform/391418444458869835/todos/classroom-details/434444836410611311/434444836456751457"
     },
     {
+      "id": "oct-break-2026-10-19",
+      "date": "2026-10-19",
+      "title": "October break",
+      "allDay": true,
+      "type": "personal",
+      "color": "purple"
+    },
+    {
+      "id": "oct-break-2026-10-20",
+      "date": "2026-10-20",
+      "title": "October break",
+      "allDay": true,
+      "type": "personal",
+      "color": "purple"
+    },
+    {
+      "id": "oct-break-2026-10-21",
+      "date": "2026-10-21",
+      "title": "October break",
+      "allDay": true,
+      "type": "personal",
+      "color": "purple"
+    },
+    {
       "id": "gdc-intro-2026-10-26",
       "date": "2026-10-26",
       "title": "GDC intro",
@@ -92,6 +116,15 @@
       "type": "school",
       "color": "blue",
       "url": "https://web.toddleapp.com/platform/391418444458869835/todos/classroom-details/436094896416350115/436094896458287776"
+    },
+    {
+      "id": "english-film-planning-2026-10-29",
+      "date": "2026-10-29",
+      "title": "English film planning",
+      "time": "20:00",
+      "due": true,
+      "type": "school",
+      "color": "blue"
     },
     {
       "id": "english-identity-film-2026-10-29",
