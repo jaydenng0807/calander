@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#070712" />
-  <meta name="description" content="Jayden's hub — Calendar, school work, debts, video editing · Hong Kong time" />
+  <meta name="description" content="Jayden's hub — Calendar, school work, debts · Hong Kong time" />
   <title>Jayden — Home</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
@@ -1927,221 +1927,6 @@
       color: var(--danger);
     }
 
-    /* —— Video editing —— */
-    .video-lead {
-      margin-top: 18px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-    .video-slots {
-      margin-top: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .video-slot {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      text-align: left;
-      padding: 12px 14px;
-      border-radius: 18px;
-      border: 1px dashed rgba(179, 154, 255, 0.35);
-      background: var(--surface);
-      color: inherit;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      font-family: inherit;
-    }
-    .video-slot.has-file {
-      border-style: solid;
-      border-color: var(--border);
-      cursor: grab;
-    }
-    .video-slot.is-over {
-      border-color: var(--purple);
-      background: rgba(139, 108, 255, 0.16);
-    }
-    .video-slot:focus-visible {
-      outline: 2px solid var(--purple);
-      outline-offset: 2px;
-    }
-    .video-slot-num {
-      flex: 0 0 auto;
-      width: 48px;
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      line-height: 1;
-      color: var(--purple);
-      text-align: center;
-    }
-    .video-slot.has-file .video-slot-num { color: #fff; }
-    .video-slot-body { min-width: 0; flex: 1; }
-    .video-slot-name {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      word-break: break-word;
-    }
-    .video-slot-meta {
-      margin-top: 3px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-    .video-slot-empty {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-    .video-clear {
-      appearance: none;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text-soft);
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 8px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .video-clear:hover { color: var(--danger); border-color: rgba(255, 122, 138, 0.5); }
-    .video-clear:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
-    .video-prompt { margin-top: 16px; }
-    .video-prompt textarea {
-      appearance: none;
-      width: 100%;
-      min-height: 110px;
-      resize: vertical;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text);
-      font: inherit;
-      font-size: 15px;
-      font-weight: 550;
-      line-height: 1.4;
-      padding: 12px 14px;
-      border-radius: 14px;
-      color-scheme: dark;
-    }
-    .video-prompt textarea::placeholder { color: var(--text-dim); }
-    .video-prompt textarea:focus {
-      outline: 2px solid var(--purple);
-      outline-offset: 1px;
-      border-color: var(--border-strong);
-    }
-    .video-go-row {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-    }
-    #videoGo:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-    .video-note {
-      margin: 0;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-    .video-note.is-bad { color: var(--danger); }
-    .video-jobs { margin-top: 22px; display: flex; flex-direction: column; gap: 12px; }
-    .video-jobs-title {
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .video-job {
-      padding: 14px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-    }
-    .video-job-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    .video-job-id {
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-    .video-status {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      color: var(--text-soft);
-      background: rgba(255,255,255,0.04);
-    }
-    .video-status.is-working {
-      color: #bae6fd;
-      border-color: rgba(56, 189, 248, 0.5);
-      background: rgba(56, 189, 248, 0.12);
-    }
-    .video-status.is-done {
-      color: #6ee7b7;
-      border-color: rgba(52, 211, 153, 0.45);
-      background: rgba(52, 211, 153, 0.1);
-    }
-    .video-status.is-failed {
-      color: #fda4af;
-      border-color: rgba(255, 122, 138, 0.5);
-      background: var(--danger-soft);
-    }
-    .video-job-prompt {
-      margin-top: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-soft);
-      line-height: 1.45;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .video-job-clips {
-      margin-top: 6px;
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    .video-job-error {
-      margin-top: 8px;
-      font-size: 13px;
-      font-weight: 650;
-      color: var(--danger);
-    }
-    .video-result { margin-top: 12px; }
-    .video-player {
-      width: 100%;
-      max-height: 420px;
-      border-radius: 16px;
-      background: #000;
-      display: block;
-    }
-    .video-download {
-      margin-top: 10px;
-      text-decoration: none;
-    }
-
   </style>
 </head>
 <body>
@@ -2155,7 +1940,7 @@
           <div class="hero-copy">
             <h1 class="welcome">Welcome Jayden</h1>
             <p class="brand">Home</p>
-            <p class="brand-sub">Your hub · Calendar · Debts · Video</p>
+            <p class="brand-sub">Your hub · Calendar · Debts</p>
           </div>
         </div>
         <span class="tz-pill">HKT</span>
@@ -2164,7 +1949,6 @@
         <button type="button" class="hub-tab is-active" role="tab" aria-selected="true" data-tab="home" id="tab-home">Home</button>
         <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="calendar" id="tab-calendar">Calendar</button>
         <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="debts" id="tab-debts">Debts</button>
-        <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="video" id="tab-video">Video Editing</button>
       </nav>
     </header>
 
@@ -2257,11 +2041,6 @@
           <div class="home-card-body" id="homeDebtBody">Interest bump countdown</div>
           <div class="home-card-meta" id="homeDebtMeta"></div>
         </button>
-        <button type="button" class="home-card" data-go="video">
-          <div class="home-card-kicker">Video editing</div>
-          <div class="home-card-title">Line up clips</div>
-          <div class="home-card-body">Slots 1–6, a prompt, then Go. The zip lands in Downloads.</div>
-        </button>
       </div>
       <div class="home-actions">
         <button type="button" class="tt-btn" id="homeOpenCalendar">
@@ -2275,9 +2054,6 @@
         </button>
         <button type="button" class="tt-btn" id="homeOpenDebts">
           <span class="ico" aria-hidden="true">$</span> Debts
-        </button>
-        <button type="button" class="tt-btn" id="homeOpenVideo">
-          <span class="ico" aria-hidden="true">▶</span> Video Editing
         </button>
       </div>
     </section>
@@ -2348,23 +2124,6 @@
       </form>
       <p class="debts-note">Saved on this device. Original balances stay in <strong>debts.json</strong>.</p>
       <button type="button" class="debt-reset" id="debtReset" hidden>Reset to original balances</button>
-    </div>
-  </section>
-
-  <section class="hub-view" id="view-video" role="tabpanel" aria-labelledby="tab-video" hidden>
-    <div class="shell">
-      <p class="video-lead">Drop a video on a slot, or click a slot to choose a file. The number is the order in the finished video — 1 plays first. Drag a clip onto another slot to rearrange, or clear a slot and pick again. Empty slots are skipped; the zip names clips 01, 02, and so on.</p>
-      <div class="video-slots" id="videoSlots"></div>
-      <label class="add-field video-prompt">
-        What should the editor do?
-        <textarea id="videoPrompt" maxlength="4000" placeholder="Example: keep this order, trim the quiet starts, and end on the last clip."></textarea>
-      </label>
-      <div class="video-go-row">
-        <button type="button" class="tt-btn" id="videoGo" disabled>Go</button>
-        <p class="video-note" id="videoNote">Add at least one clip and a prompt.</p>
-      </div>
-      <div class="video-jobs" id="videoJobs"></div>
-      <input type="file" id="videoFilePick" accept="video/*" hidden />
     </div>
   </section>
 
@@ -3682,601 +3441,6 @@
       syncDebtReset();
     });
 
-    // —— Video editing ——
-    const VIDEO_JOBS_KEY = "jayden-cal-video-jobs";
-    const VIDEO_SLOT_COUNT = 6;
-    let videoSlots = Array.from({ length: VIDEO_SLOT_COUNT }, () => ({ file: null, duration: null }));
-    let videoJobs = [];
-    let videoServer = { updated: "", jobs: {} };
-    let videoPollTimer = null;
-    let videoBusy = false;
-    let videoDragFrom = null;
-    let videoPickIndex = 0;
-
-    function loadVideoJobs() {
-      try {
-        const raw = JSON.parse(localStorage.getItem(VIDEO_JOBS_KEY) || "[]");
-        videoJobs = Array.isArray(raw) ? raw.filter(j => j && j.id) : [];
-      } catch {
-        videoJobs = [];
-      }
-    }
-
-    function saveVideoJobs() {
-      try { localStorage.setItem(VIDEO_JOBS_KEY, JSON.stringify(videoJobs)); } catch (_) {}
-    }
-
-    function openVideoDb() {
-      return new Promise((resolve, reject) => {
-        const req = indexedDB.open("jayden-cal-video", 1);
-        req.onupgradeneeded = () => {
-          const db = req.result;
-          if (!db.objectStoreNames.contains("clips")) db.createObjectStore("clips");
-        };
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error || new Error("IndexedDB"));
-      });
-    }
-
-    async function saveVideoBlobs(jobId, clips) {
-      const db = await openVideoDb();
-      await new Promise((resolve, reject) => {
-        const tx = db.transaction("clips", "readwrite");
-        const store = tx.objectStore("clips");
-        clips.forEach((clip, i) => {
-          store.put({
-            jobId,
-            index: i,
-            name: clip.name,
-            type: clip.file.type || "video/mp4",
-            blob: clip.file
-          }, jobId + ":" + i);
-        });
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error || new Error("save"));
-      });
-      db.close();
-    }
-
-    function isVideoFile(file) {
-      if (!file) return false;
-      if (file.type && file.type.startsWith("video/")) return true;
-      return /\.(mp4|mov|m4v|webm|mkv|avi|mpeg|mpg|3gp)$/i.test(file.name || "");
-    }
-
-    function formatClipDuration(sec) {
-      if (!Number.isFinite(sec) || sec < 0) return "";
-      const s = Math.round(sec);
-      const m = Math.floor(s / 60);
-      const r = s % 60;
-      if (m >= 60) {
-        const h = Math.floor(m / 60);
-        return h + ":" + String(m % 60).padStart(2, "0") + ":" + String(r).padStart(2, "0");
-      }
-      return m + ":" + String(r).padStart(2, "0");
-    }
-
-    function probeDuration(file) {
-      return new Promise((resolve) => {
-        const url = URL.createObjectURL(file);
-        const v = document.createElement("video");
-        const done = (val) => {
-          URL.revokeObjectURL(url);
-          resolve(val);
-        };
-        v.preload = "metadata";
-        v.onloadedmetadata = () => done(Number.isFinite(v.duration) ? v.duration : null);
-        v.onerror = () => done(null);
-        v.src = url;
-      });
-    }
-
-    function setVideoNote(text, bad) {
-      const el = document.getElementById("videoNote");
-      if (!el) return;
-      el.textContent = text || "";
-      el.classList.toggle("is-bad", !!bad);
-    }
-
-    function syncVideoGo() {
-      const btn = document.getElementById("videoGo");
-      const promptEl = document.getElementById("videoPrompt");
-      if (!btn || !promptEl) return;
-      const prompt = String(promptEl.value || "").trim();
-      const n = videoSlots.filter(s => s.file).length;
-      btn.disabled = videoBusy || n < 1 || !prompt;
-    }
-
-    function refreshVideoHint() {
-      if (videoBusy) return;
-      const promptEl = document.getElementById("videoPrompt");
-      const prompt = String(promptEl && promptEl.value || "").trim();
-      const n = videoSlots.filter(s => s.file).length;
-      if (!n && !prompt) setVideoNote("Add at least one clip and a prompt.");
-      else if (!n) setVideoNote("Add at least one clip.");
-      else if (!prompt) setVideoNote("Write what you want the editor to do.");
-      else setVideoNote("Go downloads a zip and asks the editor to start.");
-    }
-
-    function renderVideoSlots() {
-      const root = document.getElementById("videoSlots");
-      if (!root) return;
-      root.innerHTML = videoSlots.map((slot, i) => {
-        const n = i + 1;
-        if (!slot.file) {
-          return `<div class="video-slot" data-slot="${i}" role="button" tabindex="0" aria-label="Slot ${n}, empty. Drop a video or press to choose a file.">
-            <div class="video-slot-num">${n}</div>
-            <div class="video-slot-body"><div class="video-slot-empty">Drop a video here, or click to choose</div></div>
-          </div>`;
-        }
-        const dur = formatClipDuration(slot.duration);
-        return `<div class="video-slot has-file" data-slot="${i}" draggable="true" role="button" tabindex="0" aria-label="Slot ${n}, ${escapeAttr(slot.file.name)}. Drag to another slot to reorder.">
-          <div class="video-slot-num">${n}</div>
-          <div class="video-slot-body">
-            <div class="video-slot-name">${escapeHtml(slot.file.name)}</div>
-            <div class="video-slot-meta">${dur ? escapeHtml(dur) : "Length unavailable"}</div>
-          </div>
-          <button type="button" class="video-clear" data-clear="${i}">Clear</button>
-        </div>`;
-      }).join("");
-    }
-
-    async function assignVideoSlot(index, file) {
-      if (!file || index < 0 || index >= VIDEO_SLOT_COUNT) return;
-      if (!isVideoFile(file)) {
-        setVideoNote("That file isn’t a video.", true);
-        return;
-      }
-      videoSlots[index] = { file, duration: null };
-      renderVideoSlots();
-      syncVideoGo();
-      refreshVideoHint();
-      const duration = await probeDuration(file);
-      if (videoSlots[index].file !== file) return;
-      videoSlots[index].duration = duration;
-      renderVideoSlots();
-    }
-
-    function clearVideoSlot(index) {
-      videoSlots[index] = { file: null, duration: null };
-      renderVideoSlots();
-      syncVideoGo();
-      refreshVideoHint();
-    }
-
-    function moveVideoSlot(from, to) {
-      if (from === to || from < 0 || to < 0 || from >= VIDEO_SLOT_COUNT || to >= VIDEO_SLOT_COUNT) return;
-      const next = videoSlots.slice();
-      if (!next[to].file) {
-        next[to] = next[from];
-        next[from] = { file: null, duration: null };
-      } else {
-        const tmp = next[to];
-        next[to] = next[from];
-        next[from] = tmp;
-      }
-      videoSlots = next;
-      renderVideoSlots();
-      syncVideoGo();
-      refreshVideoHint();
-    }
-
-    function pickVideoSlot(index) {
-      videoPickIndex = index;
-      const input = document.getElementById("videoFilePick");
-      if (!input) return;
-      input.value = "";
-      input.click();
-    }
-
-    function statusLabel(status) {
-      if (status === "working") return "Working";
-      if (status === "done") return "Done";
-      if (status === "failed") return "Failed";
-      return "Queued";
-    }
-
-    function viewVideoJob(local, server) {
-      const s = server && typeof server === "object" ? server : {};
-      const error = String(s.error || local.error || "").trim();
-      const done = s.done === true;
-      const working = s.working === true;
-      let status = local.status || "queued";
-      if (error && !done) status = "failed";
-      else if (done) status = "done";
-      else if (working) status = "working";
-      return {
-        id: local.id,
-        prompt: local.prompt || "",
-        clipNames: Array.isArray(local.clipNames) ? local.clipNames : [],
-        clipCount: local.clipCount || (Array.isArray(local.clipNames) ? local.clipNames.length : 0),
-        zipName: local.zipName || "",
-        created: local.created || "",
-        status,
-        error: status === "failed" ? error : "",
-        resultPath: String(s.resultPath || local.resultPath || "").trim(),
-        resultUrl: String(s.resultUrl || local.resultUrl || "").trim()
-      };
-    }
-
-    function mergedVideoJobs() {
-      const byId = new Map();
-      videoJobs.forEach(job => {
-        byId.set(job.id, viewVideoJob(job, videoServer.jobs && videoServer.jobs[job.id]));
-      });
-      Object.entries(videoServer.jobs || {}).forEach(([id, info]) => {
-        if (byId.has(id)) return;
-        byId.set(id, viewVideoJob({
-          id,
-          prompt: "",
-          clipNames: Array.isArray(info.clipNames) ? info.clipNames : [],
-          clipCount: info.clipCount || 0,
-          status: "queued",
-          created: info.updated || ""
-        }, info));
-      });
-      return [...byId.values()].sort((a, b) => String(b.created || "").localeCompare(String(a.created || "")));
-    }
-
-    function videoResultHref(job) {
-      const raw = job.resultUrl || job.resultPath;
-      if (!raw) return "";
-      try {
-        const url = new URL(raw, location.href);
-        if (url.protocol !== "http:" && url.protocol !== "https:") return "";
-        return url.href;
-      } catch {
-        return "";
-      }
-    }
-
-    function renderVideoJobs() {
-      const root = document.getElementById("videoJobs");
-      if (!root) return;
-      const jobs = mergedVideoJobs();
-      if (!jobs.length) {
-        root.innerHTML = "";
-        return;
-      }
-      root.innerHTML = `<div class="video-jobs-title">Jobs</div>` + jobs.map(job => {
-        const href = job.status === "done" ? videoResultHref(job) : "";
-        const names = job.clipNames.length ? job.clipNames.join(", ") : (job.clipCount ? job.clipCount + " clips" : "");
-        const result = href
-          ? `<div class="video-result">
-              <video class="video-player" controls playsinline preload="metadata" src="${escapeAttr(href)}"></video>
-              <a class="tt-btn video-download" href="${escapeAttr(href)}" download>Download</a>
-            </div>`
-          : (job.status === "done" ? `<p class="video-job-error">Done, but no video link yet.</p>` : "");
-        return `<article class="video-job">
-          <div class="video-job-top">
-            <div class="video-job-id">${escapeHtml(job.zipName || job.id)}</div>
-            <span class="video-status is-${escapeAttr(job.status)}">${statusLabel(job.status)}</span>
-          </div>
-          ${job.prompt ? `<p class="video-job-prompt">${escapeHtml(job.prompt)}</p>` : ""}
-          ${names ? `<p class="video-job-clips">${escapeHtml(names)}</p>` : ""}
-          ${job.error ? `<p class="video-job-error">${escapeHtml(job.error)}</p>` : ""}
-          ${result}
-        </article>`;
-      }).join("");
-    }
-
-    function applyVideoServer() {
-      let changed = false;
-      videoJobs.forEach(job => {
-        const view = viewVideoJob(job, videoServer.jobs && videoServer.jobs[job.id]);
-        if (job.status !== view.status || (job.error || "") !== (view.error || "") || (job.resultPath || "") !== view.resultPath || (job.resultUrl || "") !== view.resultUrl) {
-          job.status = view.status;
-          job.error = view.error || "";
-          job.resultPath = view.resultPath;
-          job.resultUrl = view.resultUrl;
-          changed = true;
-        }
-      });
-      if (changed) saveVideoJobs();
-    }
-
-    async function fetchVideoStatus() {
-      try {
-        const res = await fetch(`video-status.json?t=${Date.now()}`, { cache: "no-store" });
-        if (!res.ok) throw new Error("status");
-        const data = await res.json();
-        videoServer = {
-          updated: data && data.updated ? String(data.updated) : "",
-          jobs: (data && data.jobs && typeof data.jobs === "object") ? data.jobs : {}
-        };
-        applyVideoServer();
-        return true;
-      } catch {
-        return false;
-      }
-    }
-
-    function startVideoPoll() {
-      if (videoPollTimer) return;
-      videoPollTimer = setInterval(async () => {
-        const pending = videoJobs.some(j => j.status === "queued" || j.status === "working");
-        if (activeTab !== "video" && !pending) return;
-        const ok = await fetchVideoStatus();
-        if (ok && (activeTab === "video" || pending)) renderVideoJobs();
-      }, 8000);
-    }
-
-    const ZIP_CRC_TABLE = (() => {
-      const table = new Uint32Array(256);
-      for (let n = 0; n < 256; n++) {
-        let c = n;
-        for (let k = 0; k < 8; k++) c = (c & 1) ? (0xedb88320 ^ (c >>> 1)) : (c >>> 1);
-        table[n] = c >>> 0;
-      }
-      return table;
-    })();
-
-    function zipCrc32(data) {
-      let c = 0xffffffff;
-      for (let i = 0; i < data.length; i++) c = ZIP_CRC_TABLE[(c ^ data[i]) & 0xff] ^ (c >>> 8);
-      return (c ^ 0xffffffff) >>> 0;
-    }
-
-    function zipStore(files) {
-      const encoder = new TextEncoder();
-      const now = new Date();
-      const time = (now.getHours() << 11) | (now.getMinutes() << 5) | Math.floor(now.getSeconds() / 2);
-      const date = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
-      const parts = [];
-      const central = [];
-      let offset = 0;
-      files.forEach(file => {
-        const nameBytes = encoder.encode(file.name);
-        const data = file.data;
-        const crc = zipCrc32(data);
-        const local = new Uint8Array(30 + nameBytes.length);
-        const view = new DataView(local.buffer);
-        view.setUint32(0, 0x04034b50, true);
-        view.setUint16(4, 20, true);
-        view.setUint16(6, 0, true);
-        view.setUint16(8, 0, true);
-        view.setUint16(10, time, true);
-        view.setUint16(12, date, true);
-        view.setUint32(14, crc, true);
-        view.setUint32(18, data.length, true);
-        view.setUint32(22, data.length, true);
-        view.setUint16(26, nameBytes.length, true);
-        view.setUint16(28, 0, true);
-        local.set(nameBytes, 30);
-        parts.push(local, data);
-        const cen = new Uint8Array(46 + nameBytes.length);
-        const cv = new DataView(cen.buffer);
-        cv.setUint32(0, 0x02014b50, true);
-        cv.setUint16(4, 20, true);
-        cv.setUint16(6, 20, true);
-        cv.setUint16(8, 0, true);
-        cv.setUint16(10, 0, true);
-        cv.setUint16(12, time, true);
-        cv.setUint16(14, date, true);
-        cv.setUint32(16, crc, true);
-        cv.setUint32(20, data.length, true);
-        cv.setUint32(24, data.length, true);
-        cv.setUint16(28, nameBytes.length, true);
-        cv.setUint16(30, 0, true);
-        cv.setUint16(32, 0, true);
-        cv.setUint16(34, 0, true);
-        cv.setUint16(36, 0, true);
-        cv.setUint32(38, 0, true);
-        cv.setUint32(42, offset, true);
-        cen.set(nameBytes, 46);
-        central.push(cen);
-        offset += local.length + data.length;
-      });
-      let centralSize = 0;
-      central.forEach(c => { centralSize += c.length; });
-      const end = new Uint8Array(22);
-      const ev = new DataView(end.buffer);
-      ev.setUint32(0, 0x06054b50, true);
-      ev.setUint16(4, 0, true);
-      ev.setUint16(6, 0, true);
-      ev.setUint16(8, files.length, true);
-      ev.setUint16(10, files.length, true);
-      ev.setUint32(12, centralSize, true);
-      ev.setUint32(16, offset, true);
-      ev.setUint16(20, 0, true);
-      return new Blob([...parts, ...central, end], { type: "application/zip" });
-    }
-
-    function safeClipName(name) {
-      const base = String(name || "clip").split(/[/\\]/).pop();
-      const clean = base.replace(/[^\w.\-]+/g, "-").replace(/^-+|-+$/g, "");
-      return (clean || "clip").slice(0, 80);
-    }
-
-    function downloadBlob(blob, filename) {
-      const a = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 8000);
-    }
-
-    async function submitVideoJob() {
-      if (videoBusy) return;
-      const prompt = String(document.getElementById("videoPrompt").value || "").trim();
-      const filled = videoSlots.map((slot, i) => ({ slot: i, file: slot.file })).filter(s => s.file);
-      if (!filled.length || !prompt) {
-        syncVideoGo();
-        return;
-      }
-      videoBusy = true;
-      syncVideoGo();
-      setVideoNote("Preparing the zip…");
-      let savedZip = false;
-      const id = "v" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-      const zipName = "video-job-" + id + ".zip";
-      const clips = filled.map((item, i) => ({
-        file: item.file,
-        name: String(i + 1).padStart(2, "0") + "-" + safeClipName(item.file.name)
-      }));
-      try {
-        try { await saveVideoBlobs(id, clips); } catch (_) {}
-        const files = [];
-        for (const clip of clips) {
-          files.push({ name: clip.name, data: new Uint8Array(await clip.file.arrayBuffer()) });
-        }
-        files.push({ name: "prompt.txt", data: new TextEncoder().encode(prompt) });
-        const zip = zipStore(files);
-        downloadBlob(zip, zipName);
-        savedZip = true;
-        const job = {
-          id,
-          prompt,
-          clipNames: clips.map(c => c.name),
-          clipCount: clips.length,
-          zipName,
-          status: "queued",
-          created: new Date().toISOString(),
-          error: "",
-          resultPath: "",
-          resultUrl: ""
-        };
-        videoJobs.unshift(job);
-        saveVideoJobs();
-        renderVideoJobs();
-        await fetchSchoolBotConfig();
-        const ntfyTopic = (swBotConfig.ntfyTopic || "").trim();
-        const payload = {
-          action: "start",
-          kind: "video-edit",
-          id,
-          prompt,
-          clipCount: clips.length,
-          clipNames: job.clipNames,
-          source: "calander-site",
-          zipName
-        };
-        if (!ntfyTopic) {
-          setVideoNote("Zip saved to Downloads. The start signal isn’t connected yet — tell Calendar.", true);
-        } else {
-          let res;
-          try {
-            res = await fetch(`https://ntfy.sh/${encodeURIComponent(ntfyTopic)}`, {
-              method: "POST",
-              headers: {
-                "Title": "calander-video",
-                "Tags": "video",
-                "Content-Type": "text/plain"
-              },
-              body: JSON.stringify(payload),
-              mode: "cors"
-            });
-          } catch (_) {
-            throw new Error("signal network");
-          }
-          if (!res.ok) throw new Error("signal " + res.status);
-          setVideoNote("Zip saved to Downloads. Queued — the editor will pick it up.");
-        }
-        videoSlots = Array.from({ length: VIDEO_SLOT_COUNT }, () => ({ file: null, duration: null }));
-        const promptEl = document.getElementById("videoPrompt");
-        if (promptEl) promptEl.value = "";
-        renderVideoSlots();
-      } catch (err) {
-        if (savedZip && /signal/.test(String(err && err.message || ""))) {
-          setVideoNote("Zip saved to Downloads. The start signal didn’t send.", true);
-        } else if (savedZip) {
-          setVideoNote("Zip saved, but something went wrong after that.", true);
-        } else {
-          setVideoNote("Couldn’t build the zip. Try again.", true);
-        }
-      } finally {
-        videoBusy = false;
-        syncVideoGo();
-        startVideoPoll();
-        renderVideoJobs();
-      }
-    }
-
-    function bindVideoBoard() {
-      const root = document.getElementById("videoSlots");
-      if (!root || root.dataset.bound === "1") return;
-      root.dataset.bound = "1";
-      root.addEventListener("click", (e) => {
-        const clear = e.target.closest("[data-clear]");
-        if (clear) {
-          e.preventDefault();
-          e.stopPropagation();
-          clearVideoSlot(Number(clear.getAttribute("data-clear")));
-          return;
-        }
-        const slot = e.target.closest("[data-slot]");
-        if (!slot) return;
-        pickVideoSlot(Number(slot.getAttribute("data-slot")));
-      });
-      root.addEventListener("keydown", (e) => {
-        if (e.key !== "Enter" && e.key !== " ") return;
-        const slot = e.target.closest("[data-slot]");
-        if (!slot || e.target.closest("[data-clear]")) return;
-        e.preventDefault();
-        pickVideoSlot(Number(slot.getAttribute("data-slot")));
-      });
-      root.addEventListener("dragstart", (e) => {
-        if (e.target.closest("[data-clear]")) {
-          e.preventDefault();
-          return;
-        }
-        const slot = e.target.closest("[data-slot]");
-        if (!slot) return;
-        videoDragFrom = Number(slot.getAttribute("data-slot"));
-        if (e.dataTransfer) {
-          e.dataTransfer.effectAllowed = "move";
-          e.dataTransfer.setData("text/plain", "slot:" + videoDragFrom);
-        }
-      });
-      root.addEventListener("dragend", () => { videoDragFrom = null; });
-      root.addEventListener("dragover", (e) => {
-        const slot = e.target.closest("[data-slot]");
-        if (!slot) return;
-        e.preventDefault();
-        if (e.dataTransfer) e.dataTransfer.dropEffect = videoDragFrom == null ? "copy" : "move";
-        root.querySelectorAll(".video-slot.is-over").forEach(el => el.classList.remove("is-over"));
-        slot.classList.add("is-over");
-      });
-      root.addEventListener("dragleave", (e) => {
-        const slot = e.target.closest("[data-slot]");
-        if (slot && !slot.contains(e.relatedTarget)) slot.classList.remove("is-over");
-      });
-      root.addEventListener("drop", (e) => {
-        const slot = e.target.closest("[data-slot]");
-        if (!slot) return;
-        e.preventDefault();
-        if (videoBusy) {
-          slot.classList.remove("is-over");
-          return;
-        }
-        slot.classList.remove("is-over");
-        const index = Number(slot.getAttribute("data-slot"));
-        const files = e.dataTransfer ? [...e.dataTransfer.files] : [];
-        if (files.length) {
-          assignVideoSlot(index, files[0]);
-          videoDragFrom = null;
-          return;
-        }
-        let from = videoDragFrom;
-        const raw = e.dataTransfer ? e.dataTransfer.getData("text/plain") : "";
-        if (raw && raw.indexOf("slot:") === 0) from = Number(raw.slice(5));
-        if (from != null && !Number.isNaN(from)) moveVideoSlot(from, index);
-        videoDragFrom = null;
-      });
-      document.getElementById("videoFilePick")?.addEventListener("change", (e) => {
-        const file = e.target.files && e.target.files[0];
-        if (file) assignVideoSlot(videoPickIndex, file);
-      });
-      document.getElementById("videoPrompt")?.addEventListener("input", () => {
-        syncVideoGo();
-        refreshVideoHint();
-      });
-      document.getElementById("videoGo")?.addEventListener("click", () => { submitVideoJob(); });
-    }
-
     // —— Hub tabs ——
     let activeTab = "home";
     let tabSwitching = false;
@@ -4293,7 +3457,7 @@
 
     function showTab(tab, opts) {
       const optsSafe = opts || {};
-      if (!["home", "calendar", "debts", "video"].includes(tab)) tab = "home";
+      if (!["home", "calendar", "debts"].includes(tab)) tab = "home";
       if (tab === activeTab && !optsSafe.force) return;
       if (tabSwitching) return;
       const prev = document.getElementById(`view-${activeTab}`);
@@ -4337,15 +3501,6 @@
           renderHomeGlance();
           loadWeather();
           if (weatherPoints.length) layoutWeatherLabels(weatherPoints);
-        }
-        if (tab === "video") {
-          renderVideoSlots();
-          renderVideoJobs();
-          syncVideoGo();
-          fetchVideoStatus().then(() => {
-            if (activeTab === "video") renderVideoJobs();
-          });
-          startVideoPoll();
         }
       };
 
@@ -5060,7 +4215,6 @@
     });
     document.getElementById("homeOpenCalendar")?.addEventListener("click", () => showTab("calendar"));
     document.getElementById("homeOpenDebts")?.addEventListener("click", () => showTab("debts"));
-    document.getElementById("homeOpenVideo")?.addEventListener("click", () => showTab("video"));
     document.getElementById("homeOpenSchoolWork")?.addEventListener("click", () => {
       showTab("calendar");
       openSchoolWork();
@@ -5079,8 +4233,6 @@
           showTab("debts");
         } else if (go === "calendar") {
           showTab("calendar");
-        } else if (go === "video") {
-          showTab("video");
         }
       });
     });
@@ -5246,9 +4398,7 @@
     (async () => {
       loadWeather();
       initWeek();
-      loadVideoJobs();
-      bindVideoBoard();
-      await Promise.all([loadEvents(), loadTimetable(), loadDebts(), fetchSchoolStatus(), fetchVideoStatus()]);
+      await Promise.all([loadEvents(), loadTimetable(), loadDebts(), fetchSchoolStatus()]);
       renderWeek();
       renderHomeGlance();
       startDebtsCountdown();
@@ -5263,7 +4413,7 @@
       if (params.has("sw")) openSchoolWork();
 
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        navigator.serviceWorker.register("./sw.js?v=16", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=17", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         let refreshing = false;
