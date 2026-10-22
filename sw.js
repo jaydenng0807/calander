@@ -1,4 +1,4 @@
-const CACHE = "jayden-cal-v16-rain";
+const CACHE = "jayden-cal-v17";
 const ASSETS = [
   "./",
   "./index.html",
@@ -7,7 +7,6 @@ const ASSETS = [
   "./school-status.json",
   "./school-bot-config.json",
   "./debts.json",
-  "./video-status.json",
   "./manifest.webmanifest"
 ];
 
@@ -70,8 +69,7 @@ self.addEventListener("fetch", (e) => {
     path.endsWith("timetable.json") ||
     path.endsWith("school-status.json") ||
     path.endsWith("school-bot-config.json") ||
-    path.endsWith("debts.json") ||
-    path.endsWith("video-status.json");
+    path.endsWith("debts.json");
 
   if (isHtml || isJson) {
     e.respondWith(networkFirst(req));
