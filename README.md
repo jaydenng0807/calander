@@ -1,9 +1,11 @@
 # Jayden Calendar
 
-Jayden's personal **hub** (Asia/Hong_Kong) — Home, Calendar, Debts.
+Jayden's personal **hub** (Asia/Hong_Kong) — Home, Calendar, Notepad, Debts.
 
 - Header: **Welcome Jayden** / **Home**
-- Tabs: Home · Calendar · Debts (`?tab=`)
+- Tabs: Home · Calendar · Notepad · Debts (`?tab=`)
+- A password screen covers the hub until it is unlocked in this tab. **Remember on this device** keeps it open after the tab closes. **Log out** locks it again. The check is a SHA-256 hash in the page (GitHub Pages is static, so this only stops casual visitors).
+- Notepad autosaves in this browser. **Clear notes** asks before wiping them.
 - Debts from `debts.json` (interest countdown)
 - Calendar module keeps week tabs, timetable, school work bots
 - Days left → right as **collapsible tabs** (tap to open/close)
