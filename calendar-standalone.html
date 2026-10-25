@@ -2,11 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    (function () {
+      try {
+        var open = sessionStorage.getItem("jayden-hub-open") === "1"
+          || localStorage.getItem("jayden-hub-open") === "1";
+        if (open) document.documentElement.classList.add("hub-open");
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#070712" />
-  <meta name="description" content="Jayden's hub — Calendar, school work, debts · Hong Kong time" />
+  <meta name="description" content="Jayden's hub — Calendar, school work, notepad, debts · Hong Kong time" />
   <title>Jayden — Home</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
@@ -1239,6 +1248,9 @@
       min-width: 0;
       transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
     }
+    @media (max-width: 520px) {
+      .hub-tab { padding: 10px 10px; font-size: 12px; }
+    }
     .hub-tab:hover { color: var(--text-soft); background: rgba(255,255,255,0.04); }
     .hub-tab.is-active {
       color: #fff;
@@ -1927,9 +1939,251 @@
       color: var(--danger);
     }
 
+    /* —— Password gate. Content stays out of view until this tab is unlocked. —— */
+    html:not(.hub-open) body {
+      overflow: hidden;
+      height: 100dvh;
+    }
+    html:not(.hub-open) body > :not(#gate) {
+      display: none !important;
+    }
+    #gate {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding:
+        calc(24px + var(--safe-top))
+        max(18px, env(safe-area-inset-left, 0px))
+        calc(24px + var(--safe-bottom))
+        max(18px, env(safe-area-inset-right, 0px));
+      background:
+        radial-gradient(ellipse 90% 55% at 50% -15%, rgba(139, 108, 255, 0.32), transparent 58%),
+        radial-gradient(ellipse 55% 45% at 110% 18%, rgba(74, 158, 255, 0.18), transparent 52%),
+        radial-gradient(ellipse 50% 40% at -10% 75%, rgba(179, 154, 255, 0.14), transparent 48%),
+        linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 45%, #06060e 100%);
+    }
+    html.hub-open #gate { display: none !important; }
+    .gate-card {
+      width: min(420px, 100%);
+      padding: 28px 22px 22px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .gate-card .welcome {
+      font-size: clamp(28px, 7vw, 36px);
+      line-height: 1.15;
+    }
+    .gate-card .brand { font-size: 16px; }
+    .gate-copy {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .gate-form {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .gate-remember {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 650;
+      color: var(--text-soft);
+      cursor: pointer;
+      user-select: none;
+    }
+    .gate-remember input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--purple-deep);
+      flex-shrink: 0;
+    }
+    .gate-open {
+      appearance: none;
+      border: none;
+      margin-top: 4px;
+      background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
+      color: #fff;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      padding: 12px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px var(--purple-glow);
+    }
+    .gate-open:active { transform: scale(0.98); }
+    .gate-open:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+    .gate-open:disabled { opacity: 0.7; cursor: default; }
+
+    .hero-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .logout-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .logout-btn:hover { color: var(--text); border-color: var(--border-strong); }
+    .logout-btn:active { transform: scale(0.97); }
+    .logout-btn:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+
+    /* —— Notepad —— */
+    .note-panel {
+      margin-top: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .note-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .note-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .note-sub {
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .note-status {
+      flex-shrink: 0;
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-align: right;
+      white-space: nowrap;
+    }
+    .note-status.is-saved { color: #6ee7b7; }
+    .note-text {
+      width: 100%;
+      height: max(220px, calc(100dvh - 400px));
+      min-height: 220px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font: inherit;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.5;
+      padding: 14px;
+      border-radius: 16px;
+      color-scheme: dark;
+    }
+    .note-text::placeholder { color: var(--text-dim); }
+    .note-text:focus {
+      outline: 2px solid var(--purple);
+      outline-offset: 1px;
+      border-color: var(--border-strong);
+    }
+    .note-foot {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .note-clear {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-soft);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .note-clear:hover { border-color: rgba(255, 122, 138, 0.45); color: var(--danger); }
+    .note-clear:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+    .note-confirm {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 650;
+      color: var(--text-soft);
+    }
+    .note-confirm[hidden] { display: none !important; }
+    .note-confirm-actions { display: flex; gap: 8px; }
+    .note-clear-yes {
+      appearance: none;
+      border: 1px solid rgba(255, 122, 138, 0.45);
+      background: var(--danger-soft);
+      color: #ffc1c8;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .note-clear-yes:focus-visible,
+    .note-confirm .add-cancel:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+
   </style>
 </head>
 <body>
+  <div id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <div class="gate-card">
+      <h1 class="welcome" id="gateTitle">Welcome Jayden</h1>
+      <p class="brand">Private hub</p>
+      <p class="gate-copy">Enter your password to open the hub.</p>
+      <form class="gate-form" id="gateForm" autocomplete="off" onsubmit="return false">
+        <label class="add-field" for="gatePassword">
+          Password
+          <input id="gatePassword" type="password" autocomplete="current-password" enterkeyhint="go" />
+        </label>
+        <label class="gate-remember">
+          <input id="gateRemember" type="checkbox" />
+          Remember on this device
+        </label>
+        <p class="add-error" id="gateError" role="alert" hidden></p>
+        <button type="submit" class="gate-open" id="gateOpen">Open</button>
+      </form>
+    </div>
+  </div>
   <div class="shell">
     <header class="hero">
       <div class="hero-top" id="hubBar">
@@ -1940,14 +2194,18 @@
           <div class="hero-copy">
             <h1 class="welcome">Welcome Jayden</h1>
             <p class="brand">Home</p>
-            <p class="brand-sub">Your hub · Calendar · Debts</p>
+            <p class="brand-sub">Your hub · Calendar · Notepad · Debts</p>
           </div>
         </div>
-        <span class="tz-pill">HKT</span>
+        <div class="hero-tools">
+          <button type="button" class="logout-btn" id="hubLogout">Log out</button>
+          <span class="tz-pill">HKT</span>
+        </div>
       </div>
       <nav class="hub-nav" role="tablist" aria-label="Hub sections">
         <button type="button" class="hub-tab is-active" role="tab" aria-selected="true" data-tab="home" id="tab-home">Home</button>
         <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="calendar" id="tab-calendar">Calendar</button>
+        <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="notepad" id="tab-notepad">Notepad</button>
         <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="debts" id="tab-debts">Debts</button>
       </nav>
     </header>
@@ -2035,6 +2293,11 @@
           <div class="home-card-body" id="homeSchoolBody">Loading tasks…</div>
           <div class="home-card-meta" id="homeSchoolMeta"></div>
         </button>
+        <button type="button" class="home-card" data-go="notepad">
+          <div class="home-card-kicker">Notepad</div>
+          <div class="home-card-title" id="homeNoteTitle">Your notes</div>
+          <div class="home-card-body" id="homeNoteBody">Nothing written yet</div>
+        </button>
         <button type="button" class="home-card" data-go="debts">
           <div class="home-card-kicker">Friend debts</div>
           <div class="home-card-title" id="homeDebtTitle">HK$602</div>
@@ -2051,6 +2314,9 @@
         </button>
         <button type="button" class="tt-btn" id="homeOpenTimetable" aria-haspopup="dialog">
           <span class="ico" aria-hidden="true">▦</span> Timetable
+        </button>
+        <button type="button" class="tt-btn" id="homeOpenNotepad">
+          <span class="ico" aria-hidden="true">✎</span> Notepad
         </button>
         <button type="button" class="tt-btn" id="homeOpenDebts">
           <span class="ico" aria-hidden="true">$</span> Debts
@@ -2124,6 +2390,31 @@
       </form>
       <p class="debts-note">Saved on this device. Original balances stay in <strong>debts.json</strong>.</p>
       <button type="button" class="debt-reset" id="debtReset" hidden>Reset to original balances</button>
+    </div>
+  </section>
+
+  <section class="hub-view" id="view-notepad" role="tabpanel" aria-labelledby="tab-notepad" hidden>
+    <div class="shell">
+      <div class="note-panel">
+        <div class="note-head">
+          <div>
+            <div class="note-title">Notepad</div>
+            <p class="note-sub">Notes stay on this device</p>
+          </div>
+          <p class="note-status" id="noteStatus" role="status">Notes stay on this device</p>
+        </div>
+        <textarea id="noteText" class="note-text" aria-label="Notes" placeholder="Write a note…" spellcheck="true"></textarea>
+        <div class="note-foot">
+          <button type="button" class="note-clear" id="noteClear">Clear notes</button>
+          <div class="note-confirm" id="noteConfirm" hidden>
+            <span>Clear all notes? This cannot be undone.</span>
+            <div class="note-confirm-actions">
+              <button type="button" class="add-cancel" id="noteClearNo">Cancel</button>
+              <button type="button" class="note-clear-yes" id="noteClearYes">Clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -3441,6 +3732,269 @@
       syncDebtReset();
     });
 
+    // SHA-256 of the hub password. Compared in the browser; nothing is sent anywhere.
+    const HUB_UNLOCK_SHA256 = "67d88aefecc6bd64b182f371c19207b98994691a88bdcdf377e6b085f95b89a4";
+    const HUB_OPEN_KEY = "jayden-hub-open";
+    const NOTE_KEY = "jayden-notepad-v1";
+    const NOTE_SAVE_MS = 400;
+    let noteTimer = null;
+
+    function sha256Hex(ascii) {
+      function rightRotate(value, amount) {
+        return (value >>> amount) | (value << (32 - amount));
+      }
+      const mathPow = Math.pow;
+      const maxWord = mathPow(2, 32);
+      let i, j;
+      let result = "";
+      const words = [];
+      const bitLength = ascii.length * 8;
+      let hash = sha256Hex.h = sha256Hex.h || [];
+      const k = sha256Hex.k = sha256Hex.k || [];
+      let primeCounter = k.length;
+      const isComposite = {};
+      for (let candidate = 2; primeCounter < 64; candidate++) {
+        if (!isComposite[candidate]) {
+          for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+          hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+          k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+        }
+      }
+      ascii += "\x80";
+      while ((ascii.length % 64) - 56) ascii += "\x00";
+      for (i = 0; i < ascii.length; i++) {
+        j = ascii.charCodeAt(i);
+        if (j >> 8) return "";
+        words[i >> 2] |= j << ((3 - i) % 4) * 8;
+      }
+      words[words.length] = (bitLength / maxWord) | 0;
+      words[words.length] = bitLength;
+      for (j = 0; j < words.length;) {
+        const w = words.slice(j, (j += 16));
+        const oldHash = hash;
+        hash = hash.slice(0, 8);
+        for (i = 0; i < 64; i++) {
+          const w15 = w[i - 15], w2 = w[i - 2];
+          const a = hash[0], e = hash[4];
+          const temp1 = hash[7]
+            + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+            + ((e & hash[5]) ^ (~e & hash[6]))
+            + k[i]
+            + (w[i] = (i < 16) ? w[i] : (
+              w[i - 16]
+              + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+              + w[i - 7]
+              + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+            ) | 0);
+          const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+            + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+          hash = [(temp1 + temp2) | 0].concat(hash);
+          hash[4] = (hash[4] + temp1) | 0;
+        }
+        for (i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+      }
+      for (i = 0; i < 8; i++) {
+        for (j = 3; j + 1; j--) {
+          const b = (hash[i] >> (j * 8)) & 255;
+          result += (b < 16 ? "0" : "") + b.toString(16);
+        }
+      }
+      return result;
+    }
+
+    function hubIsRemembered() {
+      try { return localStorage.getItem(HUB_OPEN_KEY) === "1"; } catch (_) { return false; }
+    }
+
+    function applyHubLock(locked) {
+      document.documentElement.classList.toggle("hub-open", !locked);
+      const gate = document.getElementById("gate");
+      if (gate) {
+        gate.hidden = !locked;
+        gate.setAttribute("aria-hidden", locked ? "false" : "true");
+      }
+      if (!locked) return;
+      const err = document.getElementById("gateError");
+      if (err) {
+        err.hidden = true;
+        err.textContent = "";
+      }
+      const input = document.getElementById("gatePassword");
+      if (input) input.value = "";
+      const remember = document.getElementById("gateRemember");
+      if (remember) remember.checked = hubIsRemembered();
+      window.setTimeout(() => { try { input && input.focus(); } catch (_) {} }, 40);
+    }
+
+    function persistHubOpen(remember) {
+      try { sessionStorage.setItem(HUB_OPEN_KEY, "1"); } catch (_) {}
+      try {
+        if (remember) localStorage.setItem(HUB_OPEN_KEY, "1");
+        else localStorage.removeItem(HUB_OPEN_KEY);
+      } catch (_) {}
+    }
+
+    function lockHub() {
+      try { closeAdd(); } catch (_) {}
+      try { closeSchoolWork(); } catch (_) {}
+      try { closeTimetable(); } catch (_) {}
+      try { sessionStorage.removeItem(HUB_OPEN_KEY); } catch (_) {}
+      try { localStorage.removeItem(HUB_OPEN_KEY); } catch (_) {}
+      applyHubLock(true);
+    }
+
+    function unlockHub(remember) {
+      persistHubOpen(remember);
+      applyHubLock(false);
+    }
+
+    function showGateError(message) {
+      const err = document.getElementById("gateError");
+      if (!err) return;
+      err.hidden = !message;
+      err.textContent = message || "";
+    }
+
+    function submitGate(ev) {
+      if (ev) ev.preventDefault();
+      const input = document.getElementById("gatePassword");
+      const button = document.getElementById("gateOpen");
+      const password = String(input && input.value || "");
+      if (!password) {
+        showGateError("Enter your password.");
+        if (input) input.focus();
+        return;
+      }
+      if (button) button.disabled = true;
+      let digest = "";
+      try { digest = sha256Hex(password); } catch (_) { digest = ""; }
+      if (button) button.disabled = false;
+      if (!digest || digest !== HUB_UNLOCK_SHA256) {
+        showGateError("That password is not right.");
+        if (input) {
+          input.focus();
+          input.select();
+        }
+        return;
+      }
+      const remember = !!(document.getElementById("gateRemember") && document.getElementById("gateRemember").checked);
+      if (input) input.value = "";
+      showGateError("");
+      unlockHub(remember);
+    }
+
+    function readNoteRecord() {
+      try {
+        const raw = localStorage.getItem(NOTE_KEY);
+        if (!raw) return { text: "", savedAt: 0 };
+        const data = JSON.parse(raw);
+        if (data && typeof data.text === "string") {
+          return { text: data.text, savedAt: Number(data.savedAt) || 0 };
+        }
+      } catch (_) {}
+      return { text: "", savedAt: 0 };
+    }
+
+    function noteStatusText(savedAt, text) {
+      if (!savedAt) return "Notes stay on this device";
+      let when = "";
+      try { when = formatHubClock(new Date(savedAt)); } catch (_) { when = ""; }
+      const label = text ? "Saved" : "Cleared";
+      return when ? `${label} · ${when}` : label;
+    }
+
+    function paintNoteStatus(savedAt, text, pending) {
+      const hint = document.getElementById("noteStatus");
+      if (!hint) return;
+      hint.textContent = pending ? "Saving…" : noteStatusText(savedAt, text);
+      hint.classList.toggle("is-saved", !pending && !!savedAt && !!text);
+    }
+
+    function renderHomeNote(text) {
+      const title = document.getElementById("homeNoteTitle");
+      const body = document.getElementById("homeNoteBody");
+      const first = String(text || "").trim().split(/\n/).find(line => line.trim()) || "";
+      if (title) title.textContent = first ? "Notes saved" : "Your notes";
+      if (body) {
+        body.textContent = first
+          ? (first.length > 90 ? first.slice(0, 87) + "…" : first)
+          : "Nothing written yet";
+      }
+    }
+
+    function saveNotesNow() {
+      if (noteTimer) {
+        clearTimeout(noteTimer);
+        noteTimer = null;
+      }
+      const el = document.getElementById("noteText");
+      if (!el) return;
+      const text = el.value;
+      const savedAt = Date.now();
+      try {
+        localStorage.setItem(NOTE_KEY, JSON.stringify({ text, savedAt }));
+        paintNoteStatus(savedAt, text, false);
+      } catch (_) {
+        const hint = document.getElementById("noteStatus");
+        if (hint) {
+          hint.textContent = "Could not save on this device";
+          hint.classList.remove("is-saved");
+        }
+      }
+      renderHomeNote(text);
+    }
+
+    function scheduleNoteSave() {
+      const el = document.getElementById("noteText");
+      paintNoteStatus(0, el ? el.value : "", true);
+      if (noteTimer) clearTimeout(noteTimer);
+      noteTimer = setTimeout(saveNotesNow, NOTE_SAVE_MS);
+    }
+
+    function hideNoteConfirm() {
+      const confirm = document.getElementById("noteConfirm");
+      const clearBtn = document.getElementById("noteClear");
+      if (confirm) confirm.hidden = true;
+      if (clearBtn) clearBtn.hidden = false;
+    }
+
+    function initNotepad() {
+      const record = readNoteRecord();
+      const el = document.getElementById("noteText");
+      if (el && el.value !== record.text) el.value = record.text;
+      paintNoteStatus(record.savedAt, record.text, false);
+      renderHomeNote(record.text);
+      if (el) {
+        el.addEventListener("input", () => {
+          hideNoteConfirm();
+          scheduleNoteSave();
+        });
+      }
+      document.getElementById("noteClear")?.addEventListener("click", () => {
+        const current = document.getElementById("noteText");
+        const text = current ? current.value : readNoteRecord().text;
+        if (!String(text || "").length) {
+          const hint = document.getElementById("noteStatus");
+          if (hint) {
+            hint.textContent = "Nothing to clear";
+            hint.classList.remove("is-saved");
+          }
+          return;
+        }
+        const confirm = document.getElementById("noteConfirm");
+        const clearBtn = document.getElementById("noteClear");
+        if (confirm) confirm.hidden = false;
+        if (clearBtn) clearBtn.hidden = true;
+      });
+      document.getElementById("noteClearNo")?.addEventListener("click", hideNoteConfirm);
+      document.getElementById("noteClearYes")?.addEventListener("click", () => {
+        const current = document.getElementById("noteText");
+        if (current) current.value = "";
+        hideNoteConfirm();
+        saveNotesNow();
+      });
+    }
+
     // —— Hub tabs ——
     let activeTab = "home";
     let tabSwitching = false;
@@ -3457,8 +4011,9 @@
 
     function showTab(tab, opts) {
       const optsSafe = opts || {};
-      if (!["home", "calendar", "debts"].includes(tab)) tab = "home";
+      if (!["home", "calendar", "debts", "notepad"].includes(tab)) tab = "home";
       if (tab === activeTab && !optsSafe.force) return;
+      if (activeTab === "notepad" && tab !== "notepad") saveNotesNow();
       if (tabSwitching) return;
       const prev = document.getElementById(`view-${activeTab}`);
       const next = document.getElementById(`view-${tab}`);
@@ -3501,6 +4056,12 @@
           renderHomeGlance();
           loadWeather();
           if (weatherPoints.length) layoutWeatherLabels(weatherPoints);
+        }
+        if (tab === "notepad" && document.documentElement.classList.contains("hub-open")) {
+          const noteEl = document.getElementById("noteText");
+          if (noteEl && !optsSafe.skipFocus) {
+            window.setTimeout(() => { try { noteEl.focus(); } catch (_) {} }, 40);
+          }
         }
       };
 
@@ -3608,6 +4169,8 @@
         dm.innerHTML = `<span class="home-chip is-money">${people.length} friends</span>
           <span class="home-chip">${(rate * 100).toFixed(1)}% / mo</span>`;
       }
+
+      renderHomeNote(readNoteRecord().text);
     }
 
     // Hong Kong forecast. Coords are the city centre; Open-Meteo needs no key.
@@ -4223,6 +4786,7 @@
       showTab("calendar");
       openTimetable();
     });
+    document.getElementById("homeOpenNotepad")?.addEventListener("click", () => showTab("notepad"));
     document.querySelectorAll("#homeGrid [data-go]").forEach(card => {
       card.addEventListener("click", () => {
         const go = card.getAttribute("data-go");
@@ -4233,6 +4797,8 @@
           showTab("debts");
         } else if (go === "calendar") {
           showTab("calendar");
+        } else if (go === "notepad") {
+          showTab("notepad");
         }
       });
     });
@@ -4382,6 +4948,11 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
+      const noteConfirm = document.getElementById("noteConfirm");
+      if (noteConfirm && !noteConfirm.hidden) {
+        hideNoteConfirm();
+        return;
+      }
       if (document.getElementById("addOverlay").classList.contains("is-open")) {
         closeAdd();
         return;
@@ -4394,6 +4965,12 @@
         closeTimetable();
       }
     });
+
+    document.getElementById("gateForm")?.addEventListener("submit", submitGate);
+    document.getElementById("hubLogout")?.addEventListener("click", lockHub);
+    initNotepad();
+    applyHubLock(!document.documentElement.classList.contains("hub-open"));
+    window.addEventListener("pagehide", () => { if (noteTimer) saveNotesNow(); });
 
     (async () => {
       loadWeather();
@@ -4413,7 +4990,7 @@
       if (params.has("sw")) openSchoolWork();
 
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        navigator.serviceWorker.register("./sw.js?v=17", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=18", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         let refreshing = false;
