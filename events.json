@@ -1,6 +1,6 @@
 {
   "timezone": "Asia/Hong_Kong",
-  "updated": "2026-10-26T00:10:38+08:00",
+  "updated": "2026-10-27T00:05:06+08:00",
   "toddleBase": "https://web.toddleapp.com/platform/391418444458869835/todos",
   "events": [
     {
@@ -106,7 +106,8 @@
       "due": true,
       "type": "school",
       "color": "blue",
-      "url": "https://web.toddleapp.com/platform/391418444458869835/todos/classroom-details/434058633240761000/434058633282706579"
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos/classroom-details/434058633240761000/434058633282706579",
+      "overdue": true
     },
     {
       "id": "chinese-work-2026-10-27",
