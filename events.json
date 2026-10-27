@@ -1,6 +1,6 @@
 {
   "timezone": "Asia/Hong_Kong",
-  "updated": "2026-10-27T00:05:06+08:00",
+  "updated": "2026-10-28T00:06:00+08:00",
   "toddleBase": "https://web.toddleapp.com/platform/391418444458869835/todos",
   "events": [
     {
@@ -117,7 +117,8 @@
       "due": true,
       "type": "school",
       "color": "blue",
-      "url": "https://web.toddleapp.com/platform/391418444458869835/todos/classroom-details/436091444340580258/436091444382517898"
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos/classroom-details/436091444340580258/436091444382517898",
+      "overdue": true
     },
     {
       "id": "chinese-summative-b-2026-10-28",
