@@ -1,6 +1,6 @@
 {
   "timezone": "Asia/Hong_Kong",
-  "updated": "2026-10-29T00:08:00+08:00",
+  "updated": "2026-10-30T00:10:00+08:00",
   "toddleBase": "https://web.toddleapp.com/platform/391418444458869835/todos",
   "events": [
     {
@@ -139,7 +139,8 @@
       "due": true,
       "type": "school",
       "color": "blue",
-      "url": "https://web.toddleapp.com/platform/391418444458869835/todos/classroom-details/431204933681923345/431204933690314342"
+      "url": "https://web.toddleapp.com/platform/391418444458869835/todos/classroom-details/431204933681923345/431204933690314342",
+      "overdue": true
     }
   ]
 }
