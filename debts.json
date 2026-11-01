@@ -1,36 +1,36 @@
 {
   "currency": "HKD",
-  "updated": "2026-10-15T12:04:00+08:00",
+  "updated": "2026-11-01T09:03:00+08:00",
   "interestRate": 0.067,
   "interestDay": 1,
   "interestTime": "09:03",
   "timezone": "Asia/Hong_Kong",
-  "nextInterest": "2026-11-01T09:03:00+08:00",
+  "nextInterest": "2026-12-01T09:03:00+08:00",
   "people": [
     {
       "id": "evander",
       "name": "Evander",
-      "balance": 55
+      "balance": 58.69
     },
     {
       "id": "liam",
       "name": "Liam",
-      "balance": 177
+      "balance": 188.86
     },
     {
       "id": "colby",
       "name": "Colby",
-      "balance": 165
+      "balance": 176.06
     },
     {
       "id": "jameson",
       "name": "Jameson",
-      "balance": 120
+      "balance": 128.04
     },
     {
       "id": "scout",
       "name": "Scout",
-      "balance": 85
+      "balance": 90.7
     }
   ]
 }
