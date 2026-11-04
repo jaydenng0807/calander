@@ -2416,6 +2416,90 @@
       font-weight: 600;
       color: var(--text-dim);
     }
+    .qz-tips {
+      margin-top: 12px;
+      margin-bottom: 2px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0 12px;
+    }
+    .qz-tips summary {
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--purple);
+      padding: 10px 0;
+      list-style: none;
+    }
+    .qz-tips summary::-webkit-details-marker { display: none; }
+    .qz-tips summary::before {
+      content: "? ";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      margin-right: 6px;
+      border-radius: 999px;
+      background: var(--purple-soft);
+      color: #fff;
+      font-size: 11px;
+    }
+    .qz-tips ul {
+      list-style: none;
+      padding: 0 0 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .qz-tips li {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.45;
+      color: var(--text-soft);
+    }
+    .qz-tips strong { color: var(--text); font-weight: 800; }
+    .qz-set-block { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+    .qz-do-test {
+      appearance: none;
+      border: none;
+      background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
+      color: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      min-height: 40px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px var(--purple-glow);
+    }
+    .qz-do-test:active { transform: scale(0.98); }
+    .qz-do-test:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+    .qz-score { margin-top: 18px; text-align: center; }
+    .qz-score-num {
+      font-size: clamp(40px, 10vw, 56px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+      background: linear-gradient(135deg, #fff 0%, #d4c4ff 50%, #9ec9ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .qz-score-label {
+      margin-top: 4px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-soft);
+    }
+    .qz-miss-note {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 650;
+      color: #fda4af;
+    }
     .qz-prompt {
       margin-top: 14px;
       padding: 16px;
@@ -4779,6 +4863,48 @@
       }
     ];
 
+    const QUIZ_TIPS = [
+      { title: "Concentration gradient", keys: ["concentration gradient"], tip: "How crowded the particles are. Against the gradient means from less crowded toward more crowded." },
+      { title: "Partially permeable", keys: ["partially permeable"], tip: "Lets some things through, such as water, and blocks others." },
+      { title: "Water potential", keys: ["water potential"], tip: "How ready water is to move. A lower water potential pulls water in." },
+      { title: "Palisade mesophyll", keys: ["palisade mesophyll", "palisade"], tip: "The tall cells near the top of the leaf. They catch the most light." },
+      { title: "Spongy mesophyll", keys: ["spongy mesophyll"], tip: "The looser leaf cells, with air spaces so gases can move." },
+      { title: "Mesophyll", keys: ["mesophyll"], tip: "The middle of the leaf, where most of the food is made." },
+      { title: "Guard cells", keys: ["guard cells", "guard cell"], tip: "The two cells that open and close a pore in the leaf." },
+      { title: "Carrier proteins", keys: ["carrier proteins", "carrier protein"], tip: "Proteins in the membrane that carry a particle across." },
+      { title: "Channel proteins", keys: ["channel proteins", "channel protein"], tip: "Protein pores that let certain ions through the membrane." },
+      { title: "Mitochondria", keys: ["mitochondria", "mitochondrion"], tip: "The part of the cell that makes most of the cell's energy when oxygen is present." },
+      { title: "Chloroplasts", keys: ["chloroplasts", "chloroplast"], tip: "The part of a plant cell that holds the green pigment and makes food." },
+      { title: "Chlorophyll", keys: ["chlorophyll"], tip: "The green chemical that catches light so the leaf can make sugar." },
+      { title: "Stomata", keys: ["stomata", "stoma"], tip: "Tiny pores that let gases in and out of the leaf." },
+      { title: "Plasmolyzed", keys: ["plasmolyzed", "plasmolysed"], tip: "A plant cell that has lost water, so the membrane has pulled away from the wall." },
+      { title: "Turgid", keys: ["turgidity", "turgid"], tip: "Firm, because the plant cell is full of water." },
+      { title: "Transpiration", keys: ["transpiration"], tip: "Water moving through the plant and leaving the leaves as vapour." },
+      { title: "Lactic acid", keys: ["lactic acid"], tip: "What animals make when they release energy without oxygen." },
+      { title: "Active transport", keys: ["active transport"], tip: "Moving particles from less crowded to more crowded. It needs energy and carrier proteins." },
+      { title: "Cohesion", keys: ["cohesion"], tip: "Water molecules sticking to each other." },
+      { title: "Adhesion", keys: ["adhesion"], tip: "Water molecules sticking to the wall of the tube." },
+      { title: "Xylem", keys: ["xylem"], tip: "Tubes that carry water and minerals up the plant." },
+      { title: "Phloem", keys: ["phloem"], tip: "Tubes that carry sugars around the plant." },
+      { title: "Osmosis", keys: ["osmosis"], tip: "Water moving across a membrane from a weaker solution to a stronger one." },
+      { title: "Aerobic", keys: ["aerobic"], tip: "With oxygen." },
+      { title: "Anaerobic", keys: ["anaerobic"], tip: "Without oxygen." },
+      { title: "ATP", keys: ["atp"], tip: "The energy molecule cells use." },
+      { title: "Diffusion", keys: ["diffusion"], tip: "Particles spreading from where they are crowded to where they are spread out." },
+      { title: "Vesicle", keys: ["vesicle"], tip: "A small membrane bag that carries material into or out of the cell." },
+      { title: "Cytoplasm", keys: ["cytoplasm"], tip: "The jelly inside the cell. Some reactions happen here." },
+      { title: "Denature", keys: ["denature"], tip: "An enzyme loses its shape in too much heat, so it stops working." },
+      { title: "Enzyme", keys: ["enzymes", "enzyme"], tip: "A protein that speeds up a reaction in the cell." },
+      { title: "Ethanol", keys: ["ethanol"], tip: "The alcohol yeast and plants make when they release energy without oxygen." },
+      { title: "Cellulose", keys: ["cellulose"], tip: "The tough material plant cell walls are made of." },
+      { title: "Starch", keys: ["starch"], tip: "How plants store spare glucose." },
+      { title: "Glucose", keys: ["glucose"], tip: "A simple sugar. Cells release energy from it." },
+      { title: "Sucrose", keys: ["sucrose"], tip: "A sugar plants often carry from the leaves to the rest of the plant." },
+      { title: "Pathogen", keys: ["pathogens", "pathogen"], tip: "A germ that can cause disease." },
+      { title: "Vacuole", keys: ["vacuole"], tip: "The bag in a plant cell that holds sap and presses on the wall when it is full." },
+      { title: "UV", keys: ["uv"], tip: "A kind of sunlight that can damage cells." }
+    ];
+
     let quizBound = false;
     let quizRestored = false;
     let quizUi = {
@@ -4836,6 +4962,54 @@
       const n = normQuiz(value);
       if (!n || !card) return false;
       return [card.term].concat(card.accept || []).some((item) => normQuiz(item) === n);
+    }
+
+    function findTips(text) {
+      const lower = String(text || "").toLowerCase();
+      const entries = [];
+      QUIZ_TIPS.forEach((item) => {
+        item.keys.forEach((key) => entries.push({ item, key: String(key).toLowerCase() }));
+      });
+      entries.sort((a, b) => b.key.length - a.key.length);
+      const taken = [];
+      const found = [];
+      const seen = new Set();
+      entries.forEach((entry) => {
+        if (seen.has(entry.item)) return;
+        const safe = entry.key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const re = new RegExp("\\b" + safe + "\\b", "g");
+        let match = re.exec(lower);
+        while (match) {
+          const start = match.index;
+          const end = start + match[0].length;
+          const overlap = taken.some((span) => start < span.end && end > span.start);
+          if (!overlap) {
+            taken.push({ start, end });
+            seen.add(entry.item);
+            found.push({ item: entry.item, start });
+            break;
+          }
+          match = re.exec(lower);
+        }
+      });
+      return found.sort((a, b) => a.start - b.start).slice(0, 4).map((entry) => entry.item);
+    }
+
+    function cardTips(card, forTest) {
+      if (!card) return [];
+      const text = forTest ? card.answer : `${card.term} ${card.answer}`;
+      const termNorm = normQuiz(card.term);
+      return findTips(text).filter((item) => {
+        if (!forTest) return true;
+        return !item.keys.some((key) => normQuiz(key) === termNorm);
+      });
+    }
+
+    function renderTips(card, forTest) {
+      const tips = cardTips(card, forTest);
+      if (!tips.length) return "";
+      const items = tips.map((item) => `<li><strong>${quizEsc(item.title)}.</strong> ${quizEsc(item.tip)}</li>`).join("");
+      return `<details class="qz-tips"><summary>What's this?</summary><ul>${items}</ul></details>`;
     }
 
     function shuffleCopy(list) {
@@ -4989,6 +5163,7 @@
       const animate = quizUi.animate;
       quizUi.animate = false;
       if (quizUi.screen === "sets") root.innerHTML = renderQuizSets(animate);
+      else if (quizUi.screen === "study" && quizUi.mode === "test") root.innerHTML = renderQuizTest(animate);
       else if (quizUi.screen === "study") root.innerHTML = renderQuizStudy(animate);
       else root.innerHTML = renderQuizSubjects(animate);
       if (animate) {
@@ -5034,13 +5209,16 @@
         const known = knownCount(set.id);
         const total = set.cards.length;
         const progress = !total ? "No cards yet" : !known ? `${total} cards · Not started` : known === total ? `${total} cards · All known` : `${total} cards · ${known} known`;
-        return `<button type="button" class="qz-row" data-qz="set" data-id="${quizEsc(set.id)}" data-accent="${quizEsc(subject.accent)}">
-          <span class="qz-row-main">
-            <span class="qz-row-title">${quizEsc(set.title)}</span>
-            <span class="qz-row-sub">${quizEsc(set.blurb)} · ${quizEsc(progress)}</span>
-          </span>
-          <span class="qz-count">${total}</span>
-        </button>`;
+        return `<div class="qz-set-block">
+          <button type="button" class="qz-row" data-qz="set" data-id="${quizEsc(set.id)}" data-accent="${quizEsc(subject.accent)}">
+            <span class="qz-row-main">
+              <span class="qz-row-title">${quizEsc(set.title)}</span>
+              <span class="qz-row-sub">${quizEsc(set.blurb)} · ${quizEsc(progress)}</span>
+            </span>
+            <span class="qz-count">${total}</span>
+          </button>
+          ${total ? `<button type="button" class="qz-do-test" data-qz="start-test" data-id="${quizEsc(set.id)}">Do test</button>` : ""}
+        </div>`;
       }).join("");
       const empty = sets.length ? "" : `<p class="qz-empty">No quizzes yet</p>`;
       return `<div class="qz-screen${animate ? " is-in" : ""}">
@@ -5090,11 +5268,14 @@
       if (quizUi.mode === "choice") body = renderQuizChoice(card);
       else if (quizUi.mode === "type") body = renderQuizType(card);
       else body = renderQuizCard(card, cardKnown);
+      body = `${renderTips(card, false)}${body}`;
+      const startTestBtn = `<button type="button" class="qz-do-test" data-qz="start-test" data-id="${quizEsc(set.id)}">Do test</button>`;
       const tools = quizUi.mode === "cards" ? `<div class="qz-tools">
+        ${startTestBtn}
         <button type="button" class="qz-tool${cardKnown ? " is-on" : ""}" data-qz="know">I know this</button>
         <button type="button" class="qz-tool" data-qz="learn">Still learning</button>
         <button type="button" class="qz-tool" data-qz="shuffle">Shuffle</button>
-      </div>` : `<div class="qz-tools"><button type="button" class="qz-tool" data-qz="shuffle">Shuffle</button></div>`;
+      </div>` : `<div class="qz-tools">${startTestBtn}<button type="button" class="qz-tool" data-qz="shuffle">Shuffle</button></div>`;
       const confirm = quizUi.confirmClear ? `<div class="qz-confirm">
         <span>Clear what you have marked known for this quiz?</span>
         <button type="button" class="add-cancel" data-qz="clear-no">Cancel</button>
@@ -5167,6 +5348,175 @@
         ${feedback}`;
     }
 
+    function testCard() {
+      const set = currentSet();
+      const test = quizUi.test;
+      if (!set || !test) return null;
+      return set.cards.find((card) => card.id === test.showing) || null;
+    }
+
+    function renderQuizTest(animate) {
+      const set = currentSet();
+      const test = quizUi.test;
+      const subject = set ? quizSubjectById(set.subjectId) : null;
+      if (!set || !test) {
+        return `<div class="qz-screen${animate ? " is-in" : ""}">
+          <div class="qz-head">
+            <div>
+              <h2 class="qz-title">Do test</h2>
+              <p class="qz-sub">Pick a quiz first</p>
+            </div>
+            <button type="button" class="qz-back" data-qz="back">Back</button>
+          </div>
+        </div>`;
+      }
+      if (test.phase === "done") {
+        const missed = test.total - test.firstRight;
+        const cleared = missed
+          ? `<p class="qz-sub">${missed} ${missed === 1 ? "card was" : "cards were"} wrong the first time. You practised ${missed === 1 ? "it" : "them"} until ${missed === 1 ? "it was" : "they were"} right.</p>`
+          : `<p class="qz-sub">Every card was right the first time.</p>`;
+        return `<div class="qz-screen${animate ? " is-in" : ""}">
+          <div class="qz-head">
+            <div>
+              <h2 class="qz-title">Test done</h2>
+              <p class="qz-sub">${quizEsc(set.title)}</p>
+            </div>
+            <button type="button" class="qz-back" data-qz="back">Back</button>
+          </div>
+          <div class="qz-score">
+            <div class="qz-score-num">${test.firstRight}/${test.total}</div>
+            <p class="qz-score-label">First try</p>
+          </div>
+          ${cleared}
+          <div class="qz-tools">
+            <button type="button" class="qz-do-test" data-qz="start-test" data-id="${quizEsc(set.id)}">Do test again</button>
+            <button type="button" class="qz-tool" data-qz="test-study">Study cards</button>
+          </div>
+        </div>`;
+      }
+      const card = testCard();
+      if (!card) return "";
+      const options = ensureChoices(card);
+      const buttons = options.map((term, i) => {
+        let cls = "qz-option";
+        if (quizUi.checked && term === card.term) cls += " is-correct";
+        else if (quizUi.checked && i === quizUi.picked) cls += " is-wrong";
+        return `<button type="button" class="${cls}" data-qz="test-choice" data-i="${i}" ${quizUi.checked ? "disabled" : ""}>${quizEsc(term)}</button>`;
+      }).join("");
+      const heading = test.phase === "drill"
+        ? `Try again · ${test.misses.length} to get right`
+        : `Question ${test.cursor + 1} of ${test.total}`;
+      const sub = test.phase === "drill"
+        ? "Missed cards stay in the test until you get each one right."
+        : `${quizEsc(subject ? subject.name : "Science")} · ${quizEsc(set.title)}`;
+      let feedback = "";
+      if (quizUi.checked && quizUi.correct) feedback = `<p class="qz-feedback is-ok" role="status">Correct</p>`;
+      else if (quizUi.checked) feedback = `<p class="qz-feedback is-bad" role="status">Not quite. The term is ${quizEsc(card.term)}. This one will come back until you get it right.</p>`;
+      let nextLabel = "Next";
+      if (quizUi.checked && test.phase === "pass" && test.cursor === test.order.length - 1) {
+        nextLabel = test.misses.length ? "Practise misses" : "See score";
+      } else if (quizUi.checked && test.phase === "drill") {
+        if (!quizUi.correct && test.misses.length === 1) nextLabel = "Try again";
+        else if (!test.misses.length) nextLabel = "See score";
+      }
+      const nextDisabled = quizUi.checked ? "" : "disabled";
+      return `<div class="qz-screen${animate ? " is-in" : ""}">
+        <div class="qz-head">
+          <div>
+            <h2 class="qz-title">${quizEsc(heading)}</h2>
+            <p class="qz-sub">${sub}</p>
+          </div>
+          <button type="button" class="qz-back" data-qz="back">Back</button>
+        </div>
+        ${test.phase === "pass" && test.misses.length ? `<p class="qz-miss-note">${test.misses.length} missed · they come back at the end</p>` : ""}
+        <div class="qz-prompt">${quizEsc(card.answer)}</div>
+        ${renderTips(card, true)}
+        <div class="qz-options">${buttons}</div>
+        ${feedback}
+        <div class="qz-nav">
+          <span></span>
+          <div class="qz-pos" role="status">${test.phase === "drill" ? `${test.misses.length} left` : `${test.cursor + 1} / ${test.total}`}</div>
+          <button type="button" class="qz-step" data-qz="test-next" ${nextDisabled}>${nextLabel}</button>
+        </div>
+      </div>`;
+    }
+
+    function startTest(setId) {
+      const set = quizSetById(setId || quizUi.setId);
+      if (!set || !set.cards.length) return;
+      const order = shuffleCopy(set.cards.map((card) => card.id));
+      quizUi.screen = "study";
+      quizUi.setId = set.id;
+      quizUi.subjectId = set.subjectId;
+      quizUi.mode = "test";
+      quizUi.animate = true;
+      quizUi.confirmClear = false;
+      quizUi.choices = {};
+      quizUi.test = {
+        phase: "pass",
+        order,
+        cursor: 0,
+        misses: [],
+        firstRight: 0,
+        total: order.length,
+        showing: order[0]
+      };
+      resetAnswerState();
+      renderQuiz();
+    }
+
+    function exitTestToCards() {
+      quizUi.mode = "cards";
+      quizUi.test = null;
+      quizUi.index = 0;
+      quizUi.order = null;
+      quizUi.choices = {};
+      resetAnswerState();
+      saveQuizPlace();
+      renderQuiz();
+    }
+
+    function gradeTest(correct, pickedIndex) {
+      const test = quizUi.test;
+      const card = testCard();
+      if (!test || !card || quizUi.checked || test.phase === "done") return;
+      quizUi.picked = pickedIndex;
+      quizUi.checked = true;
+      quizUi.correct = correct;
+      if (test.phase === "pass") {
+        if (correct) test.firstRight += 1;
+        else if (!test.misses.includes(card.id)) test.misses.push(card.id);
+      } else if (test.phase === "drill") {
+        if (correct) test.misses = test.misses.filter((id) => id !== card.id);
+        else test.misses = test.misses.filter((id) => id !== card.id).concat([card.id]);
+      }
+      setCardKnown(quizUi.setId, card.id, correct);
+      renderQuiz();
+      renderHomeQuiz();
+    }
+
+    function advanceTest() {
+      const test = quizUi.test;
+      if (!test || !quizUi.checked || test.phase === "done") return;
+      if (test.phase === "pass") {
+        if (test.cursor < test.order.length - 1) {
+          test.cursor += 1;
+          test.showing = test.order[test.cursor];
+        } else if (test.misses.length) {
+          test.phase = "drill";
+          test.showing = test.misses[0];
+        } else {
+          test.phase = "done";
+        }
+      } else if (test.phase === "drill") {
+        if (!test.misses.length) test.phase = "done";
+        else test.showing = test.misses[0];
+      }
+      if (test.phase !== "done" && quizUi.choices && test.showing) delete quizUi.choices[test.showing];
+      resetAnswerState();
+      renderQuiz();
+    }
+
     function openSubject(id) {
       if (!quizSubjectById(id)) return;
       quizUi.subjectId = id;
@@ -5201,6 +5551,10 @@
       quizUi.confirmClear = false;
       resetAnswerState();
       quizUi.animate = true;
+      if (quizUi.mode === "test") {
+        quizUi.mode = "cards";
+        quizUi.test = null;
+      }
       if (quizUi.screen === "study") quizUi.screen = "sets";
       else quizUi.screen = "subjects";
       saveQuizPlace();
@@ -5321,6 +5675,15 @@
       else if (action === "know") markCurrent(true);
       else if (action === "learn") markCurrent(false);
       else if (action === "choice") pickChoice(Number(el.getAttribute("data-i")));
+      else if (action === "test-choice") {
+        const card = testCard();
+        const options = card ? ensureChoices(card) : [];
+        const index = Number(el.getAttribute("data-i"));
+        gradeTest(!!card && options[index] === card.term, index);
+      }
+      else if (action === "test-next") advanceTest();
+      else if (action === "start-test") startTest(el.getAttribute("data-id"));
+      else if (action === "test-study") exitTestToCards();
       else if (action === "shuffle") shuffleQuiz();
       else if (action === "clear") {
         quizUi.confirmClear = true;
@@ -6329,7 +6692,7 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
         if (!document.documentElement.classList.contains("hub-open")) return;
-        if (activeTab !== "quiz" || quizUi.screen !== "study") return;
+        if (activeTab !== "quiz" || quizUi.screen !== "study" || quizUi.mode === "test") return;
         const tag = e.target && e.target.tagName;
         if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
         e.preventDefault();
@@ -6384,7 +6747,7 @@
       if (params.has("sw")) openSchoolWork();
 
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        navigator.serviceWorker.register("./sw.js?v=19", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=20", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         let refreshing = false;
