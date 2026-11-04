@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#070712" />
-  <meta name="description" content="Jayden's hub — Calendar, school work, notepad, debts · Hong Kong time" />
+  <meta name="description" content="Jayden's hub — Calendar, school work, quiz, notepad, debts · Hong Kong time" />
   <title>Jayden — Home</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
@@ -1227,6 +1227,8 @@
       -webkit-backdrop-filter: blur(16px);
       box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
       scrollbar-width: none;
     }
     .hub-nav::-webkit-scrollbar { display: none; }
@@ -1244,8 +1246,8 @@
       border-radius: 14px;
       cursor: pointer;
       white-space: nowrap;
-      flex: 1 1 0;
-      min-width: 0;
+      flex: 1 0 auto;
+      min-width: max-content;
       transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
     }
     @media (max-width: 520px) {
@@ -2162,6 +2164,435 @@
     .note-clear-yes:focus-visible,
     .note-confirm .add-cancel:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
 
+    /* —— School work quiz —— */
+    .quiz-app {
+      width: min(100%, 680px);
+      margin: 16px auto 0;
+    }
+    .qz-screen.is-in { animation: hubViewIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .qz-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .qz-title {
+      font-size: clamp(22px, 5vw, 28px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+    .qz-sub {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .qz-back {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-soft);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .qz-back:active { transform: scale(0.97); }
+    .qz-back:focus-visible,
+    .qz-row:focus-visible,
+    .qz-mode:focus-visible,
+    .qz-step:focus-visible,
+    .qz-option:focus-visible,
+    .qz-flip:focus-visible,
+    .qz-tool:focus-visible,
+    .qz-check:focus-visible {
+      outline: 2px solid var(--purple);
+      outline-offset: 2px;
+    }
+    .qz-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .qz-row {
+      appearance: none;
+      width: 100%;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 14px 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: inherit;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      position: relative;
+      overflow: hidden;
+      min-height: 64px;
+    }
+    .qz-row::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--purple);
+    }
+    .qz-row[data-accent="sci"]::before { background: var(--blue); }
+    .qz-row[data-accent="eng"]::before { background: #34d399; }
+    .qz-row[data-accent="chi"]::before { background: #fbbf24; }
+    .qz-row[data-accent="math"]::before { background: #f472b6; }
+    .qz-row[data-accent="design"]::before { background: #a78bfa; }
+    .qz-row:active { transform: scale(0.985); }
+    .qz-row-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .qz-row-title {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .qz-row-sub {
+      display: block;
+      margin-top: 0;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .qz-count {
+      flex-shrink: 0;
+      min-width: 40px;
+      height: 40px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: var(--purple-soft);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      border: 1px solid var(--border-strong);
+    }
+    .qz-count.is-zero {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      border-color: var(--border);
+    }
+    .qz-progress {
+      margin-top: 12px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
+    .qz-progress > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--purple-deep), var(--blue-deep));
+    }
+    .qz-modes {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .qz-modes::-webkit-scrollbar { display: none; }
+    .qz-mode {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(30, 30, 54, 0.8);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-height: 40px;
+    }
+    .qz-mode.is-active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
+      border-color: transparent;
+      box-shadow: 0 4px 16px var(--purple-glow);
+    }
+    .qz-flip {
+      margin-top: 14px;
+      min-height: 300px;
+      perspective: 1100px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      padding: 0;
+      width: 100%;
+      color: inherit;
+      font: inherit;
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .qz-flip-inner {
+      position: relative;
+      min-height: 300px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .qz-flip.is-flipped .qz-flip-inner { transform: rotateY(180deg); }
+    .qz-flip:active .qz-flip-inner { transform: scale(0.985); }
+    .qz-flip.is-flipped:active .qz-flip-inner { transform: rotateY(180deg) scale(0.985); }
+    .qz-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: safe center;
+      gap: 8px;
+      padding: 28px 20px;
+      border-radius: 22px;
+      border: 1px solid var(--border-strong);
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139, 108, 255, 0.22), transparent 62%),
+        var(--surface);
+      box-shadow: var(--shadow);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: auto;
+      user-select: none;
+    }
+    .qz-face.qz-back {
+      transform: rotateY(180deg);
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(74, 158, 255, 0.2), transparent 62%),
+        var(--surface);
+    }
+    .qz-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--purple);
+    }
+    .qz-kicker.is-known { color: #6ee7b7; }
+    .qz-term {
+      font-size: clamp(22px, 5.4vw, 30px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .qz-answer {
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.45;
+      color: var(--text-soft);
+      max-width: 36em;
+    }
+    .qz-hint {
+      margin-top: 8px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+    .qz-prompt {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+    .qz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .qz-option {
+      appearance: none;
+      text-align: left;
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      cursor: pointer;
+    }
+    .qz-option:active:not(:disabled) { transform: scale(0.985); }
+    .qz-option.is-correct {
+      border-color: rgba(52, 211, 153, 0.65);
+      background: rgba(52, 211, 153, 0.14);
+      color: #d1fae5;
+    }
+    .qz-option.is-wrong {
+      border-color: rgba(255, 122, 138, 0.6);
+      background: var(--danger-soft);
+      color: #ffd0d6;
+    }
+    .qz-option:disabled { cursor: default; }
+    .qz-type {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .qz-type input {
+      width: 100%;
+      font: inherit;
+      font-size: 16px;
+      font-weight: 650;
+      min-height: 48px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      color-scheme: dark;
+    }
+    .qz-type input::placeholder { color: var(--text-dim); }
+    .qz-type input:focus {
+      outline: 2px solid var(--purple);
+      outline-offset: 1px;
+      border-color: var(--border-strong);
+    }
+    .qz-type input.is-ok { border-color: rgba(52, 211, 153, 0.7); }
+    .qz-type input.is-bad { border-color: rgba(255, 122, 138, 0.7); }
+    .qz-check {
+      appearance: none;
+      border: none;
+      background: linear-gradient(135deg, var(--purple-deep), var(--blue-deep));
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px var(--purple-glow);
+    }
+    .qz-check:active { transform: scale(0.98); }
+    .qz-check:disabled { opacity: 0.7; cursor: default; }
+    .qz-feedback {
+      min-height: 1.3em;
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .qz-feedback.is-ok { color: #6ee7b7; }
+    .qz-feedback.is-bad { color: #fda4af; }
+    .qz-nav {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+      margin-top: 14px;
+    }
+    .qz-step {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      min-height: 44px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .qz-step:first-child { justify-self: start; }
+    .qz-step:last-child { justify-self: end; }
+    .qz-step:active:not(:disabled) { transform: scale(0.97); }
+    .qz-step:disabled { opacity: 0.35; cursor: default; }
+    .qz-pos {
+      font-size: 13px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-soft);
+      text-align: center;
+    }
+    .qz-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      align-items: center;
+    }
+    .qz-tool {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-soft);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      min-height: 40px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .qz-tool.is-on {
+      color: #d1fae5;
+      border-color: rgba(52, 211, 153, 0.55);
+      background: rgba(52, 211, 153, 0.12);
+    }
+    .qz-tool:active { transform: scale(0.97); }
+    .qz-confirm {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 650;
+      color: var(--text-soft);
+    }
+    .qz-empty {
+      text-align: center;
+      padding: 36px 16px;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .qz-screen.is-in { animation: none; }
+      .qz-flip-inner { transition: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -2194,7 +2625,7 @@
           <div class="hero-copy">
             <h1 class="welcome">Welcome Jayden</h1>
             <p class="brand">Home</p>
-            <p class="brand-sub">Your hub · Calendar · Notepad · Debts</p>
+            <p class="brand-sub">Your hub · Calendar · School work quiz · Notepad · Debts</p>
           </div>
         </div>
         <div class="hero-tools">
@@ -2205,6 +2636,7 @@
       <nav class="hub-nav" role="tablist" aria-label="Hub sections">
         <button type="button" class="hub-tab is-active" role="tab" aria-selected="true" data-tab="home" id="tab-home">Home</button>
         <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="calendar" id="tab-calendar">Calendar</button>
+        <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="quiz" id="tab-quiz">School work quiz</button>
         <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="notepad" id="tab-notepad">Notepad</button>
         <button type="button" class="hub-tab" role="tab" aria-selected="false" data-tab="debts" id="tab-debts">Debts</button>
       </nav>
@@ -2293,6 +2725,12 @@
           <div class="home-card-body" id="homeSchoolBody">Loading tasks…</div>
           <div class="home-card-meta" id="homeSchoolMeta"></div>
         </button>
+        <button type="button" class="home-card" data-go="quiz">
+          <div class="home-card-kicker">School work quiz</div>
+          <div class="home-card-title" id="homeQuizTitle">Bio revision</div>
+          <div class="home-card-body" id="homeQuizBody">Transport, respiration, leaves, and photosynthesis</div>
+          <div class="home-card-meta" id="homeQuizMeta"><span class="home-chip">1 quiz</span></div>
+        </button>
         <button type="button" class="home-card" data-go="notepad">
           <div class="home-card-kicker">Notepad</div>
           <div class="home-card-title" id="homeNoteTitle">Your notes</div>
@@ -2311,6 +2749,9 @@
         </button>
         <button type="button" class="tt-btn" id="homeOpenSchoolWork" aria-haspopup="dialog">
           <span class="ico" aria-hidden="true">☑</span> School work
+        </button>
+        <button type="button" class="tt-btn" id="homeOpenQuiz">
+          <span class="ico" aria-hidden="true">Q</span> School work quiz
         </button>
         <button type="button" class="tt-btn" id="homeOpenTimetable" aria-haspopup="dialog">
           <span class="ico" aria-hidden="true">▦</span> Timetable
@@ -2415,6 +2856,12 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="hub-view" id="view-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+    <div class="shell">
+      <div id="quizApp" class="quiz-app"></div>
     </div>
   </section>
 
@@ -4120,6 +4567,804 @@
       });
     }
 
+    // —— School work quiz (cards + practice, saved on this device) ——
+    const QUIZ_KEY = "jayden-quiz-v1";
+    const QUIZ_SUBJECTS = [
+      { id: "science", name: "Science", accent: "sci" },
+      { id: "english", name: "English", accent: "eng" },
+      { id: "chinese", name: "Chinese", accent: "chi" },
+      { id: "maths", name: "Maths", accent: "math" },
+      { id: "design", name: "Design", accent: "design" }
+    ];
+    const QUIZ_SETS = [
+      {
+        id: "bio-revision",
+        subjectId: "science",
+        title: "Bio revision",
+        blurb: "Transport, respiration, leaves, and photosynthesis",
+        cards: [
+          {
+            id: "active-transport",
+            term: "Active transport",
+            answer: "Particles move against the concentration gradient. This needs ATP and carrier proteins."
+          },
+          {
+            id: "endocytosis",
+            term: "Endocytosis",
+            answer: "The cell membrane folds inward and brings material into the cell in a vesicle."
+          },
+          {
+            id: "exocytosis",
+            term: "Exocytosis",
+            answer: "A vesicle joins the cell membrane and lets material out of the cell."
+          },
+          {
+            id: "simple-diffusion",
+            term: "Simple diffusion",
+            answer: "Particles move from high concentration to low, with no energy and no carrier protein. An example is food colouring spreading in water."
+          },
+          {
+            id: "facilitated-diffusion",
+            term: "Facilitated diffusion",
+            answer: "Ions such as Na+, K+, and Ca2+ move through channel proteins, from high concentration to low. No ATP is used."
+          },
+          {
+            id: "osmosis",
+            term: "Osmosis",
+            answer: "Water moves across a partially permeable membrane, from a dilute solution to a more concentrated one."
+          },
+          {
+            id: "turgid-plasmolyzed",
+            term: "Turgid and plasmolyzed",
+            accept: ["Turgid vs plasmolyzed", "Turgid and plasmolysed", "Turgid vs plasmolysed"],
+            answer: "One state is a plant cell that is firm and full of water, with the vacuole pushing on the wall. The other is a plant cell that has lost water, so the membrane has pulled away from the wall."
+          },
+          {
+            id: "root-hairs",
+            term: "Root hair cells",
+            accept: ["Root hairs"],
+            answer: "These cells use active transport to take mineral ions in from the soil."
+          },
+          {
+            id: "white-blood-cells",
+            term: "White blood cells",
+            accept: ["White blood cell"],
+            answer: "These cells use endocytosis to take in pathogens."
+          },
+          {
+            id: "pancreas",
+            term: "Pancreas",
+            answer: "This organ uses exocytosis to release digestive enzymes."
+          },
+          {
+            id: "respiration",
+            term: "Respiration",
+            answer: "The release of energy as ATP from glucose."
+          },
+          {
+            id: "aerobic",
+            term: "Aerobic respiration",
+            accept: ["Aerobic"],
+            answer: "Happens in the mitochondria and needs oxygen. One glucose gives about 36 to 38 ATP. The equation is glucose + oxygen → carbon dioxide + water + energy (glucose + O2 → CO2 + H2O + energy)."
+          },
+          {
+            id: "anaerobic",
+            term: "Anaerobic respiration",
+            accept: ["Anaerobic"],
+            answer: "Happens in the cytoplasm and does not use oxygen. One glucose gives 2 ATP. Animals make lactic acid. Yeast and plants make ethanol and carbon dioxide."
+          },
+          {
+            id: "limiting-factors",
+            term: "Limiting factors of respiration",
+            accept: ["Limiting factors"],
+            answer: "The amount of sugar, and the temperature. If either is too low, the process slows down."
+          },
+          {
+            id: "flower",
+            term: "Flower",
+            answer: "This part is for reproduction. It makes seeds."
+          },
+          {
+            id: "leaf",
+            term: "Leaf",
+            answer: "This part makes food for the plant by photosynthesis."
+          },
+          {
+            id: "stem",
+            term: "Stem",
+            answer: "This part holds the plant up. It carries water, minerals, and sugars between the roots and the leaves."
+          },
+          {
+            id: "roots",
+            term: "Roots",
+            answer: "These parts hold the plant in the soil and take in water and mineral ions."
+          },
+          {
+            id: "xylem",
+            term: "Xylem",
+            answer: "This tissue carries water and minerals up the plant, from the roots to the leaves. It also helps hold the plant up."
+          },
+          {
+            id: "phloem",
+            term: "Phloem",
+            answer: "This tissue carries sugars, such as glucose and sucrose, from the leaves to the rest of the plant."
+          },
+          {
+            id: "waxy-cuticle",
+            term: "Waxy cuticle",
+            answer: "A waterproof layer on the outside of the leaf. It slows water loss and reflects harmful UV."
+          },
+          {
+            id: "upper-epidermis",
+            term: "Upper epidermis",
+            answer: "A clear layer of cells across the top of the leaf. Light passes through to the cells underneath."
+          },
+          {
+            id: "palisade-mesophyll",
+            term: "Palisade mesophyll",
+            accept: ["Palisade"],
+            answer: "Tall cells packed just under the top of the leaf. They catch the most light and do most of the food-making."
+          },
+          {
+            id: "spongy-mesophyll",
+            term: "Spongy mesophyll",
+            accept: ["Spongy layer"],
+            answer: "Looser cells lower in the leaf, with air spaces between them, so gases can be exchanged."
+          },
+          {
+            id: "stomata",
+            term: "Stomata",
+            accept: ["Stoma"],
+            answer: "Tiny pores that let gases in and out and let water vapour leave. They open in daylight and close at night."
+          },
+          {
+            id: "guard-cells",
+            term: "Guard cells",
+            accept: ["Guard cell"],
+            answer: "The pair of cells that open and close each pore in the leaf."
+          },
+          {
+            id: "transpiration",
+            term: "Transpiration",
+            answer: "Water moving through the plant and leaving the leaves as vapour. The long cells on the roots give a large surface area. Water enters them by osmosis. Mineral ions enter by active transport, which lowers water potential, so more water follows."
+          },
+          {
+            id: "uses-of-water",
+            term: "Uses of water in a plant",
+            accept: ["Uses of water"],
+            answer: "It dissolves mineral ions and carries them around, keeps cells firm so the plant stays upright, helps hold a steady temperature, and takes part in chemical reactions."
+          },
+          {
+            id: "transpiration-pull",
+            term: "Transpiration pull",
+            accept: ["Cohesion pull"],
+            answer: "Water evaporates from the leaf pores, so the pressure there falls. Water molecules stick together, and that column is pulled up from the roots against gravity."
+          },
+          {
+            id: "reduce-water-loss",
+            term: "Adaptations that reduce water loss",
+            accept: ["Reducing water loss", "Adaptations to reduce water loss"],
+            answer: "A thicker waterproof outer layer, sunken pores, small or needle-shaped leaves, hairs that trap moist air, and pores that stay shut except at certain times of day."
+          },
+          {
+            id: "photosynthesis",
+            term: "Photosynthesis",
+            answer: "Chlorophyll in chloroplasts uses light to turn carbon dioxide and water into glucose and oxygen. The equation is 6CO2 + 6H2O → C6H12O6 + 6O2."
+          },
+          {
+            id: "complementary-processes",
+            term: "Complementary processes",
+            accept: ["Photosynthesis and aerobic respiration", "Photosynthesis and respiration"],
+            answer: "Making glucose with light, and releasing energy from glucose with oxygen, run in opposite directions. One uses carbon dioxide and water to make glucose and oxygen. The other uses glucose and oxygen and gives off carbon dioxide and water."
+          },
+          {
+            id: "why-photosynthesis",
+            term: "Why photosynthesis matters",
+            accept: ["Importance of photosynthesis"],
+            answer: "Producers start food chains and store light as chemical energy in glucose. It also releases oxygen and takes in carbon dioxide. Spare glucose can be stored as starch, built into cellulose cell walls, or used to release energy."
+          },
+          {
+            id: "leaf-adaptations",
+            term: "Leaf adaptations for photosynthesis",
+            accept: ["Leaf adaptations"],
+            answer: "A flat, thin shape gives a large surface for light and a short path for gases. The upper cell layer is packed with chloroplasts. Air spaces lower down let carbon dioxide spread quickly and let oxygen leave."
+          },
+          {
+            id: "photosynthesis-factors",
+            term: "Factors affecting photosynthesis",
+            accept: ["Limiting factors of photosynthesis"],
+            answer: "Light, carbon dioxide, temperature, water, and the amount of chlorophyll. Dim light or little carbon dioxide slows it. Too cold slows the enzymes, and too hot can denature them. If water is short, the pores close, so less carbon dioxide gets in. Less chlorophyll means less light is absorbed."
+          }
+        ]
+      }
+    ];
+
+    let quizBound = false;
+    let quizRestored = false;
+    let quizUi = {
+      screen: "subjects",
+      subjectId: "science",
+      setId: "",
+      mode: "cards",
+      index: 0,
+      flipped: false,
+      order: null,
+      choices: {},
+      picked: null,
+      checked: false,
+      correct: false,
+      typed: "",
+      typeHint: "",
+      confirmClear: false,
+      animate: true
+    };
+
+    function quizEsc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[c]));
+    }
+
+    function quizSubjectById(id) {
+      return QUIZ_SUBJECTS.find((s) => s.id === id) || null;
+    }
+
+    function quizSetById(id) {
+      return QUIZ_SETS.find((s) => s.id === id) || null;
+    }
+
+    function quizSetsFor(subjectId) {
+      return QUIZ_SETS.filter((s) => s.subjectId === subjectId);
+    }
+
+    function quizCountLabel(n) {
+      const count = Number(n) || 0;
+      return count === 1 ? "1 quiz" : `${count} quizzes`;
+    }
+
+    function normQuiz(s) {
+      let n = String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
+      if (n.startsWith("the ")) n = n.slice(4);
+      return n;
+    }
+
+    function answerMatches(value, card) {
+      const n = normQuiz(value);
+      if (!n || !card) return false;
+      return [card.term].concat(card.accept || []).some((item) => normQuiz(item) === n);
+    }
+
+    function shuffleCopy(list) {
+      const a = list.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+      }
+      return a;
+    }
+
+    function readQuizStore() {
+      try {
+        const data = JSON.parse(localStorage.getItem(QUIZ_KEY) || "null");
+        if (data && typeof data === "object") {
+          if (!data.known || typeof data.known !== "object") data.known = {};
+          return data;
+        }
+      } catch (_) {}
+      return { known: {}, place: null };
+    }
+
+    function writeQuizStore(store) {
+      try { localStorage.setItem(QUIZ_KEY, JSON.stringify(store)); } catch (_) {}
+    }
+
+    function isCardKnown(setId, cardId) {
+      const bag = readQuizStore().known[setId];
+      return !!(bag && bag[cardId]);
+    }
+
+    function knownCount(setId) {
+      const set = quizSetById(setId);
+      if (!set) return 0;
+      return set.cards.filter((card) => isCardKnown(setId, card.id)).length;
+    }
+
+    function setCardKnown(setId, cardId, known) {
+      const store = readQuizStore();
+      const bag = store.known[setId] && typeof store.known[setId] === "object" ? store.known[setId] : {};
+      if (known) bag[cardId] = 1;
+      else delete bag[cardId];
+      store.known[setId] = bag;
+      writeQuizStore(store);
+    }
+
+    function saveQuizPlace() {
+      const store = readQuizStore();
+      store.place = {
+        screen: quizUi.screen,
+        subjectId: quizUi.subjectId,
+        setId: quizUi.setId,
+        mode: quizUi.mode,
+        index: quizUi.index
+      };
+      writeQuizStore(store);
+    }
+
+    function restoreQuizPlace() {
+      if (quizRestored) return;
+      quizRestored = true;
+      const place = readQuizStore().place;
+      if (!place || typeof place !== "object") return;
+      const screen = place.screen;
+      if (screen !== "subjects" && screen !== "sets" && screen !== "study") return;
+      if (["cards", "choice", "type"].includes(place.mode)) quizUi.mode = place.mode;
+      if (typeof place.subjectId === "string" && quizSubjectById(place.subjectId)) quizUi.subjectId = place.subjectId;
+      if (typeof place.setId === "string" && quizSetById(place.setId)) {
+        const set = quizSetById(place.setId);
+        quizUi.setId = set.id;
+        quizUi.subjectId = set.subjectId;
+        const max = Math.max(0, set.cards.length - 1);
+        const idx = Number(place.index);
+        quizUi.index = Number.isFinite(idx) ? Math.min(Math.max(0, idx), max) : 0;
+      }
+      if (screen === "study" && !quizSetById(quizUi.setId)) quizUi.screen = "subjects";
+      else if (screen === "sets" && !quizSubjectById(quizUi.subjectId)) quizUi.screen = "subjects";
+      else quizUi.screen = screen;
+    }
+
+    function currentSet() {
+      return quizSetById(quizUi.setId);
+    }
+
+    function currentOrder() {
+      const set = currentSet();
+      if (!set) return [];
+      const ids = set.cards.map((card) => card.id);
+      const order = quizUi.order;
+      if (Array.isArray(order) && order.length === ids.length && order.every((id) => ids.includes(id))) return order;
+      return ids;
+    }
+
+    function currentCard() {
+      const set = currentSet();
+      if (!set || !set.cards.length) return null;
+      const ids = currentOrder();
+      const id = ids[quizUi.index] || ids[0];
+      return set.cards.find((card) => card.id === id) || set.cards[0];
+    }
+
+    function ensureChoices(card) {
+      if (!quizUi.choices) quizUi.choices = {};
+      if (!quizUi.choices[card.id]) {
+        const set = currentSet();
+        const pool = (set ? set.cards : []).map((item) => item.term).filter((term) => term !== card.term);
+        quizUi.choices[card.id] = shuffleCopy(shuffleCopy(pool).slice(0, 3).concat([card.term]));
+      }
+      return quizUi.choices[card.id];
+    }
+
+    function flipLabel(card, flipped) {
+      if (!card) return "Flashcard";
+      return flipped ? `${card.term}. ${card.answer}` : `${card.term}. Tap to show the answer`;
+    }
+
+    function resetAnswerState() {
+      quizUi.flipped = false;
+      quizUi.picked = null;
+      quizUi.checked = false;
+      quizUi.correct = false;
+      quizUi.typed = "";
+      quizUi.typeHint = "";
+    }
+
+    function renderHomeQuiz() {
+      const title = document.getElementById("homeQuizTitle");
+      const body = document.getElementById("homeQuizBody");
+      const meta = document.getElementById("homeQuizMeta");
+      const scienceSets = quizSetsFor("science");
+      const cards = scienceSets.reduce((sum, set) => sum + set.cards.length, 0);
+      const known = scienceSets.reduce((sum, set) => sum + knownCount(set.id), 0);
+      const first = scienceSets[0];
+      if (title) title.textContent = first ? first.title : "Science";
+      if (body) {
+        body.textContent = known
+          ? `${known} of ${cards} cards known`
+          : (first ? first.blurb : "No quizzes yet");
+      }
+      if (meta) {
+        meta.innerHTML = `<span class="home-chip">${quizEsc(quizCountLabel(scienceSets.length))}</span>`;
+      }
+    }
+
+    function renderQuiz() {
+      const root = document.getElementById("quizApp");
+      if (!root) return;
+      restoreQuizPlace();
+      const animate = quizUi.animate;
+      quizUi.animate = false;
+      if (quizUi.screen === "sets") root.innerHTML = renderQuizSets(animate);
+      else if (quizUi.screen === "study") root.innerHTML = renderQuizStudy(animate);
+      else root.innerHTML = renderQuizSubjects(animate);
+      if (animate) {
+        const top = root.getBoundingClientRect().top;
+        if (top < 0) window.scrollTo(0, 0);
+      }
+      if (quizUi.screen === "study" && quizUi.mode === "type" && !quizUi.checked) {
+        const input = document.getElementById("quizTypeInput");
+        const view = document.getElementById("view-quiz");
+        if (input && view && view.classList.contains("is-active") && document.documentElement.classList.contains("hub-open")) {
+          window.setTimeout(() => { try { input.focus(); } catch (_) {} }, 40);
+        }
+      }
+    }
+
+    function renderQuizSubjects(animate) {
+      const rows = QUIZ_SUBJECTS.map((subject) => {
+        const count = quizSetsFor(subject.id).length;
+        const sub = count ? quizCountLabel(count) : "No quizzes yet";
+        return `<button type="button" class="qz-row" data-qz="subject" data-id="${quizEsc(subject.id)}" data-accent="${quizEsc(subject.accent)}">
+          <span class="qz-row-main">
+            <span class="qz-row-title">${quizEsc(subject.name)}</span>
+            <span class="qz-row-sub">${quizEsc(sub)}</span>
+          </span>
+          <span class="qz-count${count ? "" : " is-zero"}">${count}</span>
+        </button>`;
+      }).join("");
+      return `<div class="qz-screen${animate ? " is-in" : ""}">
+        <div class="qz-head">
+          <div>
+            <h2 class="qz-title">School work quiz</h2>
+            <p class="qz-sub">Pick a subject. The number is how many quizzes it has.</p>
+          </div>
+        </div>
+        <div class="qz-list">${rows}</div>
+      </div>`;
+    }
+
+    function renderQuizSets(animate) {
+      const subject = quizSubjectById(quizUi.subjectId) || QUIZ_SUBJECTS[0];
+      const sets = quizSetsFor(subject.id);
+      const rows = sets.map((set) => {
+        const known = knownCount(set.id);
+        const total = set.cards.length;
+        const progress = !total ? "No cards yet" : !known ? `${total} cards · Not started` : known === total ? `${total} cards · All known` : `${total} cards · ${known} known`;
+        return `<button type="button" class="qz-row" data-qz="set" data-id="${quizEsc(set.id)}" data-accent="${quizEsc(subject.accent)}">
+          <span class="qz-row-main">
+            <span class="qz-row-title">${quizEsc(set.title)}</span>
+            <span class="qz-row-sub">${quizEsc(set.blurb)} · ${quizEsc(progress)}</span>
+          </span>
+          <span class="qz-count">${total}</span>
+        </button>`;
+      }).join("");
+      const empty = sets.length ? "" : `<p class="qz-empty">No quizzes yet</p>`;
+      return `<div class="qz-screen${animate ? " is-in" : ""}">
+        <div class="qz-head">
+          <div>
+            <h2 class="qz-title">${quizEsc(subject.name)}</h2>
+            <p class="qz-sub">${quizEsc(sets.length ? quizCountLabel(sets.length) : "No quizzes yet")}</p>
+          </div>
+          <button type="button" class="qz-back" data-qz="back">Back</button>
+        </div>
+        ${sets.length ? `<div class="qz-list">${rows}</div>` : empty}
+      </div>`;
+    }
+
+    function renderQuizStudy(animate) {
+      const set = currentSet();
+      const subject = set ? quizSubjectById(set.subjectId) : null;
+      if (!set || !set.cards.length) {
+        return `<div class="qz-screen${animate ? " is-in" : ""}">
+          <div class="qz-head">
+            <div>
+              <h2 class="qz-title">Quiz</h2>
+              <p class="qz-sub">No cards in this quiz yet</p>
+            </div>
+            <button type="button" class="qz-back" data-qz="back">Back</button>
+          </div>
+        </div>`;
+      }
+      const card = currentCard();
+      const total = currentOrder().length;
+      const index = Math.min(quizUi.index, total - 1);
+      quizUi.index = index;
+      const known = knownCount(set.id);
+      const pct = total ? Math.round((known / total) * 100) : 0;
+      const cardKnown = isCardKnown(set.id, card.id);
+      const modes = [
+        ["cards", "Cards"],
+        ["choice", "Multiple choice"],
+        ["type", "Type the answer"]
+      ].map(([id, label]) => `<button type="button" class="qz-mode${quizUi.mode === id ? " is-active" : ""}" data-qz="mode" data-mode="${id}" aria-pressed="${quizUi.mode === id ? "true" : "false"}">${label}</button>`).join("");
+      const nav = `<div class="qz-nav">
+        <button type="button" class="qz-step" data-qz="prev" ${index === 0 ? "disabled" : ""}>Previous</button>
+        <div class="qz-pos" role="status">${index + 1} / ${total}</div>
+        <button type="button" class="qz-step" data-qz="next" ${index === total - 1 ? "disabled" : ""}>Next</button>
+      </div>`;
+      let body = "";
+      if (quizUi.mode === "choice") body = renderQuizChoice(card);
+      else if (quizUi.mode === "type") body = renderQuizType(card);
+      else body = renderQuizCard(card, cardKnown);
+      const tools = quizUi.mode === "cards" ? `<div class="qz-tools">
+        <button type="button" class="qz-tool${cardKnown ? " is-on" : ""}" data-qz="know">I know this</button>
+        <button type="button" class="qz-tool" data-qz="learn">Still learning</button>
+        <button type="button" class="qz-tool" data-qz="shuffle">Shuffle</button>
+      </div>` : `<div class="qz-tools"><button type="button" class="qz-tool" data-qz="shuffle">Shuffle</button></div>`;
+      const confirm = quizUi.confirmClear ? `<div class="qz-confirm">
+        <span>Clear what you have marked known for this quiz?</span>
+        <button type="button" class="add-cancel" data-qz="clear-no">Cancel</button>
+        <button type="button" class="note-clear-yes" data-qz="clear-yes">Clear</button>
+      </div>` : (known ? `<div class="qz-tools"><button type="button" class="qz-tool" data-qz="clear">Clear progress</button></div>` : "");
+      return `<div class="qz-screen${animate ? " is-in" : ""}">
+        <div class="qz-head">
+          <div>
+            <h2 class="qz-title">${quizEsc(set.title)}</h2>
+            <p class="qz-sub">${quizEsc(subject ? subject.name : "Science")} · ${quizEsc(set.blurb)}</p>
+          </div>
+          <button type="button" class="qz-back" data-qz="back">Back</button>
+        </div>
+        <div class="qz-progress" aria-hidden="true"><span style="width:${pct}%"></span></div>
+        <p class="qz-sub">${known} of ${total} known</p>
+        <div class="qz-modes" role="group" aria-label="Study mode">${modes}</div>
+        ${body}
+        ${nav}
+        ${tools}
+        ${confirm}
+      </div>`;
+    }
+
+    function renderQuizCard(card, cardKnown) {
+      return `<div class="qz-flip${quizUi.flipped ? " is-flipped" : ""}" data-qz="flip" role="button" tabindex="0" aria-pressed="${quizUi.flipped ? "true" : "false"}" aria-label="${quizEsc(flipLabel(card, quizUi.flipped))}">
+        <div class="qz-flip-inner">
+          <div class="qz-face qz-front" aria-hidden="true">
+            <div class="qz-kicker${cardKnown ? " is-known" : ""}">Term${cardKnown ? " · Known" : ""}</div>
+            <div class="qz-term">${quizEsc(card.term)}</div>
+          </div>
+          <div class="qz-face qz-back" aria-hidden="true">
+            <div class="qz-kicker${cardKnown ? " is-known" : ""}">Answer${cardKnown ? " · Known" : ""}</div>
+            <div class="qz-answer">${quizEsc(card.answer)}</div>
+          </div>
+        </div>
+      </div>
+      <p class="qz-hint">Tap the card to flip</p>`;
+    }
+
+    function renderQuizChoice(card) {
+      const options = ensureChoices(card);
+      const buttons = options.map((term, i) => {
+        let cls = "qz-option";
+        if (quizUi.checked && term === card.term) cls += " is-correct";
+        else if (quizUi.checked && i === quizUi.picked) cls += " is-wrong";
+        return `<button type="button" class="${cls}" data-qz="choice" data-i="${i}" ${quizUi.checked ? "disabled" : ""}>${quizEsc(term)}</button>`;
+      }).join("");
+      let feedback = "";
+      if (quizUi.checked && quizUi.correct) feedback = `<p class="qz-feedback is-ok" role="status">Correct</p>`;
+      else if (quizUi.checked) feedback = `<p class="qz-feedback is-bad" role="status">Not quite. The term is ${quizEsc(card.term)}.</p>`;
+      return `<div class="qz-prompt">${quizEsc(card.answer)}</div>
+        <div class="qz-options">${buttons}</div>
+        ${feedback}`;
+    }
+
+    function renderQuizType(card) {
+      const cls = quizUi.checked ? (quizUi.correct ? " is-ok" : " is-bad") : "";
+      let feedback = "";
+      if (quizUi.typeHint) feedback = `<p class="qz-feedback is-bad" id="quizFeedback" role="status">${quizEsc(quizUi.typeHint)}</p>`;
+      else if (quizUi.checked && quizUi.correct) feedback = `<p class="qz-feedback is-ok" id="quizFeedback" role="status">Correct</p>`;
+      else if (quizUi.checked) feedback = `<p class="qz-feedback is-bad" id="quizFeedback" role="status">Not quite. The term is ${quizEsc(card.term)}.</p>`;
+      else feedback = `<p class="qz-feedback" id="quizFeedback" role="status"></p>`;
+      return `<div class="qz-prompt">${quizEsc(card.answer)}</div>
+        <form class="qz-type" data-qz-form="type" autocomplete="off">
+          <label class="add-field" for="quizTypeInput">Term
+            <input id="quizTypeInput" type="text" enterkeyhint="go" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" placeholder="Type the term" value="${quizEsc(quizUi.typed)}" ${quizUi.checked ? "disabled" : ""} class="${cls.trim()}" />
+          </label>
+          <button type="submit" class="qz-check" ${quizUi.checked ? "disabled" : ""}>Check</button>
+        </form>
+        ${feedback}`;
+    }
+
+    function openSubject(id) {
+      if (!quizSubjectById(id)) return;
+      quizUi.subjectId = id;
+      quizUi.animate = true;
+      quizUi.screen = "sets";
+      quizUi.confirmClear = false;
+      saveQuizPlace();
+      renderQuiz();
+    }
+
+    function openSet(id) {
+      const set = quizSetById(id);
+      if (!set) return;
+      const place = readQuizStore().place;
+      quizUi.animate = true;
+      quizUi.screen = "study";
+      quizUi.setId = set.id;
+      quizUi.subjectId = set.subjectId;
+      quizUi.mode = place && place.setId === set.id && ["cards", "choice", "type"].includes(place.mode) ? place.mode : "cards";
+      const max = Math.max(0, set.cards.length - 1);
+      const idx = place && place.setId === set.id ? Number(place.index) : 0;
+      quizUi.index = Number.isFinite(idx) ? Math.min(Math.max(0, idx), max) : 0;
+      quizUi.order = null;
+      quizUi.choices = {};
+      quizUi.confirmClear = false;
+      resetAnswerState();
+      saveQuizPlace();
+      renderQuiz();
+    }
+
+    function quizBack() {
+      quizUi.confirmClear = false;
+      resetAnswerState();
+      quizUi.animate = true;
+      if (quizUi.screen === "study") quizUi.screen = "sets";
+      else quizUi.screen = "subjects";
+      saveQuizPlace();
+      renderQuiz();
+    }
+
+    function setQuizMode(mode) {
+      if (!["cards", "choice", "type"].includes(mode) || quizUi.mode === mode) return;
+      quizUi.mode = mode;
+      resetAnswerState();
+      saveQuizPlace();
+      renderQuiz();
+    }
+
+    function stepCard(delta) {
+      const total = currentOrder().length;
+      if (!total) return;
+      const next = quizUi.index + delta;
+      if (next < 0 || next >= total) return;
+      quizUi.index = next;
+      resetAnswerState();
+      saveQuizPlace();
+      renderQuiz();
+    }
+
+    function shuffleQuiz() {
+      const set = currentSet();
+      if (!set || set.cards.length < 2) return;
+      quizUi.order = shuffleCopy(set.cards.map((card) => card.id));
+      quizUi.index = 0;
+      quizUi.choices = {};
+      resetAnswerState();
+      saveQuizPlace();
+      renderQuiz();
+    }
+
+    function markCurrent(known) {
+      const card = currentCard();
+      if (!card || !quizUi.setId) return;
+      setCardKnown(quizUi.setId, card.id, known);
+      renderQuiz();
+      renderHomeQuiz();
+    }
+
+    function pickChoice(i) {
+      if (quizUi.checked || quizUi.mode !== "choice") return;
+      const card = currentCard();
+      if (!card) return;
+      const options = ensureChoices(card);
+      if (!options[i]) return;
+      quizUi.picked = i;
+      quizUi.checked = true;
+      quizUi.correct = options[i] === card.term;
+      setCardKnown(quizUi.setId, card.id, quizUi.correct);
+      renderQuiz();
+      renderHomeQuiz();
+    }
+
+    function checkTyped() {
+      if (quizUi.checked || quizUi.mode !== "type") return;
+      const input = document.getElementById("quizTypeInput");
+      const value = input ? input.value : quizUi.typed;
+      quizUi.typed = value;
+      const card = currentCard();
+      if (!card) return;
+      if (!normQuiz(value)) {
+        quizUi.typeHint = "Type the term first.";
+        const fb = document.getElementById("quizFeedback");
+        if (fb) {
+          fb.textContent = quizUi.typeHint;
+          fb.className = "qz-feedback is-bad";
+        }
+        if (input) input.focus();
+        return;
+      }
+      quizUi.typeHint = "";
+      quizUi.checked = true;
+      quizUi.correct = answerMatches(value, card);
+      setCardKnown(quizUi.setId, card.id, quizUi.correct);
+      renderQuiz();
+      renderHomeQuiz();
+    }
+
+    function clearCurrentProgress() {
+      const store = readQuizStore();
+      if (quizUi.setId && store.known) delete store.known[quizUi.setId];
+      writeQuizStore(store);
+      quizUi.confirmClear = false;
+      renderQuiz();
+      renderHomeQuiz();
+    }
+
+    function toggleFlip() {
+      if (quizUi.mode !== "cards") return;
+      const card = currentCard();
+      quizUi.flipped = !quizUi.flipped;
+      const box = document.querySelector("#quizApp .qz-flip");
+      if (!box) return;
+      box.classList.toggle("is-flipped", quizUi.flipped);
+      box.setAttribute("aria-pressed", quizUi.flipped ? "true" : "false");
+      if (card) box.setAttribute("aria-label", flipLabel(card, quizUi.flipped));
+    }
+
+    function onQuizClick(e) {
+      const el = e.target.closest("[data-qz]");
+      if (!el) return;
+      const action = el.getAttribute("data-qz");
+      if (action === "flip") {
+        toggleFlip();
+        return;
+      }
+      if (action === "subject") openSubject(el.getAttribute("data-id"));
+      else if (action === "set") openSet(el.getAttribute("data-id"));
+      else if (action === "back") quizBack();
+      else if (action === "mode") setQuizMode(el.getAttribute("data-mode"));
+      else if (action === "prev") stepCard(-1);
+      else if (action === "next") stepCard(1);
+      else if (action === "know") markCurrent(true);
+      else if (action === "learn") markCurrent(false);
+      else if (action === "choice") pickChoice(Number(el.getAttribute("data-i")));
+      else if (action === "shuffle") shuffleQuiz();
+      else if (action === "clear") {
+        quizUi.confirmClear = true;
+        renderQuiz();
+      } else if (action === "clear-no") {
+        quizUi.confirmClear = false;
+        renderQuiz();
+      } else if (action === "clear-yes") clearCurrentProgress();
+    }
+
+    function onQuizKeydown(e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const flip = e.target.closest(".qz-flip");
+      if (!flip) return;
+      e.preventDefault();
+      toggleFlip();
+    }
+
+    function onQuizSubmit(e) {
+      const form = e.target.closest("[data-qz-form]");
+      if (!form) return;
+      e.preventDefault();
+      checkTyped();
+    }
+
+    function bindQuiz() {
+      const root = document.getElementById("quizApp");
+      if (!root || quizBound) return;
+      quizBound = true;
+      root.addEventListener("click", onQuizClick);
+      root.addEventListener("keydown", onQuizKeydown);
+      root.addEventListener("submit", onQuizSubmit);
+    }
+
+    function scrollHubTabIntoView(tab) {
+      const nav = document.querySelector(".hub-nav");
+      const btn = document.querySelector(`.hub-tab[data-tab="${tab}"]`);
+      if (!nav || !btn) return;
+      const navRect = nav.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+      if (btnRect.left < navRect.left) nav.scrollLeft -= (navRect.left - btnRect.left) + 8;
+      else if (btnRect.right > navRect.right) nav.scrollLeft += (btnRect.right - navRect.right) + 8;
+    }
+
     // —— Hub tabs ——
     let activeTab = "home";
     let tabSwitching = false;
@@ -4136,7 +5381,7 @@
 
     function showTab(tab, opts) {
       const optsSafe = opts || {};
-      if (!["home", "calendar", "debts", "notepad"].includes(tab)) tab = "home";
+      if (!["home", "calendar", "debts", "notepad", "quiz"].includes(tab)) tab = "home";
       if (tab === activeTab && !optsSafe.force) return;
       if (activeTab === "notepad" && tab !== "notepad") saveNotesNow();
       if (tabSwitching) return;
@@ -4187,6 +5432,11 @@
           if (noteEl && !optsSafe.skipFocus) {
             window.setTimeout(() => { try { noteEl.focus(); } catch (_) {} }, 40);
           }
+        }
+        scrollHubTabIntoView(tab);
+        if (tab === "quiz") {
+          quizUi.animate = true;
+          renderQuiz();
         }
       };
 
@@ -4296,6 +5546,7 @@
       }
 
       renderHomeNote(readNoteRecord().text);
+      renderHomeQuiz();
     }
 
     // Hong Kong forecast. Coords are the city centre; Open-Meteo needs no key.
@@ -4898,6 +6149,7 @@
       });
     })();
 
+    bindQuiz();
     document.querySelectorAll(".hub-tab").forEach(btn => {
       btn.addEventListener("click", () => showTab(btn.getAttribute("data-tab")));
     });
@@ -4911,6 +6163,7 @@
       showTab("calendar");
       openTimetable();
     });
+    document.getElementById("homeOpenQuiz")?.addEventListener("click", () => showTab("quiz"));
     document.getElementById("homeOpenNotepad")?.addEventListener("click", () => showTab("notepad"));
     document.querySelectorAll("#homeGrid [data-go]").forEach(card => {
       card.addEventListener("click", () => {
@@ -4924,6 +6177,8 @@
           showTab("calendar");
         } else if (go === "notepad") {
           showTab("notepad");
+        } else if (go === "quiz") {
+          showTab("quiz");
         }
       });
     });
@@ -5072,10 +6327,24 @@
     }
 
     document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        if (!document.documentElement.classList.contains("hub-open")) return;
+        if (activeTab !== "quiz" || quizUi.screen !== "study") return;
+        const tag = e.target && e.target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+        e.preventDefault();
+        stepCard(e.key === "ArrowRight" ? 1 : -1);
+        return;
+      }
       if (e.key !== "Escape") return;
       const noteConfirm = document.getElementById("noteConfirm");
       if (noteConfirm && !noteConfirm.hidden) {
         hideNoteConfirm();
+        return;
+      }
+      if (activeTab === "quiz" && quizUi.confirmClear) {
+        quizUi.confirmClear = false;
+        renderQuiz();
         return;
       }
       if (document.getElementById("addOverlay").classList.contains("is-open")) {
@@ -5115,7 +6384,7 @@
       if (params.has("sw")) openSchoolWork();
 
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-        navigator.serviceWorker.register("./sw.js?v=18", { updateViaCache: "none" })
+        navigator.serviceWorker.register("./sw.js?v=19", { updateViaCache: "none" })
           .then((reg) => { try { reg.update(); } catch (_) {} })
           .catch(() => {});
         let refreshing = false;
