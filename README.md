@@ -6,7 +6,7 @@ Jayden's personal **hub** (Asia/Hong_Kong) — Home, Calendar, School work quiz,
 - Tabs: Home · Calendar · School work quiz · Notepad · Debts (`?tab=`)
 - A password screen covers the hub until it is unlocked in this tab. **Remember on this device** keeps it open after the tab closes. **Log out** locks it again. The check is a SHA-256 hash in the page (GitHub Pages is static, so this only stops casual visitors).
 - Notepad autosaves in this browser. **Clear notes** asks before wiping them.
-- School work quiz lists subjects and how many quizzes each one has. Science has a bio revision set (transport, respiration, leaf structure, transpiration, and photosynthesis) with flip cards, multiple choice, and type-the-term practice. What you mark known stays in this browser. English, Chinese, Maths, and Design are listed for later.
+- School work quiz lists subjects and how many quizzes each one has. Science has a bio revision set (transport, respiration, leaf structure, transpiration, and photosynthesis) with flip cards, multiple choice, and type-the-term practice. **Do test** asks the set, scores the first try, then keeps every miss until it is answered right. Tricky words such as ATP, xylem, and osmosis have a short **What's this?** tip. What you mark known stays in this browser. English, Chinese, Maths, and Design are listed for later.
 - Debts from `debts.json` (interest countdown)
 - Calendar module keeps week tabs, timetable, school work bots
 - Days left → right as **collapsible tabs** (tap to open/close)
