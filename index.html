@@ -2891,7 +2891,7 @@
       <div class="debts-hero">
         <div class="debts-total-label">Total owed to you</div>
         <div class="debts-total" id="debtsTotal">HK$642.35</div>
-        <div class="debts-rate" id="debtsRate">6.7% interest · 1st of each month · 9:03 AM HKT</div>
+        <div class="debts-rate" id="debtsRate">4% interest · 1st of each month · 9:03 AM HKT</div>
         <div class="debts-countdown-box">
           <div class="debts-countdown-label">Next interest bump</div>
           <div class="debts-countdown" id="debtsCountdown">—</div>
@@ -4049,7 +4049,7 @@
     const EMBEDDED_DEBTS = {
       "currency": "HKD",
       "updated": "2026-11-01T09:03:00+08:00",
-      "interestRate": 0.067,
+      "interestRate": 0.04,
       "interestDay": 1,
       "interestTime": "09:03",
       "timezone": "Asia/Hong_Kong",
@@ -4173,6 +4173,11 @@
       return Math.round(bal * (1 + rate) * 100) / 100;
     }
 
+    function formatInterestPercent(rate) {
+      const text = (Number(rate) * 100).toFixed(1).replace(/\.0$/, "");
+      return text + "%";
+    }
+
     function parseInterestDate(iso) {
       // "2026-11-01T09:03:00+08:00"
       if (!iso) return null;
@@ -4206,13 +4211,13 @@
     function renderDebts(opts) {
       const rebuildList = !opts || opts.list !== false;
       const people = debtsData.people || [];
-      const rate = Number(debtsData.interestRate) || 0.067;
+      const rate = Number(debtsData.interestRate) || 0.04;
       const total = people.reduce((s, p) => s + Number(p.balance || 0), 0);
       const elTotal = document.getElementById("debtsTotal");
       if (elTotal) elTotal.textContent = moneyHKD(total);
       const elRate = document.getElementById("debtsRate");
       if (elRate) {
-        elRate.textContent = `${(rate * 100).toFixed(1)}% interest · 1st of each month · 9:03 AM HKT`;
+        elRate.textContent = `${formatInterestPercent(rate)} interest · 1st of each month · 9:03 AM HKT`;
       }
       const next = parseInterestDate(debtsData.nextInterest);
       const ms = next ? (next.getTime() - Date.now()) : 0;
@@ -4282,7 +4287,7 @@
       const row = e.target.closest(".debt-row");
       const person = debtPersonFromRow(row);
       if (!person) return;
-      const rate = Number(debtsData.interestRate) || 0.067;
+      const rate = Number(debtsData.interestRate) || 0.04;
       if (e.target.classList.contains("debt-name-input")) {
         const name = cleanDebtName(e.target.value);
         if (!name) return;
@@ -4323,7 +4328,7 @@
         person.balance = amount;
         e.target.value = amountInputValue(amount);
         const after = row.querySelector(".debt-after");
-        const rate = Number(debtsData.interestRate) || 0.067;
+        const rate = Number(debtsData.interestRate) || 0.04;
         if (after) after.textContent = `After interest · ${moneyHKD(afterInterest(amount, rate))}`;
       } else {
         return;
@@ -5892,7 +5897,7 @@
       }
 
       const people = debtsData.people || [];
-      const rate = Number(debtsData.interestRate) || 0.067;
+      const rate = Number(debtsData.interestRate) || 0.04;
       const total = people.reduce((s, p) => s + Number(p.balance || 0), 0);
       const next = parseInterestDate(debtsData.nextInterest);
       const ms = next ? (next.getTime() - Date.now()) : 0;
@@ -5902,10 +5907,10 @@
       if (dt) dt.textContent = moneyHKD(total);
       if (db) db.textContent = next
         ? `Next interest · ${formatCountdown(ms)}`
-        : `${(rate * 100).toFixed(1)}% on the 1st`;
+        : `${formatInterestPercent(rate)} on the 1st`;
       if (dm) {
         dm.innerHTML = `<span class="home-chip is-money">${people.length} friends</span>
-          <span class="home-chip">${(rate * 100).toFixed(1)}% / mo</span>`;
+          <span class="home-chip">${formatInterestPercent(rate)} / mo</span>`;
       }
 
       renderHomeNote(readNoteRecord().text);
